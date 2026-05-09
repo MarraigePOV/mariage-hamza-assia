@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="theme-color" content="#F5F0E8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hamza & Assia — 4 Juillet 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Cinzel:wght@300;400&family=Pinyon+Script&family=Lato:wght@100;300;400&display=swap" rel="stylesheet"/>
+<style>
+/* ════════════════════════════════
+   DESIGN SYSTEM
+════════════════════════════════ */
+:root {
+  --base:   #F5F0E8;
+  --sable:  #EAE0D0;
+  --lin:    #D4C8B8;
+  --or:     #B8965A;
+  --laiton: #9A7A45;
+  --terra:  #C4896A;
+  --olive:  #4A5240;
+  --text:   #2C2418;
+  --muted:  #8A7A68;
+  --light:  #C4B8A8;
+  --err:    #B85A4A;
+  --ok:     #5A8A6A;
+
+  --f-serif: 'Cormorant Garamond', serif;
+  --f-cap:   'Cinzel', serif;
+  --f-calli: 'Pinyon Script', cursive;
+  --f-sans:  'Lato', sans-serif;
+}
+
+html, body {
+  background-color: #F5F0E8 !important;
+  background: #F5F0E8 !important;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+body {
+  background: #F5F0E8;
+  color: var(--text);
+  font-family: var(--f-sans);
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Grain tadelakt */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ════════ HERO ════════ */
+.hero {
+  min-height: 100vh;
+  background: #F5F0E8;
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 80px 32px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.hero-moucharabieh {
+  position: absolute; top: -50px; left: -50px;
+  width: 380px; height: 380px;
+  opacity: 0.065; pointer-events: none;
+}
+.hero-moucharabieh-r {
+  position: absolute; bottom: -70px; right: -70px;
+  width: 340px; height: 340px;
+  opacity: 0.05; pointer-events: none;
+  transform: scaleX(-1);
+}
+.hero-top-line, .hero-bot-line {
+  position: absolute; left: 32px; right: 32px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--lin), var(--or), var(--lin), transparent);
+}
+.hero-top-line { top: 32px; }
+.hero-bot-line { bottom: 32px; }
+
+.hero-eyebrow {
+  font-family: var(--f-cap); font-weight: 300;
+  font-size: 8px; letter-spacing: 0.5em; text-transform: uppercase;
+  color: var(--or); margin-bottom: 52px;
+}
+
+.arche-wrap {
+  position: relative; display: inline-block;
+  padding: 44px 52px 36px;
+}
+.arche-wrap::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 12%;
+  border: 1px solid rgba(184,150,90,0.22);
+  border-bottom: none;
+  border-radius: 50% 50% 0 0 / 36% 36% 0 0;
+}
+.arche-wrap::after {
+  content: '';
+  position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+  width: 26px; height: 16px;
+  border: 1px solid rgba(184,150,90,0.28); border-bottom: none;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: #F5F0E8;
+}
+.arche-bl, .arche-br {
+  position: absolute; bottom: 0;
+  width: 1px; height: 12%;
+  background: rgba(184,150,90,0.22);
+}
+.arche-bl { left: 0; } .arche-br { right: 0; }
+
+.hero-names {
+  font-family: var(--f-calli);
+  font-size: clamp(4rem, 12vw, 9rem);
+  color: var(--text); line-height: 0.9;
+}
+.hero-amp {
+  font-family: var(--f-serif); font-style: italic; font-weight: 200;
+  font-size: clamp(1.3rem, 3.5vw, 2.4rem);
+  color: var(--or); display: block; margin: 8px 0;
+}
+.hero-date {
+  font-family: var(--f-serif); font-style: italic; font-weight: 300;
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  color: var(--muted); letter-spacing: 0.14em; margin-top: 44px;
+}
+
+.scroll-ind {
+  position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-family: var(--f-cap); font-size: 7px; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--light);
+}
+.scroll-line {
+  width: 1px; height: 38px;
+  background: linear-gradient(to bottom, var(--or), transparent);
+  animation: sc 2.2s ease-in-out infinite;
+}
+@keyframes sc { 0%,100%{transform:scaleY(1);opacity:.7}50%{transform:scaleY(.3);opacity:.2} }
+
+/* ════════ SÉPARATEUR ════════ */
+.sep {
+  height: 1px; margin: 0 64px;
+  background: linear-gradient(90deg, transparent, var(--lin), transparent);
+}
+
+/* ════════ MODAL IDENTITÉ ════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(245,240,232,0.96);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal-box {
+  background: #F5F0E8;
+  border: 1px solid rgba(184,150,90,0.3);
+  max-width: 420px; width: 100%;
+  padding: 52px 40px 44px;
+  text-align: center;
+  position: relative;
+  animation: modal-in 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes modal-in { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.modal-box::before {
+  content: '';
+  position: absolute; top: 0; left: 20px; right: 20px; bottom: 15%;
+  border: 1px solid rgba(184,150,90,0.15);
+  border-bottom: none;
+  border-radius: 50% 50% 0 0 / 12% 12% 0 0;
+  pointer-events: none;
+}
+.modal-title {
+  font-family: var(--f-serif); font-weight: 200; font-style: italic;
+  font-size: 1.8rem; color: var(--text); margin-bottom: 6px;
+}
+.modal-sub {
+  font-size: 10px; letter-spacing: 0.12em; color: var(--muted);
+  margin-bottom: 36px; line-height: 1.8;
+}
+.modal-field { margin-bottom: 20px; text-align: left; }
+.modal-label {
+  display: block; font-family: var(--f-cap); font-weight: 300;
+  font-size: 7px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--or); margin-bottom: 8px;
+}
+.modal-input {
+  width: 100%; background: transparent;
+  border: none; border-bottom: 1px solid rgba(184,150,90,0.25);
+  padding: 10px 0; color: var(--text);
+  font-family: var(--f-serif); font-style: italic; font-size: 1rem;
+  outline: none; transition: border-color 0.3s;
+}
+.modal-input:focus { border-bottom-color: var(--or); }
+.modal-input::placeholder { color: var(--light); font-style: italic; }
+.modal-err { font-size: 10px; color: var(--err); margin-top: -12px; margin-bottom: 12px; display: none; }
+.modal-btn {
+  width: 100%; background: transparent;
+  border: 1px solid rgba(184,150,90,0.4);
+  color: var(--or); padding: 15px 24px;
+  font-family: var(--f-cap); font-weight: 300;
+  font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: color 0.4s, border-color 0.3s;
+  margin-top: 8px;
+}
+.modal-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--or); transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.modal-btn:hover { color: #F5F0E8; border-color: var(--or); }
+.modal-btn:hover::before { transform: translateX(0); }
+.modal-btn span { position: relative; z-index: 1; }
+
+/* ════════ SECTION PRINCIPALE ════════ */
+.section-main {
+  background: #F5F0E8;
+  padding: 80px 32px 100px;
+  min-height: 100vh;
+  position: relative;
+}
+.zellige-left {
+  position: absolute; top: 50%; left: -30px; transform: translateY(-50%);
+  width: 220px; height: 360px; opacity: 0.05; pointer-events: none;
+}
+
+.main-col { max-width: 500px; margin: 0 auto; text-align: center; }
+
+/* identité affichée */
+.identity-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(212,200,184,0.5);
+  padding-bottom: 16px; margin-bottom: 48px;
+}
+.identity-name {
+  font-family: var(--f-serif); font-style: italic; font-size: 1rem;
+  color: var(--text);
+}
+.identity-edit {
+  font-family: var(--f-cap); font-size: 7px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--light);
+  background: none; border: none; cursor: pointer;
+  transition: color 0.2s; padding: 4px;
+}
+.identity-edit:hover { color: var(--or); }
+
+/* compteur */
+.counter {
+  font-family: var(--f-cap); font-weight: 300;
+  font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 32px;
+}
+.counter-bar {
+  height: 1px; background: var(--sable); margin: 10px 0 0; position: relative;
+}
+.counter-fill {
+  position: absolute; top: 0; left: 0; height: 100%;
+  background: linear-gradient(90deg, var(--laiton), var(--or));
+  transition: width 0.5s ease;
+}
+
+.s-label {
+  font-family: var(--f-cap); font-weight: 300;
+  font-size: 8px; letter-spacing: 0.5em; text-transform: uppercase;
+  color: var(--or); margin-bottom: 12px; display: block;
+}
+.s-title {
+  font-family: var(--f-serif); font-weight: 200; font-style: italic;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  color: var(--text); line-height: 1.1; margin-bottom: 8px;
+}
+.s-sub {
+  font-size: 11px; letter-spacing: 0.04em; line-height: 1.95;
+  color: var(--muted); margin-bottom: 40px;
+}
+
+/* divider fin */
+.thin-div { display: flex; align-items: center; gap: 12px; margin: 16px auto 28px; width: fit-content; }
+.tdl { width: 56px; height: 1px; background: var(--lin); }
+.tdd { width: 4px; height: 4px; background: var(--or); transform: rotate(45deg); flex-shrink: 0; }
+
+/* ── DROP ZONE ── */
+.drop-zone {
+  position: relative;
+  border: 1px solid rgba(184,150,90,0.28);
+  padding: 48px 24px;
+  cursor: pointer;
+  transition: border-color 0.4s, background 0.4s;
+  margin-bottom: 24px;
+  border-radius: 46% 46% 0 0 / 13% 13% 0 0;
+  overflow: hidden;
+  background: #F5F0E8;
+}
+.drop-zone::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(184,150,90,0.05) 0%, transparent 70%);
+  opacity: 0; transition: opacity 0.4s; pointer-events: none;
+}
+.drop-zone:hover { border-color: rgba(184,150,90,0.5); }
+.drop-zone:hover::before { opacity: 1; }
+.drop-zone.drag { border-color: var(--or); background: rgba(184,150,90,0.03); }
+.drop-zone.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+.drop-zone input[type="file"] {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0; cursor: pointer; z-index: 10; font-size: 0;
+}
+.drop-zone.disabled input { pointer-events: none; }
+
+.dz-content { position: relative; z-index: 1; pointer-events: none; }
+.dz-icon-wrap {
+  width: 46px; height: 46px;
+  border: 1px solid rgba(184,150,90,0.3); border-radius: 50%;
+  margin: 0 auto 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.3s;
+}
+.drop-zone:hover .dz-icon-wrap { border-color: var(--or); }
+.dz-main { font-family: var(--f-serif); font-style: italic; font-size: 1rem; color: var(--text); margin-bottom: 4px; }
+.dz-sub { font-size: 9.5px; letter-spacing: 0.08em; color: var(--light); }
+
+/* ── CONFIRMATION PREVIEW ── */
+.confirm-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(245,240,232,0.97);
+  backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.confirm-overlay.open { display: flex; }
+.confirm-box {
+  max-width: 420px; width: 100%;
+  background: #F5F0E8;
+  border: 1px solid rgba(184,150,90,0.28);
+  text-align: center;
+  animation: modal-in 0.4s cubic-bezier(0.16,1,0.3,1) both;
+}
+.confirm-img-wrap {
+  width: 100%;
+  border-radius: 46% 46% 0 0 / 14% 14% 0 0;
+  overflow: hidden;
+  max-height: 280px;
+}
+.confirm-img-wrap img {
+  width: 100%; max-height: 280px; object-fit: cover; display: block;
+  filter: saturate(0.88) brightness(0.96);
+}
+.confirm-body { padding: 28px 32px 32px; }
+.confirm-title {
+  font-family: var(--f-serif); font-style: italic; font-weight: 300;
+  font-size: 1.3rem; color: var(--text); margin-bottom: 4px;
+}
+.confirm-name {
+  font-family: var(--f-cap); font-size: 8px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--or); margin-bottom: 24px;
+}
+.confirm-actions { display: flex; gap: 12px; }
+.btn-cancel {
+  flex: 1; background: transparent;
+  border: 1px solid rgba(184,150,90,0.25); color: var(--muted);
+  padding: 13px; font-family: var(--f-cap); font-weight: 300;
+  font-size: 7.5px; letter-spacing: 0.3em; text-transform: uppercase;
+  cursor: pointer; transition: border-color 0.2s, color 0.2s;
+}
+.btn-cancel:hover { border-color: var(--light); color: var(--text); }
+.btn-confirm {
+  flex: 2; background: transparent; position: relative; overflow: hidden;
+  border: 1px solid rgba(184,150,90,0.45); color: var(--or);
+  padding: 13px; font-family: var(--f-cap); font-weight: 300;
+  font-size: 7.5px; letter-spacing: 0.3em; text-transform: uppercase;
+  cursor: pointer; transition: color 0.4s, border-color 0.3s;
+}
+.btn-confirm::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--or); transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.btn-confirm:hover { color: #F5F0E8; border-color: var(--or); }
+.btn-confirm:hover::before { transform: translateX(0); }
+.btn-confirm span { position: relative; z-index: 1; }
+.btn-confirm:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-confirm:disabled::before { display: none; }
+.btn-confirm:disabled { color: var(--or); }
+
+/* ── MINI ALBUM PERSONNEL ── */
+.my-album { margin-top: 56px; }
+.my-album-title {
+  font-family: var(--f-cap); font-weight: 300;
+  font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--or); margin-bottom: 20px;
+}
+.album-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.album-item {
+  position: relative; aspect-ratio: 1;
+  overflow: hidden; cursor: pointer;
+}
+.album-item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: saturate(0.85) brightness(0.95);
+  transition: transform 0.4s ease, filter 0.3s;
+}
+.album-item:hover img { transform: scale(1.04); filter: saturate(1) brightness(1); }
+.album-item-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(44,36,24,0.5), transparent 50%);
+  opacity: 0; transition: opacity 0.3s;
+  display: flex; align-items: flex-end; justify-content: flex-end;
+  padding: 8px;
+}
+.album-item:hover .album-item-overlay { opacity: 1; }
+.album-item-del {
+  background: rgba(245,240,232,0.9);
+  border: 1px solid rgba(184,150,90,0.3);
+  color: var(--err); width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 12px; line-height: 1;
+  transition: background 0.2s;
+}
+.album-item-del:hover { background: rgba(184,90,74,0.1); }
+.album-empty {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: 0.9rem; color: var(--light);
+  grid-column: 1/-1; padding: 32px 0;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--text); color: var(--sable);
+  font-family: var(--f-cap); font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase;
+  padding: 14px 28px; z-index: 1000;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s;
+  opacity: 0; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.gold { background: var(--laiton); color: #F5F0E8; }
+
+/* ════════ FOOTER ════════ */
+footer {
+  background: #F5F0E8;
+  padding: 56px 32px 40px;
+  text-align: center;
+  border-top: 1px solid rgba(212,200,184,0.5);
+}
+.f-names { font-family: var(--f-calli); font-size: 2rem; color: var(--or); margin-bottom: 8px; }
+.f-date { font-family: var(--f-cap); font-weight: 300; font-size: 8px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--light); }
+
+/* ════════ REVEAL ════════ */
+.rv { opacity: 0; transform: translateY(22px); transition: opacity 0.85s ease, transform 0.85s ease; }
+.rv.on { opacity: 1; transform: translateY(0); }
+.rv-d1{transition-delay:.08s} .rv-d2{transition-delay:.16s}
+.rv-d3{transition-delay:.24s} .rv-d4{transition-delay:.32s}
+
+@keyframes fu { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.ha1{opacity:0;animation:fu .9s .2s forwards}
+.ha2{opacity:0;animation:fu 1.1s .5s forwards}
+.ha3{opacity:0;animation:fu .9s .9s forwards}
+.ha4{opacity:0;animation:fu .9s 1.1s forwards}
+
+/* ════════ MOBILE ════════ */
+@media(max-width:600px){
+  .hero { padding: 60px 20px; }
+  .arche-wrap { padding: 32px 28px 24px; }
+  .hero-moucharabieh { width: 240px; height: 240px; top:-30px; left:-30px; }
+  .hero-moucharabieh-r { width: 200px; height: 200px; }
+  .section-main { padding: 60px 20px 80px; }
+  .zellige-left { display: none; }
+  .modal-box { padding: 40px 24px 36px; }
+  .confirm-body { padding: 20px 20px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <svg class="hero-moucharabieh" viewBox="0 0 380 380" fill="none">
+    <defs><pattern id="mq1" x="0" y="0" width="38" height="38" patternUnits="userSpaceOnUse">
+      <path d="M19 0L38 19L19 38L0 19Z" stroke="#9A7A45" stroke-width="0.55" fill="none"/>
+      <path d="M19 7L31 19L19 31L7 19Z" stroke="#9A7A45" stroke-width="0.38" fill="none"/>
+      <circle cx="19" cy="19" r="4" stroke="#9A7A45" stroke-width="0.3" fill="none"/>
+      <line x1="19" y1="0" x2="19" y2="7" stroke="#9A7A45" stroke-width="0.28"/>
+      <line x1="19" y1="31" x2="19" y2="38" stroke="#9A7A45" stroke-width="0.28"/>
+      <line x1="0" y1="19" x2="7" y2="19" stroke="#9A7A45" stroke-width="0.28"/>
+      <line x1="31" y1="19" x2="38" y2="19" stroke="#9A7A45" stroke-width="0.28"/>
+    </pattern></defs>
+    <rect width="380" height="380" fill="url(#mq1)"/>
+  </svg>
+  <svg class="hero-moucharabieh-r" viewBox="0 0 340 340" fill="none">
+    <defs><pattern id="mq2" x="0" y="0" width="38" height="38" patternUnits="userSpaceOnUse">
+      <path d="M19 0L38 19L19 38L0 19Z" stroke="#9A7A45" stroke-width="0.5" fill="none"/>
+      <path d="M19 7L31 19L19 31L7 19Z" stroke="#9A7A45" stroke-width="0.35" fill="none"/>
+      <circle cx="19" cy="19" r="3.5" stroke="#9A7A45" stroke-width="0.28" fill="none"/>
+    </pattern></defs>
+    <rect width="340" height="340" fill="url(#mq2)"/>
+  </svg>
+
+  <div class="hero-top-line ha1"></div>
+  <div class="hero-bot-line ha1"></div>
+
+  <div style="position:relative;z-index:1;">
+    <p class="hero-eyebrow ha1">Mariage · 4 Juillet 2026</p>
+    <div class="ha2">
+      <div class="arche-wrap">
+        <div class="arche-bl"></div><div class="arche-br"></div>
+        <div class="hero-names">
+          Hamza
+          <span class="hero-amp">&amp;</span>
+          Assia
+        </div>
+      </div>
+    </div>
+    <p class="hero-date ha3">Partagez ce moment avec nous</p>
+    <div class="ha4" style="margin-top:36px;">
+      <div class="thin-div" style="margin:0 auto;">
+        <div class="tdl"></div>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M11 1L14 8L11 10L8 8Z" stroke="#B8965A" stroke-width="0.8" fill="rgba(184,150,90,0.12)"/>
+          <path d="M11 10L14 12L11 17L8 12Z" stroke="#B8965A" stroke-width="0.7" fill="rgba(184,150,90,0.07)"/>
+          <circle cx="11" cy="10.5" r="2" fill="#B8965A"/>
+        </svg>
+        <div class="tdl"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-ind ha4">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ════════ SECTION PRINCIPALE ════════ -->
+<section class="section-main">
+  <svg class="zellige-left" viewBox="0 0 220 360" fill="none">
+    <defs><pattern id="zl" x="0" y="0" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M22 0L44 22L22 44L0 22Z" stroke="#9A7A45" stroke-width="0.5" fill="none"/>
+      <path d="M22 9L35 22L22 35L9 22Z" stroke="#9A7A45" stroke-width="0.35" fill="none"/>
+      <circle cx="22" cy="22" r="4.5" stroke="#9A7A45" stroke-width="0.28" fill="none"/>
+    </pattern></defs>
+    <rect width="220" height="360" fill="url(#zl)"/>
+  </svg>
+
+  <div class="main-col">
+
+    <!-- Barre identité -->
+    <div class="identity-bar rv" id="identity-bar">
+      <div class="identity-name" id="identity-display">—</div>
+      <button class="identity-edit" id="identity-edit-btn">Modifier</button>
+    </div>
+
+    <!-- Compteur -->
+    <div class="counter rv rv-d1" id="counter-wrap">
+      <span id="counter-txt">0 / 15 photos partagées</span>
+      <div class="counter-bar"><div class="counter-fill" id="counter-fill" style="width:0%"></div></div>
+    </div>
+
+    <span class="s-label rv rv-d1">Album souvenir</span>
+    <h2 class="s-title rv rv-d2">Immortalisez<br/><em>cet instant</em></h2>
+    <div class="thin-div rv rv-d2"><div class="tdl"></div><div class="tdd"></div><div class="tdl"></div></div>
+    <p class="s-sub rv rv-d3">Votre regard est un cadeau.<br/>Chaque photo rejoint l'album commun de ce jour béni.</p>
+
+    <!-- Drop zone -->
+    <div class="drop-zone rv rv-d4" id="dz">
+      <input type="file" id="fi" accept="image/*" capture="environment"/>
+      <div class="dz-content">
+        <div class="dz-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B8965A" stroke-width="1.4">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <p class="dz-main" id="dz-main-txt">Prendre ou choisir une photo</p>
+        <p class="dz-sub">JPG · PNG · jusqu'à 10 Mo</p>
+      </div>
+    </div>
+
+    <!-- Mini album personnel -->
+    <div class="my-album rv rv-d4" id="my-album">
+      <p class="my-album-title">Mes photos</p>
+      <div class="album-grid" id="album-grid">
+        <p class="album-empty">Vous n'avez pas encore partagé de photo.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer>
+  <div class="thin-div" style="margin:0 auto 20px;">
+    <div class="tdl"></div><div class="tdd"></div><div class="tdl"></div>
+  </div>
+  <div class="f-names">Hamza &amp; Assia</div>
+  <p class="f-date" style="margin-top:8px;">4 · Juillet · 2026</p>
+</footer>
+
+<!-- ════════ MODAL IDENTITÉ ════════ -->
+<div class="modal-overlay" id="modal-identity">
+  <div class="modal-box">
+    <h2 class="modal-title">Bienvenue</h2>
+    <p class="modal-sub">Pour rejoindre l'album, merci de vous présenter.<br/>Ces informations ne seront utilisées qu'une seule fois.</p>
+    <div class="modal-field">
+      <label class="modal-label" for="m-prenom">Prénom *</label>
+      <input type="text" id="m-prenom" class="modal-input" placeholder="ex : Fatima" maxlength="30" autocomplete="given-name"/>
+    </div>
+    <p class="modal-err" id="m-prenom-err">Le prénom est requis.</p>
+    <div class="modal-field">
+      <label class="modal-label" for="m-nom">Nom de famille *</label>
+      <input type="text" id="m-nom" class="modal-input" placeholder="ex : Benali" maxlength="30" autocomplete="family-name"/>
+    </div>
+    <p class="modal-err" id="m-nom-err">Le nom est requis.</p>
+    <button class="modal-btn" id="modal-submit"><span>Rejoindre l'album</span></button>
+  </div>
+</div>
+
+<!-- ════════ CONFIRMATION AVANT ENVOI ════════ -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-img-wrap">
+      <img id="confirm-img" src="" alt="Aperçu"/>
+    </div>
+    <div class="confirm-body">
+      <p class="confirm-title">Partager cette photo ?</p>
+      <p class="confirm-name" id="confirm-name-txt">—</p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" id="btn-cancel">Annuler</button>
+        <button class="btn-confirm" id="btn-confirm"><span id="confirm-txt">Partager</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TOAST ════════ -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════
+   CONSTANTES
+════════════════════════════════ */
+const MAX_PHOTOS = 15;
+const STORAGE_USER  = 'ha_user';
+const STORAGE_PHOTOS = 'ha_photos';
+
+/* ════════════════════════════════
+   ÉLÉMENTS DOM
+════════════════════════════════ */
+const modalIdentity   = document.getElementById('modal-identity');
+const mPrenom         = document.getElementById('m-prenom');
+const mNom            = document.getElementById('m-nom');
+const mPrenomErr      = document.getElementById('m-prenom-err');
+const mNomErr         = document.getElementById('m-nom-err');
+const modalSubmit     = document.getElementById('modal-submit');
+const identityDisplay = document.getElementById('identity-display');
+const identityEditBtn = document.getElementById('identity-edit-btn');
+const counterTxt      = document.getElementById('counter-txt');
+const counterFill     = document.getElementById('counter-fill');
+const dz              = document.getElementById('dz');
+const fi              = document.getElementById('fi');
+const dzMainTxt       = document.getElementById('dz-main-txt');
+const albumGrid       = document.getElementById('album-grid');
+const confirmOverlay  = document.getElementById('confirm-overlay');
+const confirmImg      = document.getElementById('confirm-img');
+const confirmNameTxt  = document.getElementById('confirm-name-txt');
+const btnCancel       = document.getElementById('btn-cancel');
+const btnConfirm      = document.getElementById('btn-confirm');
+const confirmTxt      = document.getElementById('confirm-txt');
+const toast           = document.getElementById('toast');
+
+/* ════════════════════════════════
+   STATE
+════════════════════════════════ */
+let user = null;        // { prenom, nom, fullName }
+let photos = [];        // [{ id, dataUrl, timestamp, name }]
+let pendingFile = null; // fichier en attente de confirmation
+let toastTimer = null;
+
+/* ════════════════════════════════
+   INIT
+════════════════════════════════ */
+function init() {
+  // Charger utilisateur
+  const stored = localStorage.getItem(STORAGE_USER);
+  if (stored) {
+    try { user = JSON.parse(stored); } catch(e) { user = null; }
+  }
+
+  // Charger photos
+  const storedPhotos = localStorage.getItem(STORAGE_PHOTOS);
+  if (storedPhotos) {
+    try {
+      const all = JSON.parse(storedPhotos);
+      // Filtrer les photos de cet utilisateur
+      if (user) photos = all.filter(p => p.userId === user.id);
+      else photos = [];
+    } catch(e) { photos = []; }
+  }
+
+  if (!user) {
+    modalIdentity.style.display = 'flex';
+  } else {
+    modalIdentity.style.display = 'none';
+    updateUI();
+  }
+
+  // Reveal scroll
+  const rvEls = document.querySelectorAll('.rv');
+  const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.1 });
+  rvEls.forEach(el => obs.observe(el));
+}
+
+/* ════════════════════════════════
+   MODAL IDENTITÉ
+════════════════════════════════ */
+modalSubmit.addEventListener('click', () => {
+  const p = mPrenom.value.trim();
+  const n = mNom.value.trim();
+  let valid = true;
+
+  mPrenomErr.style.display = p ? 'none' : 'block'; if (!p) valid = false;
+  mNomErr.style.display    = n ? 'none' : 'block'; if (!n) valid = false;
+  if (!valid) return;
+
+  user = {
+    id: 'u_' + Date.now(),
+    prenom: p,
+    nom: n,
+    fullName: p + ' ' + n
+  };
+  localStorage.setItem(STORAGE_USER, JSON.stringify(user));
+
+  modalIdentity.style.display = 'none';
+  updateUI();
+  showToast('Bienvenue, ' + p + ' !', 'gold');
+});
+
+// Entrée clavier modal
+[mPrenom, mNom].forEach(el => el.addEventListener('keydown', e => { if(e.key === 'Enter') modalSubmit.click(); }));
+
+// Modifier identité
+identityEditBtn.addEventListener('click', () => {
+  if (user) { mPrenom.value = user.prenom; mNom.value = user.nom; }
+  modalIdentity.style.display = 'flex';
+});
+
+/* ════════════════════════════════
+   UPDATE UI
+════════════════════════════════ */
+function updateUI() {
+  if (!user) return;
+
+  // Identité
+  identityDisplay.textContent = user.fullName;
+
+  // Compteur
+  const count = photos.length;
+  const pct = (count / MAX_PHOTOS) * 100;
+  counterTxt.textContent = count + ' / ' + MAX_PHOTOS + ' photo' + (count > 1 ? 's' : '') + ' partagée' + (count > 1 ? 's' : '');
+  counterFill.style.width = pct + '%';
+
+  // Zone upload
+  if (count >= MAX_PHOTOS) {
+    dz.classList.add('disabled');
+    dzMainTxt.textContent = 'Limite de 15 photos atteinte';
+  } else {
+    dz.classList.remove('disabled');
+    dzMainTxt.textContent = 'Prendre ou choisir une photo';
+  }
+
+  // Album
+  renderAlbum();
+}
+
+/* ════════════════════════════════
+   ALBUM PERSONNEL
+════════════════════════════════ */
+function renderAlbum() {
+  if (photos.length === 0) {
+    albumGrid.innerHTML = '<p class="album-empty">Vous n\'avez pas encore partagé de photo.</p>';
+    return;
+  }
+
+  albumGrid.innerHTML = '';
+  // Afficher du plus récent au plus ancien
+  [...photos].reverse().forEach(photo => {
+    const item = document.createElement('div');
+    item.className = 'album-item';
+    item.innerHTML = `
+      <img src="${photo.dataUrl}" alt="Photo ${photo.id}" loading="lazy"/>
+      <div class="album-item-overlay">
+        <button class="album-item-del" data-id="${photo.id}" title="Supprimer">×</button>
+      </div>
+    `;
+    albumGrid.appendChild(item);
+  });
+
+  // Boutons supprimer
+  albumGrid.querySelectorAll('.album-item-del').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      deletePhoto(btn.dataset.id);
+    });
+  });
+}
+
+function deletePhoto(id) {
+  photos = photos.filter(p => p.id !== id);
+  savePhotos();
+  updateUI();
+  showToast('Photo supprimée');
+}
+
+function savePhotos() {
+  // Charger toutes les photos existantes et remplacer celles de cet utilisateur
+  let all = [];
+  try { all = JSON.parse(localStorage.getItem(STORAGE_PHOTOS) || '[]'); } catch(e) {}
+  // Retirer les photos de cet utilisateur
+  if (user) all = all.filter(p => p.userId !== user.id);
+  // Réajouter les siennes
+  all = all.concat(photos);
+  localStorage.setItem(STORAGE_PHOTOS, JSON.stringify(all));
+}
+
+/* ════════════════════════════════
+   UPLOAD
+════════════════════════════════ */
+// Drag & drop
+dz.addEventListener('dragover', e => { e.preventDefault(); if(!dz.classList.contains('disabled')) dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  if (dz.classList.contains('disabled')) return;
+  if (e.dataTransfer.files[0]) prepareFile(e.dataTransfer.files[0]);
+});
+
+// Input file
+fi.addEventListener('change', () => {
+  if (fi.files && fi.files[0]) prepareFile(fi.files[0]);
+});
+
+function prepareFile(file) {
+  if (!file.type.startsWith('image/')) { showToast('Format non supporté'); return; }
+  if (photos.length >= MAX_PHOTOS) { showToast('Limite de 15 photos atteinte'); return; }
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    pendingFile = { file, dataUrl };
+    // Ouvrir confirmation
+    confirmImg.src = dataUrl;
+    confirmNameTxt.textContent = user ? user.fullName.toUpperCase() : '';
+    confirmTxt.textContent = 'Partager';
+    btnConfirm.disabled = false;
+    confirmOverlay.classList.add('open');
+  };
+  reader.readAsDataURL(file);
+  // Reset input pour pouvoir re-sélectionner le même fichier
+  fi.value = '';
+}
+
+/* ── Confirmation ── */
+btnCancel.addEventListener('click', () => {
+  confirmOverlay.classList.remove('open');
+  pendingFile = null;
+});
+
+btnConfirm.addEventListener('click', async () => {
+  if (!pendingFile) return;
+  btnConfirm.disabled = true;
+  confirmTxt.textContent = 'Envoi…';
+
+  // Simulation envoi (TODO: remplacer par Supabase)
+  await new Promise(r => setTimeout(r, 1200));
+
+  // Sauvegarder
+  const photo = {
+    id: 'p_' + Date.now(),
+    userId: user.id,
+    userName: user.fullName,
+    dataUrl: pendingFile.dataUrl,
+    timestamp: Date.now()
+  };
+  photos.push(photo);
+  savePhotos();
+
+  confirmOverlay.classList.remove('open');
+  pendingFile = null;
+  updateUI();
+  showToast('Photo partagée — merci !', 'gold');
+});
+
+/* ════════════════════════════════
+   TOAST
+════════════════════════════════ */
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className = 'toast' + (type ? ' ' + type : '');
+  requestAnimationFrame(() => { toast.classList.add('show'); });
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+}
+
+/* ════════════════════════════════
+   LANCEMENT
+════════════════════════════════ */
+init();
+</script>
+</body>
+</html>
