@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="theme-color" content="#F5F0E8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title id="page-title">Album Souvenir</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Cinzel:wght@300;400&family=Pinyon+Script&family=Lato:wght@100;300;400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --base:#F5F0E8;--sable:#EAE0D0;--lin:#D4C8B8;
+  --or:#B8965A;--laiton:#9A7A45;--terra:#C4896A;
+  --text:#2C2418;--muted:#8A7A68;--light:#C4B8A8;
+  --err:#B85A4A;--ok:#5A8A6A;
+  --f-serif:'Cormorant Garamond',serif;
+  --f-cap:'Cinzel',serif;
+  --f-calli:'Pinyon Script',cursive;
+  --f-sans:'Lato',sans-serif;
+}
+html,body{background:#F5F0E8!important}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:#F5F0E8;color:var(--text);font-family:var(--f-sans);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.028;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:#F5F0E8;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px;overflow:hidden;text-align:center}
+.hero-mq{position:absolute;top:-50px;left:-50px;width:340px;height:340px;opacity:.065;pointer-events:none}
+.hero-mq-r{position:absolute;bottom:-60px;right:-60px;width:300px;height:300px;opacity:.05;pointer-events:none;transform:scaleX(-1)}
+.htl,.hbl{position:absolute;left:32px;right:32px;height:1px;background:linear-gradient(90deg,transparent,var(--lin),var(--or),var(--lin),transparent)}
+.htl{top:32px}.hbl{bottom:32px}
+.hero-event-badge{font-family:var(--f-cap);font-weight:300;font-size:7.5px;letter-spacing:.45em;text-transform:uppercase;color:var(--or);margin-bottom:12px;opacity:0;animation:fu .9s .1s forwards}
+.hero-eyebrow{font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--muted);margin-bottom:44px;opacity:0;animation:fu .9s .2s forwards}
+.arche-wrap{position:relative;display:inline-block;padding:44px 52px 36px;opacity:0;animation:fu 1.1s .5s forwards}
+.arche-wrap::before{content:'';position:absolute;top:0;left:0;right:0;bottom:12%;border:1px solid rgba(184,150,90,.22);border-bottom:none;border-radius:50% 50% 0 0/36% 36% 0 0}
+.arche-wrap::after{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:26px;height:16px;border:1px solid rgba(184,150,90,.28);border-bottom:none;border-radius:50% 50% 0 0/100% 100% 0 0;background:#F5F0E8}
+.abl,.abr{position:absolute;bottom:0;width:1px;height:12%;background:rgba(184,150,90,.22)}
+.abl{left:0}.abr{right:0}
+.hero-names{font-family:var(--f-calli);font-size:clamp(4rem,12vw,9rem);color:var(--text);line-height:.9}
+.hero-amp{font-family:var(--f-serif);font-style:italic;font-weight:200;font-size:clamp(1.3rem,3.5vw,2.4rem);color:var(--or);display:block;margin:8px 0}
+.hero-date{font-family:var(--f-serif);font-style:italic;font-weight:300;font-size:clamp(.85rem,2vw,1.05rem);color:var(--muted);letter-spacing:.14em;margin-top:36px;opacity:0;animation:fu .9s .9s forwards}
+.scroll-ind{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--f-cap);font-size:7px;letter-spacing:.35em;text-transform:uppercase;color:var(--light);opacity:0;animation:fu .9s 1.1s forwards}
+.scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--or),transparent);animation:sc 2.2s ease-in-out infinite}
+@keyframes sc{0%,100%{transform:scaleY(1);opacity:.7}50%{transform:scaleY(.3);opacity:.2}}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SEP ── */
+.sep{height:1px;margin:0 64px;background:linear-gradient(90deg,transparent,var(--lin),transparent)}
+
+/* ── MODAL IDENTITÉ ── */
+.modal-overlay{position:fixed;inset:0;z-index:900;background:rgba(245,240,232,.97);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal-box{background:#F5F0E8;border:1px solid rgba(184,150,90,.3);max-width:420px;width:100%;padding:52px 40px 44px;text-align:center;position:relative;animation:mi .5s cubic-bezier(.16,1,.3,1) both}
+@keyframes mi{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-box::before{content:'';position:absolute;top:0;left:20px;right:20px;bottom:15%;border:1px solid rgba(184,150,90,.15);border-bottom:none;border-radius:50% 50% 0 0/12% 12% 0 0;pointer-events:none}
+.modal-title{font-family:var(--f-serif);font-weight:200;font-style:italic;font-size:1.8rem;color:var(--text);margin-bottom:6px}
+.modal-sub{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-bottom:28px;line-height:1.8}
+.modal-field{margin-bottom:16px;text-align:left}
+.modal-label{display:block;font-family:var(--f-cap);font-weight:300;font-size:7px;letter-spacing:.4em;text-transform:uppercase;color:var(--or);margin-bottom:8px}
+.modal-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(184,150,90,.25);padding:10px 0;color:var(--text);font-family:var(--f-serif);font-style:italic;font-size:1rem;outline:none;transition:border-color .3s}
+.modal-input:focus{border-bottom-color:var(--or)}
+.modal-input::placeholder{color:var(--light);font-style:italic}
+.modal-err{font-size:10px;color:var(--err);margin-top:-8px;margin-bottom:10px;display:none;text-align:left}
+.pin-row{display:flex;gap:12px;justify-content:center;margin:8px 0 4px}
+.pin-digit{width:44px;height:52px;text-align:center;background:transparent;border:none;border-bottom:1px solid rgba(184,150,90,.25);font-family:var(--f-serif);font-size:1.5rem;color:var(--text);outline:none;transition:border-color .3s;-webkit-appearance:none;appearance:none}
+.pin-digit:focus{border-bottom-color:var(--or)}
+.modal-hint{font-size:9.5px;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;line-height:1.7;text-align:left}
+.modal-btn{width:100%;background:transparent;border:1px solid rgba(184,150,90,.4);color:var(--or);padding:15px 24px;font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.4em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color .4s,border-color .3s;margin-top:12px}
+.modal-btn::before{content:'';position:absolute;inset:0;background:var(--or);transform:translateX(-101%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.modal-btn:hover{color:#F5F0E8;border-color:var(--or)}
+.modal-btn:hover::before{transform:translateX(0)}
+.modal-btn span{position:relative;z-index:1}
+.modal-btn:disabled{opacity:.4;cursor:not-allowed}
+.modal-btn:disabled::before{display:none}
+.modal-btn:disabled{color:var(--or)}
+
+/* ── SECTION PRINCIPALE ── */
+.section-main{background:#F5F0E8;padding:72px 32px 100px;min-height:100vh;position:relative}
+.zellige-left{position:absolute;top:50%;left:-30px;transform:translateY(-50%);width:200px;height:340px;opacity:.05;pointer-events:none}
+.main-col{max-width:500px;margin:0 auto;text-align:center}
+
+/* identité bar */
+.identity-bar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(212,200,184,.5);padding-bottom:14px;margin-bottom:32px}
+.identity-name{font-family:var(--f-serif);font-style:italic;font-size:1rem;color:var(--text)}
+.identity-edit{font-family:var(--f-cap);font-size:7px;letter-spacing:.2em;text-transform:uppercase;color:var(--light);background:none;border:none;cursor:pointer;transition:color .2s;padding:4px}
+.identity-edit:hover{color:var(--or)}
+
+/* compteur */
+.counter{font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+.counter-bar{height:1px;background:var(--sable);margin:8px 0 0;position:relative}
+.counter-fill{position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,var(--laiton),var(--or));transition:width .5s ease}
+
+/* offline */
+.offline-banner{background:rgba(184,150,90,.08);border:1px solid rgba(184,150,90,.25);padding:10px 14px;font-size:9.5px;letter-spacing:.06em;color:var(--laiton);margin-bottom:14px;display:none}
+.offline-banner.show{display:block}
+.queue-badge{font-family:var(--f-cap);font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra);margin-top:10px;display:none}
+.queue-badge.show{display:block}
+
+.s-label{font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--or);margin-bottom:12px;display:block}
+.s-title{font-family:var(--f-serif);font-weight:200;font-style:italic;font-size:clamp(2rem,5vw,3.2rem);color:var(--text);line-height:1.1;margin-bottom:8px}
+.s-sub{font-size:11px;letter-spacing:.04em;line-height:1.95;color:var(--muted);margin-bottom:36px}
+.thin-div{display:flex;align-items:center;gap:12px;margin:14px auto 26px;width:fit-content}
+.tdl{width:52px;height:1px;background:var(--lin)}
+.tdd{width:4px;height:4px;background:var(--or);transform:rotate(45deg);flex-shrink:0}
+
+/* drop zone */
+.drop-zone{position:relative;border:1px solid rgba(184,150,90,.28);padding:46px 24px;cursor:pointer;transition:border-color .4s,background .4s;margin-bottom:20px;border-radius:46% 46% 0 0/13% 13% 0 0;overflow:hidden;background:#F5F0E8}
+.drop-zone::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(184,150,90,.05) 0%,transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+.drop-zone:hover{border-color:rgba(184,150,90,.5)}
+.drop-zone:hover::before,.drop-zone.drag::before{opacity:1}
+.drop-zone.drag{border-color:var(--or);background:rgba(184,150,90,.03)}
+.drop-zone.disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
+.drop-zone input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:10;font-size:0}
+.dz-content{position:relative;z-index:1;pointer-events:none}
+.dz-icon-wrap{width:46px;height:46px;border:1px solid rgba(184,150,90,.3);border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;transition:border-color .3s}
+.drop-zone:hover .dz-icon-wrap{border-color:var(--or)}
+.dz-main{font-family:var(--f-serif);font-style:italic;font-size:1rem;color:var(--text);margin-bottom:4px}
+.dz-sub{font-size:9.5px;letter-spacing:.08em;color:var(--light)}
+
+/* confirmation */
+.confirm-overlay{position:fixed;inset:0;z-index:800;background:rgba(245,240,232,.97);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:24px}
+.confirm-overlay.open{display:flex}
+.confirm-box{max-width:420px;width:100%;background:#F5F0E8;border:1px solid rgba(184,150,90,.28);animation:mi .4s cubic-bezier(.16,1,.3,1) both}
+.confirm-img-wrap{width:100%;border-radius:46% 46% 0 0/14% 14% 0 0;overflow:hidden;max-height:260px}
+.confirm-img-wrap img{width:100%;max-height:260px;object-fit:cover;display:block;filter:saturate(.88) brightness(.96)}
+.confirm-body{padding:22px 28px 28px}
+.confirm-title{font-family:var(--f-serif);font-style:italic;font-weight:300;font-size:1.2rem;color:var(--text);margin-bottom:4px}
+.confirm-name{font-family:var(--f-cap);font-size:7.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--or);margin-bottom:16px}
+.desc-field{margin-bottom:18px;text-align:left}
+.desc-label{display:block;font-family:var(--f-cap);font-size:7px;letter-spacing:.35em;text-transform:uppercase;color:var(--or);margin-bottom:7px}
+.desc-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(184,150,90,.22);padding:8px 0;color:var(--text);font-family:var(--f-serif);font-style:italic;font-size:.95rem;outline:none;transition:border-color .3s;resize:none}
+.desc-input:focus{border-bottom-color:var(--or)}
+.desc-input::placeholder{color:var(--light);font-style:italic}
+.desc-count{font-size:9px;color:var(--light);text-align:right;margin-top:3px}
+.upload-progress{display:none;margin-bottom:14px}
+.upload-progress.show{display:block}
+.prog-label{font-family:var(--f-cap);font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:1px;background:var(--sable);position:relative}
+.prog-fill{position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,var(--laiton),var(--or));transition:width .2s ease;width:0%}
+.confirm-actions{display:flex;gap:12px}
+.btn-cancel{flex:1;background:transparent;border:1px solid rgba(184,150,90,.22);color:var(--muted);padding:13px;font-family:var(--f-cap);font-weight:300;font-size:7.5px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.btn-cancel:hover{border-color:var(--light);color:var(--text)}
+.btn-confirm{flex:2;background:transparent;position:relative;overflow:hidden;border:1px solid rgba(184,150,90,.45);color:var(--or);padding:13px;font-family:var(--f-cap);font-weight:300;font-size:7.5px;letter-spacing:.28em;text-transform:uppercase;cursor:pointer;transition:color .4s,border-color .3s}
+.btn-confirm::before{content:'';position:absolute;inset:0;background:var(--or);transform:translateX(-101%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.btn-confirm:hover{color:#F5F0E8;border-color:var(--or)}
+.btn-confirm:hover::before{transform:translateX(0)}
+.btn-confirm span{position:relative;z-index:1}
+.btn-confirm:disabled{opacity:.4;cursor:not-allowed}
+.btn-confirm:disabled::before{display:none}
+.btn-confirm:disabled{color:var(--or)}
+
+/* mini album */
+.my-album{margin-top:52px}
+.my-album-title{font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:var(--or);margin-bottom:18px}
+.album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.album-item{position:relative;aspect-ratio:1;overflow:hidden;cursor:pointer}
+.album-item img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85) brightness(.95);transition:transform .4s,filter .3s}
+.album-item:hover img{transform:scale(1.04);filter:saturate(1) brightness(1)}
+.album-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,36,24,.55),transparent 50%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;justify-content:space-between;padding:8px}
+.album-item:hover .album-item-overlay{opacity:1}
+.album-item-desc{font-size:8px;color:rgba(245,240,232,.8);flex:1;margin-right:6px;line-height:1.3;font-style:italic;font-family:var(--f-serif);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.album-item-del{background:rgba(245,240,232,.9);border:1px solid rgba(184,150,90,.3);color:var(--err);width:24px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;flex-shrink:0;transition:background .2s;line-height:1}
+.album-item-del:hover{background:rgba(184,90,74,.12)}
+.album-empty{font-family:var(--f-serif);font-style:italic;font-size:.9rem;color:var(--light);grid-column:1/-1;padding:32px 0}
+
+/* toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:var(--sable);font-family:var(--f-cap);font-size:8px;letter-spacing:.25em;text-transform:uppercase;padding:13px 26px;z-index:1000;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.gold{background:var(--laiton);color:#F5F0E8}
+.toast.err{background:var(--err);color:#F5F0E8}
+
+footer{background:#F5F0E8;padding:52px 32px 40px;text-align:center;border-top:1px solid rgba(212,200,184,.5)}
+.f-names{font-family:var(--f-calli);font-size:2rem;color:var(--or);margin-bottom:8px}
+.f-date{font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.4em;text-transform:uppercase;color:var(--light)}
+
+.rv{opacity:0;transform:translateY(22px);transition:opacity .85s ease,transform .85s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+.rv-d1{transition-delay:.08s}.rv-d2{transition-delay:.16s}.rv-d3{transition-delay:.24s}.rv-d4{transition-delay:.32s}
+
+@media(max-width:600px){
+  .hero{padding:60px 20px}
+  .arche-wrap{padding:30px 26px 22px}
+  .hero-mq{width:200px;height:200px;top:-25px;left:-25px}
+  .hero-mq-r{width:180px;height:180px}
+  .section-main{padding:52px 18px 80px}
+  .zellige-left{display:none}
+  .modal-box{padding:36px 20px 32px}
+  .confirm-body{padding:16px 18px 22px}
+  .pin-row{gap:8px}
+  .pin-digit{width:38px;height:46px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="hero-mq" viewBox="0 0 340 340" fill="none">
+    <defs><pattern id="mq1" x="0" y="0" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M17 0L34 17L17 34L0 17Z" stroke="#9A7A45" stroke-width="0.5" fill="none"/>
+      <path d="M17 7L27 17L17 27L7 17Z" stroke="#9A7A45" stroke-width="0.34" fill="none"/>
+      <circle cx="17" cy="17" r="3" stroke="#9A7A45" stroke-width="0.26" fill="none"/>
+      <line x1="17" y1="0" x2="17" y2="7"   stroke="#9A7A45" stroke-width="0.24"/>
+      <line x1="17" y1="27" x2="17" y2="34"  stroke="#9A7A45" stroke-width="0.24"/>
+      <line x1="0"  y1="17" x2="7"  y2="17"  stroke="#9A7A45" stroke-width="0.24"/>
+      <line x1="27" y1="17" x2="34" y2="17"  stroke="#9A7A45" stroke-width="0.24"/>
+    </pattern></defs>
+    <rect width="340" height="340" fill="url(#mq1)"/>
+  </svg>
+  <svg class="hero-mq-r" viewBox="0 0 300 300" fill="none">
+    <defs><pattern id="mq2" x="0" y="0" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M17 0L34 17L17 34L0 17Z" stroke="#9A7A45" stroke-width="0.45" fill="none"/>
+      <path d="M17 7L27 17L17 27L7 17Z"  stroke="#9A7A45" stroke-width="0.3"  fill="none"/>
+    </pattern></defs>
+    <rect width="300" height="300" fill="url(#mq2)"/>
+  </svg>
+  <div class="htl"></div>
+  <div class="hbl"></div>
+  <div style="position:relative;z-index:1">
+    <p class="hero-event-badge" id="hero-event-badge">—</p>
+    <p class="hero-eyebrow">Album Souvenir · 2026</p>
+    <div class="arche-wrap">
+      <div class="abl"></div><div class="abr"></div>
+      <div class="hero-names">Hamza<span class="hero-amp">&amp;</span>Assia</div>
+    </div>
+    <p class="hero-date" id="hero-date">—</p>
+    <div style="margin-top:30px;opacity:0;animation:fu .9s 1s forwards">
+      <div class="thin-div" style="margin:0 auto">
+        <div class="tdl"></div>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1L13 7.5L10 9L7 7.5Z" stroke="#B8965A" stroke-width=".8" fill="rgba(184,150,90,.12)"/><path d="M10 9L13 11L10 16L7 11Z" stroke="#B8965A" stroke-width=".7" fill="rgba(184,150,90,.07)"/><circle cx="10" cy="9.5" r="1.8" fill="#B8965A"/></svg>
+        <div class="tdl"></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-ind"><span>Défiler</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="sep"></div>
+
+<!-- SECTION PRINCIPALE -->
+<section class="section-main">
+  <svg class="zellige-left" viewBox="0 0 200 340" fill="none">
+    <defs><pattern id="zl" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M20 0L40 20L20 40L0 20Z" stroke="#9A7A45" stroke-width="0.42" fill="none"/>
+      <path d="M20 8L32 20L20 32L8 20Z" stroke="#9A7A45" stroke-width="0.28" fill="none"/>
+    </pattern></defs>
+    <rect width="200" height="340" fill="url(#zl)"/>
+  </svg>
+  <div class="main-col">
+    <div class="identity-bar rv">
+      <div class="identity-name" id="identity-display">—</div>
+      <button class="identity-edit" id="identity-edit-btn">Modifier</button>
+    </div>
+    <div class="counter rv rv-d1" id="counter-wrap">
+      <span id="counter-txt">0 / 15 photos</span>
+      <div class="counter-bar"><div class="counter-fill" id="counter-fill" style="width:0%"></div></div>
+    </div>
+    <div class="offline-banner" id="offline-banner">📡 Hors ligne — vos photos seront envoyées dès la reconnexion</div>
+    <div class="queue-badge" id="queue-badge"></div>
+    <span class="s-label rv rv-d1">Album souvenir</span>
+    <h2 class="s-title rv rv-d2">Immortalisez<br/><em>cet instant</em></h2>
+    <div class="thin-div rv rv-d2"><div class="tdl"></div><div class="tdd"></div><div class="tdl"></div></div>
+    <p class="s-sub rv rv-d3">Votre regard est un cadeau.<br/>Chaque photo rejoint l'album commun de ce jour béni.</p>
+    <div class="drop-zone rv rv-d4" id="dz">
+      <input type="file" id="fi" accept="image/*" capture="environment"/>
+      <div class="dz-content">
+        <div class="dz-icon-wrap">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B8965A" stroke-width="1.4">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <p class="dz-main" id="dz-main-txt">Prendre ou choisir une photo</p>
+        <p class="dz-sub">JPG · PNG · jusqu'à 10 Mo</p>
+      </div>
+    </div>
+    <div class="my-album rv rv-d4">
+      <p class="my-album-title">Mes photos</p>
+      <div class="album-grid" id="album-grid">
+        <p class="album-empty">Vous n'avez pas encore partagé de photo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="thin-div" style="margin:0 auto 18px"><div class="tdl"></div><div class="tdd"></div><div class="tdl"></div></div>
+  <div class="f-names">Hamza &amp; Assia</div>
+  <p class="f-date" id="footer-date" style="margin-top:8px">—</p>
+</footer>
+
+<!-- MODAL IDENTITÉ -->
+<div class="modal-overlay" id="modal-identity">
+  <div class="modal-box">
+    <h2 class="modal-title" id="modal-title-txt">Bienvenue</h2>
+    <p class="modal-sub" id="modal-sub-txt">Pour rejoindre l'album, présentez-vous.<br/>Votre profil sera reconnu sur tous vos appareils.</p>
+    <div class="modal-field">
+      <label class="modal-label" for="m-prenom">Prénom *</label>
+      <input type="text" id="m-prenom" class="modal-input" placeholder="ex : Fatima" maxlength="30" autocomplete="given-name"/>
+    </div>
+    <p class="modal-err" id="m-prenom-err">Le prénom est requis.</p>
+    <div class="modal-field">
+      <label class="modal-label" for="m-nom">Nom de famille *</label>
+      <input type="text" id="m-nom" class="modal-input" placeholder="ex : Benali" maxlength="30" autocomplete="family-name"/>
+    </div>
+    <p class="modal-err" id="m-nom-err">Le nom est requis.</p>
+    <div class="modal-field">
+      <label class="modal-label">Code PIN · 4 chiffres *</label>
+      <p class="modal-hint">Choisissez un code secret pour retrouver votre album sur n'importe quel appareil.</p>
+      <div class="pin-row">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" class="pin-digit" maxlength="1" id="pin0" autocomplete="off"/>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" class="pin-digit" maxlength="1" id="pin1" autocomplete="off"/>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" class="pin-digit" maxlength="1" id="pin2" autocomplete="off"/>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" class="pin-digit" maxlength="1" id="pin3" autocomplete="off"/>
+      </div>
+    </div>
+    <p class="modal-err" id="m-pin-err">Le code PIN (4 chiffres) est requis.</p>
+    <p class="modal-err" id="m-taken-err">Ce nom est déjà utilisé. Ajoutez un surnom ou un caractère distinctif.</p>
+    <p class="modal-err" id="m-pin-wrong-err">Code PIN incorrect pour ce nom.</p>
+    <button class="modal-btn" id="modal-submit"><span id="modal-btn-txt">Rejoindre l'album</span></button>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-img-wrap"><img id="confirm-img" src="" alt=""/></div>
+    <div class="confirm-body">
+      <p class="confirm-title">Partager cette photo ?</p>
+      <p class="confirm-name" id="confirm-name-txt">—</p>
+      <div class="desc-field">
+        <label class="desc-label" for="desc-input">Description · facultatif</label>
+        <textarea id="desc-input" class="desc-input" rows="2" maxlength="100" placeholder="Un mot sur ce moment…"></textarea>
+        <div class="desc-count"><span id="desc-count">0</span> / 100</div>
+      </div>
+      <div class="upload-progress" id="upload-progress">
+        <div class="prog-label">Envoi en cours…</div>
+        <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+      </div>
+      <div class="confirm-actions">
+        <button class="btn-cancel" id="btn-cancel">Annuler</button>
+        <button class="btn-confirm" id="btn-confirm"><span id="confirm-txt">Partager</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, where, getDocs, deleteDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+/* Cloudinary - pas de Storage Firebase */
+const CLOUDINARY_CLOUD  = 'ddvulkoma';
+const CLOUDINARY_PRESET = 'saqpy6qg';
+
+/* ══ CONFIG FIREBASE ══ */
+const firebaseConfig = {
+  apiKey: "AIzaSyA0bWnVGhLJzahyAwCDu2nYPc2PCDEAV0w",
+  authDomain: "mariage-hamza-assia.firebaseapp.com",
+  projectId: "mariage-hamza-assia",
+  storageBucket: "mariage-hamza-assia.firebasestorage.app",
+  messagingSenderId: "212021574745",
+  appId: "1:212021574745:web:a9f070733d889a94728548"
+};
+const app     = initializeApp(firebaseConfig);
+const db      = getFirestore(app);
+/* storage = Cloudinary */
+
+/* ══ CONFIG ÉVÉNEMENT ══
+   Cette variable est définie par chaque page HTML fille.
+   henna.html → EVENT_ID = 'henna'
+   mariage.html → EVENT_ID = 'mariage'
+*/
+const EVENT_ID    = window.EVENT_ID    || 'mariage';
+const EVENT_LABEL = window.EVENT_LABEL || 'Mariage · 4 Juillet 2026';
+const EVENT_DATE  = window.EVENT_DATE  || '4 · Juillet · 2026';
+
+/* Injecter dans le DOM */
+document.getElementById('hero-event-badge').textContent = EVENT_LABEL;
+document.getElementById('hero-date').textContent        = 'Partagez ce moment avec nous';
+document.getElementById('footer-date').textContent      = EVENT_DATE;
+document.title = 'Hamza & Assia · ' + EVENT_LABEL;
+
+/* ══ CONSTANTES ══ */
+const MAX_PHOTOS = 15;
+const LS_USER    = 'ha_user_v3';
+const LS_QUEUE   = 'ha_queue_v2';
+
+/* ══ STATE ══ */
+let user        = null;
+let userPhotos  = [];
+let pendingFile = null;
+let isOnline    = navigator.onLine;
+let toastTimer  = null;
+
+/* ══ DOM ══ */
+const $ = id => document.getElementById(id);
+const modalIdentity = $('modal-identity');
+const mPrenom       = $('m-prenom');
+const mNom          = $('m-nom');
+const mPrenomErr    = $('m-prenom-err');
+const mNomErr       = $('m-nom-err');
+const mPinErr       = $('m-pin-err');
+const mTakenErr     = $('m-taken-err');
+const mPinWrongErr  = $('m-pin-wrong-err');
+const modalSubmit   = $('modal-submit');
+const modalBtnTxt   = $('modal-btn-txt');
+const identDisplay  = $('identity-display');
+const identEditBtn  = $('identity-edit-btn');
+const counterTxt    = $('counter-txt');
+const counterFill   = $('counter-fill');
+const dz            = $('dz');
+const fi            = $('fi');
+const dzMainTxt     = $('dz-main-txt');
+const albumGrid     = $('album-grid');
+const confirmOverlay= $('confirm-overlay');
+const confirmImg    = $('confirm-img');
+const confirmNameTxt= $('confirm-name-txt');
+const btnCancel     = $('btn-cancel');
+const btnConfirm    = $('btn-confirm');
+const confirmTxt    = $('confirm-txt');
+const descInput     = $('desc-input');
+const descCount     = $('desc-count');
+const uploadProg    = $('upload-progress');
+const progFill      = $('prog-fill');
+const offlineBanner = $('offline-banner');
+const queueBadge    = $('queue-badge');
+const toast         = $('toast');
+
+/* ══ RÉSEAU ══ */
+window.addEventListener('online',  () => { isOnline=true;  offlineBanner.classList.remove('show'); processQueue(); });
+window.addEventListener('offline', () => { isOnline=false; offlineBanner.classList.add('show'); });
+if (!isOnline) offlineBanner.classList.add('show');
+
+/* ══ REVEAL ══ */
+document.querySelectorAll('.rv').forEach(el =>
+  new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); }), {threshold:.1}).observe(el)
+);
+
+/* ══ PIN INPUT ══ */
+function getPIN() {
+  return [0,1,2,3].map(i => ($('pin'+i).value||'').replace(/[^0-9]/g,'')).join('');
+}
+[0,1,2,3].forEach(i => {
+  const el = $('pin'+i);
+  el.addEventListener('input', () => {
+    const v = el.value.replace(/[^0-9]/g,'');
+    el.value = v.slice(-1);
+    if (v && i < 3) $('pin'+(i+1)).focus();
+  });
+  el.addEventListener('keydown', e => {
+    if (e.key==='Backspace' && !el.value && i>0) $('pin'+(i-1)).focus();
+  });
+});
+
+/* ══ MODAL ══ */
+function openModal(isEdit=false) {
+  [mPrenomErr,mNomErr,mPinErr,mTakenErr,mPinWrongErr].forEach(e=>e.style.display='none');
+  if (isEdit && user) {
+    mPrenom.value = user.prenom;
+    mNom.value    = user.nom;
+    $('modal-title-txt').textContent = 'Modifier mon profil';
+    $('modal-sub-txt').textContent   = 'Mettez à jour vos informations.';
+    modalBtnTxt.textContent          = 'Enregistrer';
+  } else {
+    $('modal-title-txt').textContent = 'Bienvenue';
+    $('modal-sub-txt').textContent   = 'Pour rejoindre l\'album, présentez-vous.\nVotre profil sera reconnu sur tous vos appareils.';
+    modalBtnTxt.textContent          = 'Rejoindre l\'album';
+  }
+  modalIdentity.classList.add('open');
+  setTimeout(() => mPrenom.focus(), 300);
+}
+
+identEditBtn.addEventListener('click', () => openModal(true));
+
+modalSubmit.addEventListener('click', async () => {
+  const p   = mPrenom.value.trim();
+  const n   = mNom.value.trim();
+  const pin = getPIN();
+  let ok = true;
+  mPrenomErr.style.display   = p         ? 'none' : 'block'; if(!p)        ok=false;
+  mNomErr.style.display      = n         ? 'none' : 'block'; if(!n)        ok=false;
+  mPinErr.style.display      = pin.length===4 ? 'none' : 'block'; if(pin.length!==4) ok=false;
+  if (!ok) return;
+
+  modalSubmit.disabled   = true;
+  modalBtnTxt.textContent = 'Vérification…';
+  [mTakenErr,mPinWrongErr].forEach(e=>e.style.display='none');
+
+  const fullName = (p + ' ' + n).trim();
+  const nameId   = fullName.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  const userId   = nameId + '-' + pin;
+
+  try {
+    const userRef  = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      // Utilisateur existant — PIN déjà vérifié via l'ID
+      user = { id:userId, prenom:p, nom:n, fullName, pin };
+    } else {
+      // Vérifier si le nom seul est déjà pris par quelqu'un d'autre
+      const nameQ  = query(collection(db,'users'), where('nameId','==',nameId));
+      const nameSnap = await getDocs(nameQ);
+      // Si le même nameId existe avec un PIN différent → nom pris
+      const conflict = nameSnap.docs.find(d => d.id !== userId);
+      if (conflict) {
+        mTakenErr.style.display = 'block';
+        modalSubmit.disabled    = false;
+        modalBtnTxt.textContent = 'Rejoindre l\'album';
+        return;
+      }
+      // Nouveau profil
+      user = { id:userId, prenom:p, nom:n, fullName, pin };
+      await setDoc(userRef, { prenom:p, nom:n, fullName, nameId, pin, createdAt:serverTimestamp() });
+    }
+
+    localStorage.setItem(LS_USER, JSON.stringify(user));
+    modalIdentity.classList.remove('open');
+    await loadUserPhotos();
+    updateUI();
+    showToast('Bienvenue, '+p+' !', 'gold');
+  } catch(err) {
+    console.error('Firebase error:', err);
+    // Fallback offline
+    user = { id:userId, prenom:p, nom:n, fullName, pin };
+    localStorage.setItem(LS_USER, JSON.stringify(user));
+    modalIdentity.classList.remove('open');
+    updateUI();
+    showToast('Bienvenue, '+p+' !', 'gold');
+  } finally {
+    modalSubmit.disabled    = false;
+    modalBtnTxt.textContent = 'Rejoindre l\'album';
+  }
+});
+[mPrenom,mNom].forEach(el => el.addEventListener('keydown', e => { if(e.key==='Enter') modalSubmit.click(); }));
+
+/* ══ CHARGER PHOTOS ══ */
+async function loadUserPhotos() {
+  if (!user) return;
+  try {
+    // Requête simple sur userId + event pour éviter l'index composite
+    const q = query(
+      collection(db,'photos'),
+      where('userId','==',user.id),
+      where('event','==',EVENT_ID)
+    );
+    const snap = await getDocs(q);
+    userPhotos = snap.docs
+      .map(d => ({ id:d.id, ...d.data() }))
+      .sort((a,b) => (a.createdAt?.seconds||0) - (b.createdAt?.seconds||0));
+  } catch(e) {
+    console.error('loadUserPhotos:', e);
+    userPhotos = [];
+  }
+}
+
+/* ══ UPDATE UI ══ */
+function updateUI() {
+  if (!user) return;
+  identDisplay.textContent = user.fullName;
+  const count = userPhotos.length;
+  counterTxt.textContent   = count+' / '+MAX_PHOTOS+' photo'+(count!==1?'s':'')+' partagée'+(count!==1?'s':'');
+  counterFill.style.width  = (count/MAX_PHOTOS*100)+'%';
+  if (count >= MAX_PHOTOS) {
+    dz.classList.add('disabled');
+    dzMainTxt.textContent = 'Limite de 15 photos atteinte';
+  } else {
+    dz.classList.remove('disabled');
+    dzMainTxt.textContent = 'Prendre ou choisir une photo';
+  }
+  renderAlbum();
+  updateQueueBadge();
+}
+
+/* ══ ALBUM ══ */
+function renderAlbum() {
+  if (!userPhotos.length) {
+    albumGrid.innerHTML = '<p class="album-empty">Vous n\'avez pas encore partagé de photo.</p>';
+    return;
+  }
+  albumGrid.innerHTML = '';
+  [...userPhotos].reverse().forEach(photo => {
+    const item = document.createElement('div');
+    item.className = 'album-item';
+    const imgSrc = photo.url || '';
+    item.innerHTML = `
+      <img src="${imgSrc}" alt="" loading="lazy"/>
+      <div class="album-item-overlay">
+        <span class="album-item-desc">${photo.description||''}</span>
+        <button class="album-item-del" data-id="${photo.id}" data-path="${photo.storagePath||''}">×</button>
+      </div>`;
+    albumGrid.appendChild(item);
+  });
+  albumGrid.querySelectorAll('.album-item-del').forEach(btn =>
+    btn.addEventListener('click', e => { e.stopPropagation(); deletePhoto(btn.dataset.id, btn.dataset.path); })
+  );
+}
+
+async function deletePhoto(id, storagePath) {
+  try {
+    await deleteDoc(doc(db,'photos',id));
+    // Suppression Cloudinary via API (optionnel - nécessite backend pour sécurité)
+    // On supprime juste le document Firestore pour l'instant
+    userPhotos = userPhotos.filter(p=>p.id!==id);
+    updateUI();
+    showToast('Photo supprimée');
+  } catch(e) { showToast('Erreur suppression','err'); }
+}
+
+/* ══ COMPRESSION ══ */
+function compressImage(file) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      const MAX=1920, Q=0.82;
+      let w=img.width, h=img.height;
+      if (w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if (h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      const c=document.createElement('canvas');
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      c.toBlob(b=>{URL.revokeObjectURL(url);resolve(b);},'image/jpeg',Q);
+    };
+    img.src=url;
+  });
+}
+
+/* ══ UPLOAD ══ */
+dz.addEventListener('dragover',e=>{e.preventDefault();if(!dz.classList.contains('disabled'))dz.classList.add('drag');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{
+  e.preventDefault();dz.classList.remove('drag');
+  if(!dz.classList.contains('disabled')&&e.dataTransfer.files[0])prepareFile(e.dataTransfer.files[0]);
+});
+fi.addEventListener('change',()=>{if(fi.files&&fi.files[0])prepareFile(fi.files[0]);fi.value='';});
+
+function prepareFile(file) {
+  if(!file.type.startsWith('image/')){showToast('Format non supporté','err');return;}
+  if(userPhotos.length>=MAX_PHOTOS){showToast('Limite de 15 photos atteinte','err');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    pendingFile={file,previewUrl:e.target.result};
+    confirmImg.src=e.target.result;
+    confirmNameTxt.textContent=user?user.fullName.toUpperCase():'';
+    descInput.value='';descCount.textContent='0';
+    confirmTxt.textContent='Partager';btnConfirm.disabled=false;
+    uploadProg.classList.remove('show');progFill.style.width='0%';
+    confirmOverlay.classList.add('open');
+  };
+  reader.readAsDataURL(file);
+}
+
+descInput.addEventListener('input',()=>{descCount.textContent=descInput.value.length;});
+btnCancel.addEventListener('click',()=>{confirmOverlay.classList.remove('open');pendingFile=null;});
+
+btnConfirm.addEventListener('click',async()=>{
+  if(!pendingFile||!user)return;
+  btnConfirm.disabled=true;
+  confirmTxt.textContent='Compression…';
+  const description=descInput.value.trim();
+  try{
+    const blob=await compressImage(pendingFile.file);
+    if(!isOnline){
+      addToQueue(blob,description);
+      confirmOverlay.classList.remove('open');pendingFile=null;
+      showToast('Photo mise en attente','gold');return;
+    }
+    await uploadPhoto(blob,description);
+    confirmOverlay.classList.remove('open');pendingFile=null;
+  }catch(err){
+    console.error(err);
+    const blob=await compressImage(pendingFile.file);
+    addToQueue(blob,description);
+    confirmOverlay.classList.remove('open');pendingFile=null;
+    showToast('Erreur — photo mise en attente','err');
+  }finally{
+    btnConfirm.disabled=false;confirmTxt.textContent='Partager';
+    uploadProg.classList.remove('show');
+  }
+});
+
+async function uploadPhoto(blob,description,retry=0) {
+  uploadProg.classList.add('show'); progFill.style.width='0%';
+  confirmTxt.textContent='Envoi…';
+  return new Promise(async(resolve,reject)=>{
+    try {
+      // Upload vers Cloudinary via XMLHttpRequest pour avoir la progression
+      const formData = new FormData();
+      formData.append('file', blob, 'photo.jpg');
+      formData.append('upload_preset', CLOUDINARY_PRESET);
+      formData.append('folder', `mariage-hamza-assia/${EVENT_ID}/${user.id}`);
+      formData.append('public_id', `${EVENT_ID}_${user.id}_${Date.now()}`);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`);
+
+      xhr.upload.onprogress = e => {
+        if(e.lengthComputable) progFill.style.width=Math.round(e.loaded/e.total*100)+'%';
+      };
+
+      xhr.onload = async () => {
+        if (xhr.status === 200) {
+          const res  = JSON.parse(xhr.responseText);
+          const url  = res.secure_url;
+          const path = res.public_id;
+          const data = {
+            userId:user.id, userName:user.fullName, event:EVENT_ID,
+            url, storagePath:path, description, createdAt:serverTimestamp()
+          };
+          const docRef = await addDoc(collection(db,'photos'), data);
+          userPhotos.push({id:docRef.id,...data,url});
+          updateUI();
+          showToast('Photo partagée — merci !','gold');
+          resolve();
+        } else {
+          if(retry<3){
+            await new Promise(r=>setTimeout(r,2000*(retry+1)));
+            try{await uploadPhoto(blob,description,retry+1);resolve();}catch(e){reject(e);}
+          } else {
+            reject(new Error('Upload failed: '+xhr.status));
+          }
+        }
+      };
+      xhr.onerror = async () => {
+        if(retry<3){
+          await new Promise(r=>setTimeout(r,2000*(retry+1)));
+          try{await uploadPhoto(blob,description,retry+1);resolve();}catch(e){reject(e);}
+        } else reject(new Error('Network error'));
+      };
+      xhr.send(formData);
+    } catch(e) { reject(e); }
+  });
+}
+
+/* ══ QUEUE OFFLINE ══ */
+function addToQueue(blob,description){
+  const r=new FileReader();
+  r.onload=e=>{
+    const q=getQueue();
+    q.push({dataUrl:e.target.result,description,userId:user.id,event:EVENT_ID,ts:Date.now()});
+    localStorage.setItem(LS_QUEUE,JSON.stringify(q));
+    updateQueueBadge();
+  };
+  r.readAsDataURL(blob);
+}
+function getQueue(){try{return JSON.parse(localStorage.getItem(LS_QUEUE)||'[]');}catch{return [];}}
+function updateQueueBadge(){
+  const q=getQueue().filter(i=>i.userId===user?.id&&i.event===EVENT_ID);
+  if(q.length){queueBadge.textContent=q.length+' photo'+(q.length>1?'s':'')+' en attente d\'envoi';queueBadge.classList.add('show');}
+  else queueBadge.classList.remove('show');
+}
+async function processQueue(){
+  if(!user||!isOnline)return;
+  const all=getQueue();
+  const mine=all.filter(i=>i.userId===user.id&&i.event===EVENT_ID);
+  const rest=all.filter(i=>!(i.userId===user.id&&i.event===EVENT_ID));
+  if(!mine.length)return;
+  showToast('Envoi des photos en attente…','gold');
+  for(const item of mine){
+    try{
+      const res=await fetch(item.dataUrl);
+      const blob=await res.blob();
+      await uploadPhoto(blob,item.description);
+    }catch(e){console.error(e);}
+  }
+  localStorage.setItem(LS_QUEUE,JSON.stringify(rest));
+  updateQueueBadge();
+}
+
+/* ══ TOAST ══ */
+function showToast(msg,type=''){
+  toast.textContent=msg;toast.className='toast'+(type?' '+type:'');
+  requestAnimationFrame(()=>toast.classList.add('show'));
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),3500);
+}
+
+/* ══ INIT ══ */
+async function init(){
+  const storedUser=localStorage.getItem(LS_USER);
+  if(storedUser){try{user=JSON.parse(storedUser);}catch{}}
+  if(user){
+    await loadUserPhotos();
+    updateUI();
+    if(isOnline)processQueue();
+  } else {
+    openModal();
+  }
+}
+init();
+</script>
+</body>
+</html>
