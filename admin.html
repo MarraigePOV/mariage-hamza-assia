@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Livre d'Or — Hamza & Assia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;1,200;1,300;1,400&family=Cinzel:wght@300;400&family=Pinyon+Script&family=Lato:wght@100;300;400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --dark:#120e08;--dark2:#1c1510;--dark3:#241c12;
+  --or:#C9A96E;--or-l:#E8D5A3;--or-d:#9A7238;--or-faint:rgba(201,169,110,.12);
+  --text:#F5EED8;--muted:rgba(245,238,216,.45);--light:rgba(245,238,216,.25);
+  --lin:rgba(201,169,110,.15);--err:#C06050;--ok:#5A8A6A;
+  --f-serif:'Cormorant Garamond',serif;--f-cap:'Cinzel',serif;
+  --f-calli:'Pinyon Script',cursive;--f-sans:'Lato',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--dark);color:var(--text);font-family:var(--f-sans);font-weight:300;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#login{position:fixed;inset:0;z-index:200;background:var(--dark);display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:rgba(201,169,110,.04);border:1px solid var(--lin);padding:56px 44px;max-width:380px;width:100%;text-align:center;position:relative}
+.login-calli{font-family:var(--f-calli);font-size:2.2rem;color:var(--or-l);margin-bottom:4px}
+.login-sub{font-family:var(--f-cap);font-size:7px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:36px}
+.login-input{width:100%;background:rgba(201,169,110,.04);border:none;border-bottom:1px solid rgba(201,169,110,.2);padding:12px 0;color:var(--text);font-family:var(--f-serif);font-style:italic;font-size:1rem;outline:none;transition:border-color .3s;text-align:center;margin-bottom:24px}
+.login-input:focus{border-bottom-color:var(--or)}
+.login-input::placeholder{color:var(--light);font-style:italic}
+.login-btn{width:100%;background:transparent;border:1px solid rgba(201,169,110,.35);color:var(--or);padding:14px;font-family:var(--f-cap);font-weight:300;font-size:8px;letter-spacing:.4em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:color .4s,border-color .3s}
+.login-btn::before{content:'';position:absolute;inset:0;background:var(--or-d);transform:translateX(-101%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.login-btn:hover{color:#F5EED8;border-color:var(--or)}.login-btn:hover::before{transform:translateX(0)}
+.login-btn span{position:relative;z-index:1}
+.login-err{font-size:9.5px;color:var(--err);margin-top:12px;display:none;font-family:var(--f-cap);letter-spacing:.1em}
+#app{display:none;min-height:100vh}
+.hd{border-bottom:1px solid var(--lin);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:rgba(18,14,8,.97);backdrop-filter:blur(12px);z-index:100;gap:12px;flex-wrap:wrap}
+.hd-calli{font-family:var(--f-calli);font-size:1.4rem;color:var(--or-l)}
+.hd-sub{font-family:var(--f-cap);font-size:6.5px;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
+.hd-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tab{background:transparent;border:1px solid var(--lin);color:var(--muted);padding:7px 16px;font-family:var(--f-cap);font-size:7px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .25s}
+.tab.on,.tab:hover{border-color:var(--or);color:var(--or)}
+.hd-logout{background:transparent;border:none;color:var(--light);font-size:8px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;font-family:var(--f-cap);padding:7px 10px;transition:color .2s}
+.hd-logout:hover{color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--lin)}
+.stat{padding:20px 28px;text-align:center;border-right:1px solid var(--lin)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--f-serif);font-style:italic;font-size:2.2rem;color:var(--or);line-height:1}
+.stat-l{font-family:var(--f-cap);font-size:6.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:5px}
+.toolbar{padding:14px 40px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--lin);background:rgba(18,14,8,.5)}
+.tb-input{background:rgba(201,169,110,.04);border:1px solid var(--lin);color:var(--text);padding:7px 14px;font-family:var(--f-sans);font-size:11px;outline:none;transition:border-color .3s;width:200px}
+.tb-input:focus{border-color:var(--or)}.tb-input::placeholder{color:var(--light)}
+.tb-select{background:rgba(201,169,110,.04);border:1px solid var(--lin);color:var(--text);padding:7px 14px;font-family:var(--f-sans);font-size:11px;outline:none;cursor:pointer}
+.tb-select option{background:var(--dark2)}
+.spacer{flex:1}
+.tb-btn{background:transparent;border:1px solid rgba(201,169,110,.28);color:var(--or);padding:7px 16px;font-family:var(--f-cap);font-size:7px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tb-btn:hover{background:var(--or-faint);border-color:var(--or)}
+.tb-refresh{background:transparent;border:1px solid var(--lin);color:var(--muted);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.tb-refresh:hover{border-color:var(--or);color:var(--or)}
+.livre-wrap{padding:40px;max-width:1400px;margin:0 auto}
+.livre-grid{columns:3 320px;column-gap:24px}
+@media(max-width:900px){.livre-grid{columns:2 280px;column-gap:16px}}
+@media(max-width:560px){.livre-grid{columns:1}}
+.livre-item{break-inside:avoid;margin-bottom:24px;background:var(--dark2);position:relative;overflow:hidden;animation:lv-in .5s ease both;cursor:pointer}
+@keyframes lv-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.lv-img-wrap{position:relative;overflow:hidden;border-radius:48% 48% 0 0/12% 12% 0 0}
+.lv-img-wrap img{width:100%;display:block;filter:saturate(.88) brightness(.92);transition:transform .5s ease,filter .4s;aspect-ratio:4/5;object-fit:cover}
+.livre-item:hover .lv-img-wrap img{transform:scale(1.04);filter:saturate(1) brightness(1)}
+.lv-photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,14,8,.8) 0%,rgba(18,14,8,.2) 50%,transparent 70%);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:16px}
+.livre-item:hover .lv-photo-overlay{opacity:1}
+.lv-photo-actions{display:flex;gap:8px;margin-left:auto}
+.lv-photo-btn{background:rgba(18,14,8,.8);border:1px solid rgba(201,169,110,.3);color:var(--text);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;border-radius:50%}
+.lv-photo-btn:hover{background:var(--or-d);border-color:var(--or)}
+.lv-photo-btn.del:hover{background:var(--err);border-color:var(--err)}
+.lv-body{padding:20px 22px 22px}
+.lv-name{font-family:var(--f-serif);font-style:italic;font-weight:300;font-size:1.15rem;color:var(--or-l);line-height:1.2;margin-bottom:6px;letter-spacing:0.04em}
+.lv-event-date{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.lv-event{font-family:var(--f-cap);font-size:6.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--or-d)}
+.lv-dot{width:3px;height:3px;background:var(--or-d);border-radius:50%;flex-shrink:0}
+.lv-time{font-family:var(--f-cap);font-size:6.5px;letter-spacing:.15em;color:var(--muted)}
+.lv-desc{font-family:var(--f-serif);font-style:italic;font-size:.95rem;color:rgba(245,238,216,.65);line-height:1.7;border-top:1px solid var(--lin);padding-top:12px;margin-top:4px}
+.lv-no-desc{font-family:var(--f-serif);font-style:italic;font-size:.82rem;color:var(--light)}
+.empty{text-align:center;padding:100px 40px;color:var(--muted)}
+.empty h3{font-family:var(--f-serif);font-style:italic;font-size:1.6rem;color:rgba(245,238,216,.3);margin-bottom:10px}
+.empty p{font-size:11px;letter-spacing:.06em}
+.pagination{display:flex;align-items:center;justify-content:center;gap:8px;padding:32px 40px;flex-wrap:wrap;border-top:1px solid var(--lin)}
+.pg-btn{background:transparent;border:1px solid var(--lin);color:var(--muted);width:36px;height:36px;font-family:var(--f-cap);font-size:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.pg-btn:hover,.pg-btn.on{border-color:var(--or);color:var(--or)}
+.pg-info{font-family:var(--f-cap);font-size:7.5px;letter-spacing:.18em;color:var(--muted);margin:0 8px}
+.pg-dots{color:var(--muted);padding:0 4px}
+#lb{display:none;position:fixed;inset:0;background:rgba(8,5,2,.97);z-index:500;align-items:center;justify-content:center;padding:20px}
+#lb.open{display:flex}
+.lb-layout{display:grid;grid-template-columns:1fr 340px;max-width:1200px;width:100%;max-height:90vh;background:var(--dark2);border:1px solid var(--lin)}
+.lb-img-side{position:relative;overflow:hidden;background:var(--dark);display:flex;align-items:center;justify-content:center;min-height:400px}
+.lb-img-side img{width:100%;height:100%;object-fit:contain;display:block;max-height:80vh}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(18,14,8,.7);border:1px solid rgba(201,169,110,.25);color:rgba(245,238,216,.6);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;transition:all .2s;border-radius:50%}
+.lb-nav:hover{background:var(--or-d);border-color:var(--or);color:var(--text)}
+.lb-nav.disabled{opacity:.2;cursor:not-allowed;pointer-events:none}
+.lb-prev{left:12px}.lb-next{right:12px}
+.lb-info-side{border-left:1px solid var(--lin);display:flex;flex-direction:column;padding:32px 28px;overflow-y:auto}
+.lb-close{position:absolute;top:12px;right:12px;background:rgba(18,14,8,.8);border:1px solid rgba(201,169,110,.2);color:rgba(245,238,216,.6);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:all .2s;z-index:10;border-radius:50%}
+.lb-close:hover{border-color:var(--or);color:var(--or)}
+.lb-calli{font-family:var(--f-serif);font-style:italic;font-weight:300;font-size:1.5rem;color:var(--or-l);margin-bottom:8px;letter-spacing:0.04em}
+.lb-ev{font-family:var(--f-cap);font-size:7px;letter-spacing:.25em;text-transform:uppercase;color:var(--or-d);margin-bottom:4px}
+.lb-ts{font-family:var(--f-cap);font-size:7px;letter-spacing:.15em;color:var(--muted);margin-bottom:16px}
+.lb-desc{font-family:var(--f-serif);font-style:italic;font-size:1rem;color:rgba(245,238,216,.65);line-height:1.8;flex:1;border-top:1px solid var(--lin);padding-top:16px}
+.lb-ctr{font-family:var(--f-cap);font-size:7px;letter-spacing:.18em;color:var(--light);margin-bottom:16px}
+.lb-actions{display:flex;flex-direction:column;gap:8px;margin-top:20px;border-top:1px solid var(--lin);padding-top:20px}
+.lb-action-btn{background:transparent;border:1px solid rgba(201,169,110,.28);color:var(--or);padding:11px 16px;font-family:var(--f-cap);font-weight:300;font-size:7.5px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:8px;width:100%}
+.lb-action-btn:hover{background:var(--or-faint);border-color:var(--or)}
+.lb-action-btn.del{color:var(--err);border-color:rgba(192,96,80,.28)}
+.lb-action-btn.del:hover{background:rgba(192,96,80,.08);border-color:var(--err)}
+@media(max-width:800px){
+  .lb-layout{grid-template-columns:1fr;grid-template-rows:auto auto;max-height:none}
+  .lb-info-side{border-left:none;border-top:1px solid var(--lin)}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat{padding:14px 12px}
+  .hd,.toolbar,.livre-wrap,.pagination{padding-left:18px;padding-right:18px}
+}
+.dl-prog{display:none;position:fixed;bottom:20px;right:20px;background:var(--dark2);border:1px solid var(--lin);padding:16px 20px;z-index:300;min-width:260px}
+.dl-prog.show{display:block}
+.dl-prog-lbl{font-family:var(--f-cap);font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--or);margin-bottom:8px}
+.dl-bar{height:1px;background:rgba(201,169,110,.15)}
+.dl-bar-fill{height:100%;background:var(--or);transition:width .3s;width:0%}
+.dl-prog-sub{font-size:9px;color:var(--muted);margin-top:6px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark2);color:var(--or-l);font-family:var(--f-cap);font-size:7.5px;letter-spacing:.2em;text-transform:uppercase;padding:12px 22px;z-index:600;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;border:1px solid var(--lin);white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.toast.err{background:var(--err);border-color:var(--err);color:#fff}
+</style>
+</head>
+<body>
+<div id="login">
+  <div class="login-box">
+    <div class="login-calli">Livre d'Or</div>
+    <div class="login-sub">Hamza &amp; Assia · 2026</div>
+    <input type="password" id="pwd" class="login-input" placeholder="Mot de passe"/>
+    <button class="login-btn" id="login-btn"><span>Accéder</span></button>
+    <div class="login-err" id="login-err">Mot de passe incorrect.</div>
+  </div>
+</div>
+<div id="app">
+  <header class="hd">
+    <div><div class="hd-calli">Hamza &amp; Assia</div><div class="hd-sub">Livre d'Or · 2026</div></div>
+    <div class="hd-right">
+      <button class="tab on" id="tab-all"     onclick="setTab('all')">Toutes</button>
+      <button class="tab"    id="tab-henna"   onclick="setTab('henna')">Henné</button>
+      <button class="tab"    id="tab-mariage" onclick="setTab('mariage')">Mariage</button>
+      <button class="hd-logout" onclick="logout()">Déconnexion</button>
+    </div>
+  </header>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="s-total">—</div><div class="stat-l">Photos</div></div>
+    <div class="stat"><div class="stat-n" id="s-users">—</div><div class="stat-l">Invités</div></div>
+    <div class="stat"><div class="stat-n" id="s-henna">—</div><div class="stat-l">Henné</div></div>
+    <div class="stat"><div class="stat-n" id="s-mariage">—</div><div class="stat-l">Mariage</div></div>
+  </div>
+  <div class="toolbar">
+    <input type="text" class="tb-input" id="search" placeholder="Rechercher un invité…" oninput="doFilter()"/>
+    <select class="tb-select" id="sort" onchange="doFilter()">
+      <option value="desc">Plus récent</option>
+      <option value="asc">Plus ancien</option>
+    </select>
+    <button class="tb-refresh" onclick="load()" title="Rafraîchir">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.84"/></svg>
+    </button>
+    <div class="spacer"></div>
+    <button class="tb-btn" onclick="dlPage()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Télécharger page
+    </button>
+    <button class="tb-btn" onclick="dlAll()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Tout télécharger
+    </button>
+    <button class="tb-btn" onclick="dlZipHenna()" style="border-color:rgba(201,169,110,.5)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      ZIP Henné
+    </button>
+    <button class="tb-btn" onclick="dlZipMariage()" style="border-color:rgba(201,169,110,.5)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      ZIP Mariage
+    </button>
+  </div>
+  <div class="livre-wrap">
+    <div class="livre-grid" id="livre-grid"></div>
+    <div class="empty" id="empty" style="display:none">
+      <h3>Aucune photo pour l'instant</h3>
+      <p>Les photos apparaîtront ici dès que les invités les partageront.</p>
+    </div>
+  </div>
+  <div class="pagination" id="pagination"></div>
+</div>
+<div id="lb">
+  <div class="lb-layout">
+    <div class="lb-img-side">
+      <button class="lb-close" onclick="closeLb()">✕</button>
+      <button class="lb-nav lb-prev" id="lb-prev">&#8249;</button>
+      <img id="lb-img" src="" alt=""/>
+      <button class="lb-nav lb-next" id="lb-next">&#8250;</button>
+    </div>
+    <div class="lb-info-side">
+      <div class="lb-calli" id="lb-name">—</div>
+      <div class="lb-ev" id="lb-ev">—</div>
+      <div class="lb-ts" id="lb-ts">—</div>
+      <div class="lb-ctr" id="lb-ctr">—</div>
+      <div class="lb-desc" id="lb-desc"></div>
+      <div class="lb-actions">
+        <button class="lb-action-btn" id="lb-dl">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger
+        </button>
+        <button class="lb-action-btn del" id="lb-del">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dl-prog" id="dl-prog">
+  <div class="dl-prog-lbl" id="dl-lbl">Téléchargement…</div>
+  <div class="dl-bar"><div class="dl-bar-fill" id="dl-fill"></div></div>
+  <div class="dl-prog-sub" id="dl-sub"></div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, query, orderBy, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyA0bWnVGhLJzahyAwCDu2nYPc2PCDEAV0w",authDomain:"mariage-hamza-assia.firebaseapp.com",projectId:"mariage-hamza-assia",storageBucket:"mariage-hamza-assia.firebasestorage.app",messagingSenderId:"212021574745",appId:"1:212021574745:web:a9f070733d889a94728548"});
+const db=getFirestore(app);
+const CL_CLOUD='ddvulkoma',CL_KEY='142917148926532',CL_SECRET='JMIfnPxyl5k4KyNFwE8BYskGumA';
+async function cloudSign(params){const msg=Object.keys(params).sort().map(k=>k+'='+params[k]).join('&');const enc=new TextEncoder();const key=await crypto.subtle.importKey('raw',enc.encode(CL_SECRET),{name:'HMAC',hash:'SHA-1'},false,['sign']);const sig=await crypto.subtle.sign('HMAC',key,enc.encode(msg));return Array.from(new Uint8Array(sig)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+async function clDel(pid){try{const ts=Math.round(Date.now()/1000);const sig=await cloudSign({public_id:pid,timestamp:ts});const fd=new FormData();fd.append('public_id',pid);fd.append('timestamp',ts);fd.append('api_key',CL_KEY);fd.append('signature',sig);await fetch('https://api.cloudinary.com/v1_1/'+CL_CLOUD+'/image/destroy',{method:'POST',body:fd});}catch(e){console.error(e);}}
+const ADMIN_PWD='hamzaassia2026',PAGE_SIZE=15;
+let all=[],filtered=[],tab='all',page=1,lbIdx=0,toastTimer=null;
+document.getElementById('login-btn').addEventListener('click',doLogin);
+document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+function doLogin(){if(document.getElementById('pwd').value===ADMIN_PWD){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';load();}else{document.getElementById('login-err').style.display='block';document.getElementById('pwd').value='';document.getElementById('pwd').focus();}}
+window.logout=()=>{document.getElementById('app').style.display='none';document.getElementById('login').style.display='flex';document.getElementById('pwd').value='';};
+window.setTab=function(t){tab=t;page=1;['all','henna','mariage'].forEach(x=>document.getElementById('tab-'+x).classList.toggle('on',x===t));doFilter();};
+window.load=async function(){try{const q=query(collection(db,'photos'),orderBy('createdAt','desc'));const snap=await getDocs(q);all=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();doFilter();showToast('Chargé','ok');}catch(e){console.error(e);showToast('Erreur chargement','err');}};
+function updateStats(){document.getElementById('s-total').textContent=all.length;document.getElementById('s-users').textContent=new Set(all.map(p=>p.userId)).size;document.getElementById('s-henna').textContent=all.filter(p=>p.event==='henna').length;document.getElementById('s-mariage').textContent=all.filter(p=>p.event==='mariage').length;}
+window.doFilter=function(){const s=document.getElementById('search').value.toLowerCase().trim();const sort=document.getElementById('sort').value;let photos=[...all];if(tab!=='all')photos=photos.filter(p=>p.event===tab);if(s)photos=photos.filter(p=>(p.userName||'').toLowerCase().includes(s));if(sort==='asc')photos.reverse();filtered=photos;page=1;render();renderPag();};
+function render(){const grid=document.getElementById('livre-grid');const empty=document.getElementById('empty');const start=(page-1)*PAGE_SIZE;const items=filtered.slice(start,start+PAGE_SIZE);if(!filtered.length){grid.innerHTML='';empty.style.display='block';return;}empty.style.display='none';grid.innerHTML=items.map((p,i)=>{const ts=p.createdAt?.seconds?new Date(p.createdAt.seconds*1000).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';const ev=p.event==='henna'?'Soirée Henné':'Mariage';const desc=p.description?'<div class="lv-desc">'+p.description+'</div>':'<div class="lv-desc lv-no-desc">—</div>';return '<div class="livre-item" style="animation-delay:'+i*.05+'s" onclick="openLb('+( start+i)+')"><div class="lv-img-wrap"><img src="'+p.url+'" alt="" loading="lazy"/><div class="lv-photo-overlay"><div class="lv-photo-actions"><button class="lv-photo-btn" title="Télécharger" onclick="event.stopPropagation();dlOne('+( start+i)+')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button><button class="lv-photo-btn del" title="Supprimer" onclick="event.stopPropagation();delPhoto('+( start+i)+')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></div></div></div><div class="lv-body"><div class="lv-name">'+( p.userName||'Invité')+'</div><div class="lv-event-date"><span class="lv-event">'+ev+'</span>'+( ts?'<span class="lv-dot"></span><span class="lv-time">'+ts+'</span>':'')+'</div>'+desc+'</div></div>';}).join('');}
+function renderPag(){const total=Math.ceil(filtered.length/PAGE_SIZE);const pag=document.getElementById('pagination');if(total<=1){pag.innerHTML='';return;}let h='';if(page>1)h+='<button class="pg-btn" onclick="goPage('+( page-1)+')">←</button>';for(let i=1;i<=total;i++){if(i===1||i===total||Math.abs(i-page)<=1)h+='<button class="pg-btn'+( i===page?' on':'')+'" onclick="goPage('+i+')">'+i+'</button>';else if(Math.abs(i-page)===2)h+='<span class="pg-dots">…</span>';}if(page<total)h+='<button class="pg-btn" onclick="goPage('+( page+1)+')">→</button>';h+='<span class="pg-info">'+filtered.length+' photo'+( filtered.length>1?'s':'')+' · Page '+page+'/'+total+'</span>';pag.innerHTML=h;}
+window.goPage=n=>{page=n;render();renderPag();window.scrollTo({top:0,behavior:'smooth'});};
+window.delPhoto=async function(idx){const p=filtered[idx];if(!p||!confirm('Supprimer cette photo définitivement ?'))return;showToast('Suppression…');try{await deleteDoc(doc(db,'photos',p.id));if(p.storagePath)await clDel(p.storagePath);all=all.filter(x=>x.id!==p.id);if(document.getElementById('lb').classList.contains('open'))closeLb();updateStats();doFilter();showToast('Photo supprimée','ok');}catch(e){showToast('Erreur suppression','err');}};
+window.openLb=function(idx){lbIdx=idx;document.getElementById('lb').classList.add('open');renderLb();};
+function renderLb(){const p=filtered[lbIdx];if(!p)return;const ts=p.createdAt?.seconds?new Date(p.createdAt.seconds*1000).toLocaleString('fr-FR'):'';const ev=p.event==='henna'?'Soirée Henné · 1er Juillet':'Mariage · 4 Juillet';document.getElementById('lb-img').src=p.url;document.getElementById('lb-name').textContent=p.userName||'Invité';document.getElementById('lb-ev').textContent=ev;document.getElementById('lb-ts').textContent=ts;document.getElementById('lb-ctr').textContent=(lbIdx+1)+' / '+filtered.length;document.getElementById('lb-desc').textContent=p.description||'Aucune description';document.getElementById('lb-prev').classList.toggle('disabled',lbIdx===0);document.getElementById('lb-next').classList.toggle('disabled',lbIdx===filtered.length-1);document.getElementById('lb-dl').onclick=()=>dlOne(lbIdx);document.getElementById('lb-del').onclick=()=>{closeLb();window.delPhoto(lbIdx);};}
+window.closeLb=()=>document.getElementById('lb').classList.remove('open');
+document.getElementById('lb').addEventListener('click',e=>{if(e.target===document.getElementById('lb'))closeLb();});
+document.getElementById('lb-prev').addEventListener('click',()=>{if(lbIdx>0){lbIdx--;renderLb();}});
+document.getElementById('lb-next').addEventListener('click',()=>{if(lbIdx<filtered.length-1){lbIdx++;renderLb();}});
+document.addEventListener('keydown',e=>{if(!document.getElementById('lb').classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft'&&lbIdx>0){lbIdx--;renderLb();}if(e.key==='ArrowRight'&&lbIdx<filtered.length-1){lbIdx++;renderLb();}});
+async function fetchBlob(url){const res=await fetch(url);if(!res.ok)throw new Error('HTTP '+res.status);return res.blob();}
+function triggerDl(blob,filename){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+window.dlOne=async function(idx){const p=filtered[idx];if(!p)return;showToast('Téléchargement…');try{const blob=await fetchBlob(p.url);const name=(p.userName||'').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'')+'-'+Date.now()+'.jpg';triggerDl(blob,name);showToast('Photo téléchargée','ok');}catch(e){showToast('Erreur téléchargement','err');console.error(e);}};
+window.dlPage=async function(){const start=(page-1)*PAGE_SIZE;await dlBatch(filtered.slice(start,start+PAGE_SIZE));};
+window.dlAll=async function(){await dlBatch(filtered);};
+async function dlBatch(photos){if(!photos.length){showToast('Aucune photo','err');return;}const prog=document.getElementById('dl-prog');const fill=document.getElementById('dl-fill');const lbl=document.getElementById('dl-lbl');const sub=document.getElementById('dl-sub');prog.classList.add('show');let done=0;for(const p of photos){const ev=p.event==='henna'?'henna-01-juillet':'mariage-04-juillet';const uname=(p.userName||'').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');const filename=ev+'_'+uname+'_'+String(done+1).padStart(3,'0')+'.jpg';lbl.textContent=p.userName||'?';sub.textContent=(done+1)+' / '+photos.length;fill.style.width=Math.round(((done+1)/photos.length)*100)+'%';try{const blob=await fetchBlob(p.url);triggerDl(blob,filename);}catch(e){console.error(e);}done++;await new Promise(r=>setTimeout(r,700));}prog.classList.remove('show');fill.style.width='0%';showToast(done+' photo'+(done>1?'s':''+' téléchargée'+(done>1?'s':'')),'ok');}
+
+window.dlZipHenna   = () => dlZipByEvent('henna',   'henna-01-juillet');
+window.dlZipMariage = () => dlZipByEvent('mariage', 'mariage-04-juillet');
+
+async function dlZipByEvent(eventId, label) {
+  const photos = all.filter(p => p.event === eventId);
+  if(!photos.length){ showToast('Aucune photo pour cet événement','err'); return; }
+  showToast('Préparation du ZIP ' + label + '…');
+  try {
+    const zip = new JSZip();
+    // Organiser par utilisateur
+    const byUser = {};
+    photos.forEach(p => {
+      const uname = (p.userName||'anonyme').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+      if(!byUser[uname]) byUser[uname] = [];
+      byUser[uname].push(p);
+    });
+    for(const [uname, uPhotos] of Object.entries(byUser)) {
+      const folder = zip.folder(label + '/' + uname);
+      let i = 0;
+      for(const p of uPhotos) {
+        try {
+          const res  = await fetch(p.url);
+          const blob = await res.blob();
+          folder.file(String(i+1).padStart(3,'0') + '.jpg', blob);
+        } catch(e){ console.error(e); }
+        i++;
+        // Update progress
+        showToast('ZIP ' + label + ' — ' + uname + ' ' + i + '/' + uPhotos.length);
+      }
+    }
+    const zipBlob = await zip.generateAsync({ type:'blob', compression:'DEFLATE', compressionOptions:{ level:6 } });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(zipBlob);
+    a.download = label + '-hamza-assia.zip';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
+    showToast('ZIP ' + label + ' téléchargé ✓', 'ok');
+  } catch(e) {
+    console.error(e); showToast('Erreur ZIP','err');
+  }
+}
+
+function showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(type?' '+type:'');requestAnimationFrame(()=>t.classList.add('show'));clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3500);}
+</script>
+</body>
+</html>
