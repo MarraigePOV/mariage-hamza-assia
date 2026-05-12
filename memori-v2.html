@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Memori — Albums Photo Événements</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,200;0,300;0,400;0,600;1,200;1,300;1,400&family=Cinzel:wght@300;400;600&family=Pinyon+Script&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+
+/* ════════════════════════════════════════
+   DESIGN SYSTEM — Memori v2
+   Aube Maghreb · Or Profond · Sable · Crème
+════════════════════════════════════════ */
+:root {
+  --bg:      #fdf8f0;
+  --bg2:     #f5e6cc;
+  --bg3:     #eeddd0;
+  --card:    #ffffff;
+  --gold:    #9a6e20;
+  --gold-l:  #c9a050;
+  --gold-xl: #e8d5a3;
+  --gold-d:  #5c3c08;
+  --text:    #2e1c08;
+  --muted:   rgba(46,28,8,.58);
+  --light:   rgba(46,28,8,.3);
+  --border:  rgba(154,110,32,.22);
+  --shadow:  0 2px 24px rgba(92,60,8,.08);
+  --shadow-lg: 0 8px 48px rgba(92,60,8,.13);
+
+  --f-display: 'Cormorant Garamond', serif;
+  --f-cap:     'Cinzel', serif;
+  --f-calli:   'Pinyon Script', cursive;
+  --f-body:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body { background: var(--bg); color: var(--text); font-family: var(--f-body); font-weight: 300; overflow-x: hidden; cursor: none; }
+
+/* ── CURSOR ── */
+.cur { width:7px;height:7px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s; }
+.cur-ring { width:30px;height:30px;border:1.5px solid rgba(154,110,32,.45);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s; }
+
+/* ══ NAV ══ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  padding: 0 60px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .4s, box-shadow .4s;
+}
+nav.scrolled { background: rgba(253,248,240,.96); box-shadow: 0 1px 0 var(--border); backdrop-filter: blur(16px); }
+.nav-logo { font-family: var(--f-calli); font-size: 2rem; color: var(--gold); letter-spacing: .02em; flex-shrink: 0; }
+.nav-links { display: flex; gap: 36px; align-items: center; }
+.nav-link { font-family: var(--f-cap); font-size: 7.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .25s; }
+.nav-link:hover { color: var(--gold); }
+.nav-cta {
+  font-family: var(--f-cap); font-size: 7.5px; letter-spacing: .28em; text-transform: uppercase;
+  background: var(--gold); color: #fdf8f0; border: none; padding: 11px 26px;
+  cursor: pointer; transition: all .25s; border-radius: 2px;
+}
+.nav-cta:hover { background: var(--gold-d); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(92,60,8,.22); }
+@media(max-width:768px){ nav{padding:0 20px} .nav-links{display:none} }
+
+/* ══ HERO ══ */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 120px 24px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-bg-gradient {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(201,160,80,.28) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 10% 80%, rgba(220,140,60,.14) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 90% 20%, rgba(240,190,90,.16) 0%, transparent 50%),
+    var(--bg);
+  animation: hero-breathe 9s ease-in-out infinite alternate;
+}
+@keyframes hero-breathe { from{opacity:.85} to{opacity:1} }
+
+/* Rosace SVG */
+.hero-rosace {
+  position: absolute; width: 740px; height: 740px;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  opacity: .09; animation: spin-slow 120s linear infinite; z-index: 0;
+}
+@keyframes spin-slow { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* Étoiles */
+.star { position:absolute;border-radius:50%;background:var(--gold);animation:twinkle var(--d) ease-in-out infinite;opacity:0; }
+@keyframes twinkle { 0%,100%{opacity:0;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+.hero-content { position: relative; z-index: 2; max-width: 860px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(154,110,32,.1); border: 1px solid rgba(154,110,32,.25);
+  padding: 7px 18px; border-radius: 99px; margin-bottom: 28px;
+  font-family: var(--f-cap); font-size: 7px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold);
+  opacity: 0; animation: fade-up .7s .2s forwards;
+}
+.hero-badge-dot { width:6px;height:6px;border-radius:50%;background:var(--gold-l);animation:pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:.6} }
+
+.hero-title {
+  font-family: var(--f-display); font-weight: 200;
+  font-size: clamp(2.8rem, 7.5vw, 6.5rem);
+  line-height: .95; color: var(--text); margin-bottom: 6px;
+  opacity: 0; animation: fade-up 1s .4s forwards;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-title .calli {
+  font-family: var(--f-calli); font-size: clamp(3.6rem, 10vw, 9rem);
+  display: block; line-height: .88; color: var(--gold);
+}
+
+.hero-sub {
+  font-family: var(--f-display); font-style: italic; font-weight: 300;
+  font-size: clamp(.95rem, 2vw, 1.2rem); color: var(--muted);
+  letter-spacing: .06em; margin-top: 24px; line-height: 1.75;
+  opacity: 0; animation: fade-up .9s .7s forwards;
+}
+
+.hero-ctas {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 36px;
+  opacity: 0; animation: fade-up .8s .9s forwards;
+}
+.btn-gold {
+  background: var(--gold); color: #fdf8f0;
+  border: none; padding: 17px 40px;
+  font-family: var(--f-cap); font-size: 8.5px; letter-spacing: .35em; text-transform: uppercase;
+  cursor: pointer; transition: all .25s; border-radius: 2px; position: relative; overflow: hidden;
+}
+.btn-gold:hover { background: var(--gold-d); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(92,60,8,.22); }
+.btn-outline {
+  background: transparent; color: var(--gold);
+  border: 1.5px solid rgba(154,110,32,.4); padding: 17px 40px;
+  font-family: var(--f-cap); font-size: 8.5px; letter-spacing: .35em; text-transform: uppercase;
+  cursor: pointer; transition: all .25s; border-radius: 2px;
+}
+.btn-outline:hover { border-color: var(--gold); background: rgba(154,110,32,.06); }
+
+/* Social proof sous les CTAs */
+.hero-proof {
+  display: flex; align-items: center; gap: 14px; justify-content: center; margin-top: 28px;
+  opacity: 0; animation: fade-up .8s 1.1s forwards;
+}
+.avatar-stack { display: flex; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 2.5px solid var(--bg); margin-left: -10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-cap); font-size: 8px; font-weight: 600; color: #fdf8f0;
+}
+.avatar:first-child { margin-left: 0; }
+.proof-text { text-align: left; }
+.proof-stars { color: var(--gold-l); font-size: 12px; letter-spacing: .05em; }
+.proof-label { font-size: 10.5px; color: var(--muted); margin-top: 1px; }
+.proof-label strong { color: var(--text); font-weight: 500; }
+
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-family: var(--f-cap); font-size: 6.5px; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--light); opacity: 0; animation: fade-up .8s 1.5s forwards;
+}
+.scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--gold-l), transparent); animation: scroll-pulse 2s ease-in-out infinite; }
+@keyframes scroll-pulse { 0%,100%{transform:scaleY(1);opacity:.7} 50%{transform:scaleY(.3);opacity:.2} }
+
+@keyframes fade-up { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+/* ══ STATS BAR ══ */
+.stats-bar {
+  background: var(--gold); padding: 28px 60px;
+  display: flex; align-items: center; justify-content: center; gap: 0;
+}
+.stat-item { flex: 1; text-align: center; max-width: 240px; position: relative; }
+.stat-item + .stat-item::before { content:''; position:absolute; left:0; top:10%; bottom:10%; width:1px; background:rgba(253,248,240,.25); }
+.stat-num { font-family: var(--f-display); font-weight: 200; font-size: clamp(2rem,4vw,3rem); color: #fdf8f0; line-height: 1; }
+.stat-num span { font-style: italic; }
+.stat-label { font-family: var(--f-cap); font-size: 7px; letter-spacing: .3em; text-transform: uppercase; color: rgba(253,248,240,.7); margin-top: 4px; }
+@media(max-width:600px){ .stats-bar{padding:24px 20px;gap:0} .stat-num{font-size:1.8rem} }
+
+/* ══ SEPARATEUR ══ */
+.sep { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+
+/* ══ SECTION GÉNÉRIQUE ══ */
+.section { padding: 100px 60px; }
+.section.alt { background: var(--bg2); }
+.section-inner { max-width: 1160px; margin: 0 auto; }
+.section-tag { font-family:var(--f-cap); font-size:7.5px; letter-spacing:.45em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+.section-heading { font-family:var(--f-display); font-weight:200; font-size:clamp(2rem,4.5vw,3.6rem); color:var(--text); line-height:1.05; margin-bottom:10px; }
+.section-heading em { font-style:italic; color:var(--gold); }
+.section-sub { font-family:var(--f-display); font-style:italic; font-size:1rem; color:var(--muted); letter-spacing:.05em; }
+@media(max-width:768px){ .section{padding:72px 20px} }
+
+/* ══ BENTO FEATURES ══ */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto;
+  gap: 16px;
+  margin-top: 52px;
+}
+.bento-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid rgba(154,110,32,.1);
+  box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
+  transition: transform .35s, box-shadow .35s;
+}
+.bento-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.bento-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(201,160,80,.04) 0%, transparent 60%); pointer-events:none; }
+
+.bento-a { grid-column: span 7; grid-row: span 2; }
+.bento-b { grid-column: span 5; }
+.bento-c { grid-column: span 5; }
+.bento-d { grid-column: span 4; }
+.bento-e { grid-column: span 4; }
+.bento-f { grid-column: span 4; }
+
+@media(max-width:1024px){
+  .bento-a,.bento-b,.bento-c { grid-column: span 12; }
+  .bento-d,.bento-e,.bento-f { grid-column: span 12; }
+}
+@media(max-width:600px){
+  .bento-grid { gap: 12px; }
+}
+
+.bento-tag { font-family:var(--f-cap); font-size:6.5px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; display:inline-block; background:rgba(154,110,32,.1); padding:4px 10px; border-radius:99px; }
+.bento-title { font-family:var(--f-display); font-weight:300; font-size:1.55rem; color:var(--text); line-height:1.2; margin-bottom:10px; }
+.bento-title em { font-style:italic; color:var(--gold); }
+.bento-desc { font-size:12px; color:var(--muted); line-height:1.8; max-width:380px; }
+.bento-illus { margin-top: 28px; }
+
+/* Illustration — Album live */
+.illus-album {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border-radius: 12px; padding: 20px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.illus-photo {
+  aspect-ratio: 1; border-radius: 8px;
+  background: linear-gradient(135deg, rgba(154,110,32,.15), rgba(154,110,32,.08));
+  border: 1px solid rgba(154,110,32,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: rgba(154,110,32,.4);
+  position: relative; overflow: hidden;
+}
+.illus-photo.new::after { content:'Nouveau'; position:absolute; top:4px; right:4px; background:var(--gold); color:#fdf8f0; font-size:7px; font-family:var(--f-cap); letter-spacing:.1em; padding:2px 6px; border-radius:4px; }
+
+/* QR illus */
+.illus-qr {
+  width: 80px; height: 80px; margin-top: 20px;
+  background: var(--bg2); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem;
+}
+
+/* Chrono illus */
+.illus-chrono {
+  display: flex; align-items: center; gap: 12px; margin-top: 20px;
+}
+.chrono-step { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.chrono-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); }
+.chrono-line { flex: 1; height: 1px; background: var(--border); margin-top: -12px; }
+.chrono-label { font-size: 9px; color: var(--muted); font-family: var(--f-cap); letter-spacing: .1em; }
+
+/* ══ ÉVÉNEMENTS CARDS ══ */
+.events-scroll {
+  display: flex; gap: 16px; margin-top: 52px;
+  overflow-x: auto; padding-bottom: 16px;
+  scrollbar-width: none;
+}
+.events-scroll::-webkit-scrollbar { display: none; }
+.event-card {
+  flex-shrink: 0; width: 240px;
+  background: var(--card); border-radius: 16px;
+  border: 1px solid rgba(154,110,32,.12);
+  box-shadow: var(--shadow); overflow: hidden;
+  transition: transform .3s, box-shadow .3s; cursor: pointer;
+}
+.event-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.event-card-preview {
+  height: 160px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.event-card-body { padding: 18px 20px 22px; }
+.event-card-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+.event-card-name { font-family: var(--f-cap); font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--text); margin-bottom: 6px; }
+.event-card-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.event-card-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-family: var(--f-cap); font-size: 7px; letter-spacing: .25em; text-transform: uppercase; color: var(--gold); }
+.event-card-cta svg { transition: transform .2s; }
+.event-card:hover .event-card-cta svg { transform: translateX(4px); }
+
+/* ══ COMMENT ÇA MARCHE ══ */
+.steps-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; position: relative; }
+.steps-layout::before { content:''; position:absolute; top:44px; left:16%; right:16%; height:1px; background:linear-gradient(90deg,transparent,var(--border),var(--gold-xl),var(--border),transparent); }
+.step-card { text-align: center; }
+.step-num-wrap {
+  width: 88px; height: 88px; margin: 0 auto 24px;
+  background: var(--card); border: 1.5px solid rgba(154,110,32,.25);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1; box-shadow: var(--shadow);
+  transition: border-color .35s, transform .35s, box-shadow .35s;
+}
+.step-card:hover .step-num-wrap { border-color: var(--gold); transform: scale(1.07); box-shadow: 0 8px 32px rgba(154,110,32,.18); }
+.step-num-inner { font-family: var(--f-display); font-style: italic; font-size: 2rem; color: var(--gold); }
+.step-title { font-family: var(--f-cap); font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: var(--text); margin-bottom: 12px; }
+.step-desc { font-size: 12px; color: var(--muted); line-height: 1.85; max-width: 230px; margin: 0 auto; }
+@media(max-width:768px){ .steps-layout{grid-template-columns:1fr;gap:28px} .steps-layout::before{display:none} }
+
+/* ══ CONFIGURATEUR ══ */
+.config-layout {
+  display: grid; grid-template-columns: 1fr 380px; gap: 56px;
+  margin-top: 52px;
+}
+.config-panel { display: flex; flex-direction: column; gap: 36px; }
+.config-block-title {
+  font-family: var(--f-cap); font-size: 7.5px; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--gold);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.config-block-title::after { content:''; flex:1; height:1px; background: var(--border); }
+
+/* Event buttons */
+.event-grid-cfg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.event-btn-cfg {
+  background: var(--card); border: 1.5px solid rgba(154,110,32,.15);
+  padding: 14px 8px; text-align: center; cursor: pointer; border-radius: 10px;
+  transition: all .25s; position: relative; overflow: hidden;
+  box-shadow: 0 1px 8px rgba(92,60,8,.06);
+}
+.event-btn-cfg:hover { border-color: rgba(154,110,32,.4); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(92,60,8,.1); }
+.event-btn-cfg.active { border-color: var(--gold); background: rgba(154,110,32,.06); }
+.event-btn-icon { font-size: 1.4rem; margin-bottom: 6px; display: block; }
+.event-btn-label { font-family: var(--f-cap); font-size: 6.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.event-btn-cfg.active .event-btn-label { color: var(--gold); }
+
+/* Sliders */
+.slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.slider-label { font-size: 12px; color: var(--text); font-weight: 300; }
+.slider-value { font-family: var(--f-display); font-style: italic; font-size: 1.4rem; color: var(--gold); }
+.slider-track { position: relative; height: 2px; background: rgba(154,110,32,.15); margin: 8px 0 6px; border-radius: 99px; }
+.slider-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--gold-d), var(--gold)); border-radius: 99px; transition: width .15s; }
+.slider-thumb { position: absolute; top: 50%; transform: translate(-50%,-50%); width: 16px; height: 16px; background: var(--gold); border-radius: 50%; cursor: pointer; box-shadow: 0 2px 8px rgba(92,60,8,.2); transition: transform .2s, box-shadow .2s; }
+.slider-thumb:hover { transform: translate(-50%,-50%) scale(1.25); box-shadow: 0 0 0 6px rgba(154,110,32,.15); }
+input[type="range"] { width: 100%; opacity: 0; position: absolute; top: 50%; transform: translateY(-50%); height: 24px; cursor: pointer; margin: 0; }
+.slider-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--light); margin-top: 4px; }
+
+/* Durée */
+.dur-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+/* Thèmes config */
+.themes-grid-cfg { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.theme-card-cfg {
+  aspect-ratio: 2/3; position: relative; overflow: hidden; cursor: pointer;
+  border: 1.5px solid rgba(154,110,32,.15); transition: border-color .3s, transform .3s;
+  border-radius: 8px; box-shadow: 0 1px 6px rgba(92,60,8,.07);
+}
+.theme-card-cfg:hover { border-color: rgba(154,110,32,.5); transform: translateY(-3px); }
+.theme-card-cfg.active { border-color: var(--gold); }
+.theme-card-cfg.active::after { content:'✓'; position:absolute; top:5px; right:5px; width:18px; height:18px; background:var(--gold); color:#fdf8f0; font-size:9px; font-weight:bold; display:flex; align-items:center; justify-content:center; border-radius:50%; }
+.theme-preview-cfg { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.theme-name-cfg { font-family:var(--f-cap); font-size:5px; letter-spacing:.15em; text-transform:uppercase; position:absolute; bottom:5px; z-index:1; color:rgba(255,255,255,.8); }
+.theme-badge-cfg { position:absolute; top:4px; left:4px; font-family:var(--f-cap); font-size:5px; letter-spacing:.08em; text-transform:uppercase; background:rgba(154,110,32,.9); color:#fdf8f0; padding:2px 5px; border-radius:3px; }
+
+/* Price panel */
+.price-panel {
+  position: sticky; top: 88px; align-self: start;
+  background: var(--card); border: 1.5px solid rgba(154,110,32,.18);
+  border-radius: 20px; padding: 36px 28px;
+  box-shadow: var(--shadow-lg);
+}
+.price-event-tag { font-family:var(--f-cap); font-size:7px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+.price-calli { font-family:var(--f-calli); font-size:1.5rem; color:var(--gold-d); margin-bottom:20px; }
+.price-divider { height:1px; background: var(--border); margin: 16px 0; }
+.price-lines { display:flex; flex-direction:column; gap:10px; }
+.price-line { display:flex; justify-content:space-between; align-items:baseline; }
+.price-line-label { font-size:11px; color:var(--muted); }
+.price-line-val { font-family:var(--f-display); font-style:italic; font-size:.95rem; color:var(--text); }
+.price-total-row { display:flex; justify-content:space-between; align-items:baseline; margin-top:16px; }
+.price-total-label { font-family:var(--f-cap); font-size:8px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+.price-total-val { font-family:var(--f-display); font-weight:300; font-size:3rem; color:var(--gold); line-height:1; }
+.price-total-currency { font-size:1.3rem; vertical-align:super; }
+.price-note { font-size:9px; color:var(--light); margin-top:10px; line-height:1.65; font-style:italic; font-family:var(--f-display); }
+.btn-order {
+  width:100%; background:var(--gold); color:#fdf8f0;
+  border:none; padding:18px; margin-top:20px; border-radius: 8px;
+  font-family:var(--f-cap); font-size:8.5px; letter-spacing:.4em; text-transform:uppercase;
+  cursor:pointer; transition:all .25s;
+}
+.btn-order:hover { background: var(--gold-d); transform:translateY(-1px); box-shadow: 0 6px 20px rgba(92,60,8,.2); }
+
+@media(max-width:1024px){ .config-layout{grid-template-columns:1fr} .price-panel{position:static} .event-grid-cfg{grid-template-columns:repeat(4,1fr)} }
+@media(max-width:560px){ .event-grid-cfg{grid-template-columns:repeat(2,1fr)} .themes-grid-cfg{grid-template-columns:repeat(3,1fr)} }
+
+/* ══ WALL OF LOVE ══ */
+.wol-track { display: flex; gap: 20px; animation: scroll-track 44s linear infinite; width: max-content; margin-top: 48px; }
+.wol-track:hover { animation-play-state: paused; }
+@keyframes scroll-track { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.wol-card {
+  width: 300px; flex-shrink: 0;
+  background: var(--card); border: 1px solid rgba(154,110,32,.12);
+  border-radius: 16px; padding: 24px; box-shadow: var(--shadow);
+}
+.wol-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.wol-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-cap); font-size: 10px; font-weight: 600; color: #fdf8f0; flex-shrink: 0;
+}
+.wol-info { min-width: 0; }
+.wol-name { font-family: var(--f-cap); font-size: 8px; letter-spacing: .2em; text-transform: uppercase; color: var(--text); }
+.wol-event { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.wol-stars { color: var(--gold-l); font-size: 12px; letter-spacing: .05em; margin-bottom: 10px; }
+.wol-text { font-family: var(--f-display); font-style: italic; font-size: .92rem; color: var(--muted); line-height: 1.7; }
+
+/* ══ GALERIE THÈMES ══ */
+.themes-showcase {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 52px;
+}
+.showcase-item {
+  border-radius: 20px; overflow: hidden;
+  aspect-ratio: 16/10; position: relative; cursor: pointer; box-shadow: var(--shadow);
+  transition: transform .4s, box-shadow .4s;
+}
+.showcase-item:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.showcase-item::before { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(20,10,2,.88) 0%,rgba(20,10,2,.3) 45%,transparent 70%); z-index:1; }
+.showcase-bg { width:100%; height:100%; transition:transform .5s; }
+.showcase-item:hover .showcase-bg { transform:scale(1.05); }
+.showcase-info { position:absolute; bottom:0; left:0; right:0; padding:24px; z-index:2; }
+.showcase-event { font-family:var(--f-cap); font-size:6.5px; letter-spacing:.25em; text-transform:uppercase; color:#e8c878; margin-bottom:6px; }
+.showcase-name { font-family:var(--f-calli); font-size:2rem; color:#f5ede0; line-height:1; }
+.showcase-desc { font-size:11px; color:rgba(245,237,224,.65); margin-top:6px; font-style:italic; font-family:var(--f-display); }
+@media(max-width:768px){ .themes-showcase{grid-template-columns:1fr 1fr} }
+@media(max-width:480px){ .themes-showcase{grid-template-columns:1fr} }
+
+/* ══ CTA FINAL ══ */
+.section-cta {
+  padding: 140px 60px; text-align: center; position: relative; overflow: hidden;
+  background: var(--gold-d);
+}
+.section-cta::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 70% at 50% 50%, rgba(201,160,80,.25) 0%, transparent 70%); }
+.cta-calli { font-family:var(--f-calli); font-size:clamp(3rem,8vw,7rem); color:var(--gold-xl); display:block; }
+.cta-title { font-family:var(--f-display); font-weight:200; font-size:clamp(1.6rem,4vw,3.2rem); color:#fdf8f0; margin-bottom:18px; }
+.cta-sub { font-family:var(--f-display); font-style:italic; font-size:1.05rem; color:rgba(253,248,240,.65); margin-bottom:44px; }
+.cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+.btn-cta-light {
+  background: #fdf8f0; color: var(--gold-d);
+  border: none; padding: 17px 40px; border-radius: 2px;
+  font-family: var(--f-cap); font-size: 8.5px; letter-spacing: .35em; text-transform: uppercase;
+  cursor: pointer; transition: all .25s;
+}
+.btn-cta-light:hover { background: var(--gold-xl); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,.2); }
+.btn-cta-outline {
+  background: transparent; color: #fdf8f0;
+  border: 1.5px solid rgba(253,248,240,.4); padding: 17px 40px; border-radius: 2px;
+  font-family: var(--f-cap); font-size: 8.5px; letter-spacing: .35em; text-transform: uppercase;
+  cursor: pointer; transition: all .25s;
+}
+.btn-cta-outline:hover { border-color: rgba(253,248,240,.8); }
+@media(max-width:768px){ .section-cta{padding:100px 24px} }
+
+/* ══ FOOTER ══ */
+footer {
+  padding: 44px 60px 32px; background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+}
+.footer-logo { font-family:var(--f-calli); font-size:1.6rem; color:var(--gold); }
+.footer-links { display:flex; gap:28px; }
+.footer-link { font-family:var(--f-cap); font-size:7px; letter-spacing:.25em; text-transform:uppercase; color:var(--light); text-decoration:none; transition:color .2s; }
+.footer-link:hover { color:var(--gold); }
+.footer-copy { font-size:10px; color:var(--light); }
+@media(max-width:768px){ footer{padding:36px 20px;flex-direction:column;text-align:center} .footer-links{justify-content:center} }
+
+/* ══ MODAL ══ */
+.modal-bg { display:none; position:fixed; inset:0; z-index:800; background:rgba(20,12,4,.88); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:20px; }
+.modal-bg.open { display:flex; }
+.modal {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; max-width: 520px; width: 100%; padding: 48px 40px;
+  position: relative; max-height: 90vh; overflow-y: auto;
+  animation: modal-in .45s cubic-bezier(.16,1,.3,1) both;
+  box-shadow: 0 24px 80px rgba(92,60,8,.22);
+}
+@keyframes modal-in { from{opacity:0;transform:translateY(28px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+.modal-close { position:absolute; top:18px; right:20px; background:transparent; border:none; color:var(--muted); font-size:20px; cursor:pointer; transition:color .2s; }
+.modal-close:hover { color:var(--gold); }
+.modal-title { font-family:var(--f-display); font-weight:200; font-style:italic; font-size:1.9rem; color:var(--text); margin-bottom:6px; }
+.modal-sub { font-size:10px; letter-spacing:.06em; color:var(--muted); margin-bottom:28px; line-height:1.75; }
+.modal-summary { background:rgba(154,110,32,.06); border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:24px; }
+.modal-summary-row { display:flex; justify-content:space-between; font-size:11px; margin-bottom:6px; }
+.modal-summary-row:last-child { margin-bottom:0; font-weight:500; border-top:1px solid var(--border); padding-top:8px; margin-top:8px; }
+.modal-summary-label { color:var(--muted); }
+.modal-summary-val { color:var(--gold); font-family:var(--f-display); font-style:italic; }
+.form-field { margin-bottom:16px; }
+.form-label { display:block; font-family:var(--f-cap); font-size:7px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+.form-input, .form-textarea { width:100%; background:transparent; border:none; border-bottom:1.5px solid rgba(154,110,32,.2); padding:10px 0; color:var(--text); font-family:var(--f-display); font-style:italic; font-size:.95rem; outline:none; transition:border-color .3s; }
+.form-input:focus, .form-textarea:focus { border-bottom-color: var(--gold); }
+.form-input::placeholder, .form-textarea::placeholder { color:var(--light); font-style:italic; }
+.form-textarea { resize:none; height:80px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.btn-send { width:100%; background:var(--gold); color:#fdf8f0; border:none; padding:17px; margin-top:10px; border-radius:8px; font-family:var(--f-cap); font-size:8.5px; letter-spacing:.4em; text-transform:uppercase; cursor:pointer; transition:all .25s; }
+.btn-send:hover { background: var(--gold-d); }
+.success-msg { display:none; text-align:center; padding:44px 0; }
+.success-icon { width:64px; height:64px; border:1.5px solid var(--gold); border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; animation:pulse-ring 2s ease-in-out infinite; }
+@keyframes pulse-ring { 0%,100%{box-shadow:0 0 0 0 rgba(154,110,32,.3)} 50%{box-shadow:0 0 0 14px rgba(154,110,32,0)} }
+.success-title { font-family:var(--f-calli); font-size:2.4rem; color:var(--gold); margin-bottom:10px; }
+.success-text { font-family:var(--f-display); font-style:italic; font-size:.95rem; color:var(--muted); line-height:1.8; }
+
+/* ══ EXPÉRIENCE INVITÉ ══ */
+.guest-layout { display:grid; grid-template-columns:1fr 280px; gap:64px; align-items:center; margin-top:56px; }
+.guest-steps { display:flex; flex-direction:column; gap:10px; }
+.gstep { display:flex; gap:16px; align-items:flex-start; padding:18px 20px; border-radius:14px; cursor:pointer; border:1.5px solid transparent; transition:all .3s; }
+.gstep:hover { background:var(--card); }
+.gstep.active { background:var(--card); border-color:var(--border); box-shadow:var(--shadow); }
+.gstep-num { width:36px;height:36px; border-radius:50%; border:1.5px solid var(--border); display:flex;align-items:center;justify-content:center; font-family:var(--f-display);font-style:italic;font-size:1.05rem;color:var(--gold); flex-shrink:0; transition:all .3s; }
+.gstep.active .gstep-num { background:var(--gold);color:#fdf8f0;border-color:var(--gold); }
+.gstep-body {}
+.gstep-title { font-family:var(--f-cap);font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--text);margin-bottom:5px; }
+.gstep-desc { font-size:11.5px;color:var(--muted);line-height:1.75; }
+
+/* Phone mockup */
+.phone-wrap { display:flex; justify-content:center; }
+.phone { width:260px; border-radius:36px; border:8px solid #2C1C08; box-shadow:0 28px 70px rgba(46,28,8,.24),0 0 0 1px rgba(46,28,8,.12),inset 0 0 0 1px rgba(255,255,255,.05); position:relative; overflow:hidden; background:#F5F0E8; }
+.phone-notch { position:absolute;top:0;left:50%;transform:translateX(-50%);width:80px;height:20px;background:#2C1C08;border-radius:0 0 12px 12px;z-index:10; }
+.phone-screen { height:520px; position:relative; overflow:hidden; }
+.pscreen { position:absolute;inset:0;display:none;flex-direction:column;padding:26px 14px 14px;background:#F5F0E8;overflow:hidden; }
+.pscreen.active { display:flex; }
+
+/* Separateur bar invité / or */
+.inv-bar { height:3px; background:linear-gradient(90deg, var(--gold-d), var(--gold), var(--gold-l), var(--gold), var(--gold-d)); margin:0; }
+
+@media(max-width:1024px){ .guest-layout{grid-template-columns:1fr;gap:44px} .phone-wrap{margin:0 auto} }
+
+/* ══ THEME LIGHTBOX ══ */
+.theme-lb { display:none; position:fixed;inset:0;z-index:700; background:rgba(12,8,2,.72); backdrop-filter:blur(10px); align-items:center;justify-content:center;padding:20px; }
+.theme-lb.open { display:flex; }
+.theme-lb-box { width:min(94vw,1160px); height:min(84vh,660px); border-radius:20px; overflow:hidden; position:relative; display:flex; animation:tlb-in .4s cubic-bezier(.16,1,.3,1) both; box-shadow:0 48px 120px rgba(0,0,0,.5); }
+@keyframes tlb-in { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+.theme-lb-mockup { flex:1; position:relative; min-width:0; overflow:hidden; }
+.theme-lb-mockup .showcase-bg { width:100%!important;height:100%!important;display:flex!important;align-items:center;justify-content:center;padding:16px!important;max-width:none!important; }
+.theme-lb-mockup svg { height:100%!important; width:auto!important; max-width:none!important; max-height:none!important; display:block!important; filter:drop-shadow(0 20px 60px rgba(0,0,0,.7))!important; }
+.theme-lb-panel { width:240px;flex-shrink:0;background:rgba(245,230,204,.055);border-left:1px solid rgba(245,230,204,.08);padding:40px 22px;display:flex;flex-direction:column;justify-content:center;gap:16px; }
+.tlb-event { font-family:var(--f-cap);font-size:7px;letter-spacing:.38em;text-transform:uppercase;color:#e8c070; }
+.tlb-name { font-family:var(--f-calli);font-size:2.4rem;color:#f5ede0;line-height:1; }
+.tlb-desc { font-family:var(--f-display);font-style:italic;font-size:.92rem;color:rgba(245,237,224,.58);line-height:1.75; }
+.tlb-divider { height:1px;background:rgba(245,230,204,.12); }
+.tlb-feature { display:flex;align-items:center;gap:10px;font-size:10px;color:rgba(245,237,224,.52); }
+.tlb-feature::before { content:'✦';color:rgba(201,160,80,.5);font-size:8px;flex-shrink:0; }
+.tlb-btn { margin-top:8px; display:inline-block; background:rgba(154,110,32,.2); border:1px solid rgba(201,160,80,.35); color:#e8c070; padding:12px 16px; font-family:var(--f-cap); font-size:7px; letter-spacing:.28em; text-transform:uppercase; cursor:pointer; transition:all .25s; text-align:center; }
+.tlb-btn:hover { background:rgba(154,110,32,.4); border-color:rgba(201,160,80,.7); color:#fff; }
+.theme-lb-close { position:absolute;top:14px;right:14px;width:36px;height:36px;background:rgba(245,230,204,.12);border:1px solid rgba(245,230,204,.2);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(245,237,224,.75);font-size:16px;z-index:10;transition:all .25s;backdrop-filter:blur(6px); }
+.theme-lb-close:hover { background:rgba(245,230,204,.25);color:#fff;transform:scale(1.08); }
+@media(max-width:768px){ .theme-lb-box{flex-direction:column;height:93vh;width:97vw} .theme-lb-panel{width:auto;border-left:none;border-top:1px solid rgba(245,230,204,.1);padding:16px 16px;flex-shrink:0;gap:8px} .tlb-name{font-size:1.7rem} .theme-lb-mockup svg{width:100%!important;height:auto!important;max-height:50vh!important} }
+
+/* ══ REVEAL ══ */
+.rv { opacity:0; transform:translateY(26px); transition:opacity .9s ease, transform .9s ease; }
+.rv.on { opacity:1; transform:translateY(0); }
+.rv-d1{transition-delay:.1s} .rv-d2{transition-delay:.2s} .rv-d3{transition-delay:.3s} .rv-d4{transition-delay:.4s}
+
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="cur-ring"></div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <div class="nav-logo">Memori</div>
+  <div class="nav-links">
+    <a href="#how" class="nav-link">Comment ça marche</a>
+    <a href="#events" class="nav-link">Événements</a>
+    <a href="#configurator" class="nav-link">Configurer</a>
+    <a href="#themes" class="nav-link">Thèmes</a>
+    <button class="nav-cta" onclick="openModal()">Commander</button>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg-gradient"></div>
+  <div id="stars"></div>
+  <svg class="hero-rosace" viewBox="0 0 600 600">
+    <g transform="translate(300,300)">
+      <circle r="290" stroke="#9a6e20" stroke-width=".7" fill="none"/>
+      <circle r="230" stroke="#9a6e20" stroke-width=".5" fill="none"/>
+      <circle r="170" stroke="#9a6e20" stroke-width=".6" fill="none"/>
+      <circle r="110" stroke="#9a6e20" stroke-width=".4" fill="none"/>
+      <circle r="55"  stroke="#9a6e20" stroke-width=".55" fill="none"/>
+      <line x1="0" y1="-290" x2="0" y2="290" stroke="#9a6e20" stroke-width=".35"/>
+      <line x1="-290" y1="0" x2="290" y2="0" stroke="#9a6e20" stroke-width=".35"/>
+      <line x1="-205" y1="-205" x2="205" y2="205" stroke="#9a6e20" stroke-width=".28"/>
+      <line x1="205" y1="-205" x2="-205" y2="205" stroke="#9a6e20" stroke-width=".28"/>
+      <line x1="-110" y1="-264" x2="110" y2="264" stroke="#9a6e20" stroke-width=".22"/>
+      <line x1="264" y1="-110" x2="-264" y2="110" stroke="#9a6e20" stroke-width=".22"/>
+      <line x1="110" y1="-264" x2="-110" y2="264" stroke="#9a6e20" stroke-width=".22"/>
+      <line x1="-264" y1="-110" x2="264" y2="110" stroke="#9a6e20" stroke-width=".22"/>
+      <path d="M0,-170 L18,-52 L0,-42 L-18,-52Z" fill="#9a6e20" opacity=".5"/>
+      <path d="M0,170 L18,52 L0,42 L-18,52Z" fill="#9a6e20" opacity=".5"/>
+      <path d="M-170,0 L-52,18 L-42,0 L-52,-18Z" fill="#9a6e20" opacity=".5"/>
+      <path d="M170,0 L52,18 L42,0 L52,-18Z" fill="#9a6e20" opacity=".5"/>
+      <circle r="16" fill="#9a6e20" opacity=".55"/>
+      <circle r="7" fill="#fdf8f0"/>
+      <circle r="3" fill="#9a6e20"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Album photo · QR Code · Livre d'or numérique
+    </div>
+    <h1 class="hero-title">
+      Chaque regard<br/>
+      <span class="calli">raconte une histoire</span>
+    </h1>
+    <p class="hero-sub">
+      Offrez à vos invités l'expérience d'un album collectif en temps réel.<br/>
+      Scannez, partagez, immortalisez — livré sous 48h.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn-gold" onclick="document.getElementById('configurator').scrollIntoView({behavior:'smooth'})">Configurer mon événement</button>
+      <button class="btn-outline" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">Découvrir</button>
+    </div>
+
+    <!-- Social proof -->
+    <div class="hero-proof">
+      <div class="avatar-stack" id="hero-avatars"></div>
+      <div class="proof-text">
+        <div class="proof-stars">★★★★★</div>
+        <div class="proof-label"><strong>4.9/5</strong> · +200 événements immortalisés</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ STATS BAR ══ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num"><span>200</span>+</div>
+    <div class="stat-label">Événements organisés</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span>50</span>k+</div>
+    <div class="stat-label">Photos partagées</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num"><span>4.9</span> ★</div>
+    <div class="stat-label">Note moyenne clients</div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ══ BENTO FEATURES ══ -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-tag rv">Pourquoi Memori</p>
+    <h2 class="section-heading rv rv-d1">Tout ce qu'il faut pour un<br/><em>souvenir parfait</em></h2>
+
+    <div class="bento-grid">
+
+      <!-- A — Grande carte gauche -->
+      <div class="bento-card bento-a rv">
+        <span class="bento-tag">Album collectif</span>
+        <h3 class="bento-title">Photos partagées<br/><em>en temps réel</em></h3>
+        <p class="bento-desc">Vos invités scannent le QR code, prennent leurs photos et les voient apparaître instantanément dans l'album commun. Un souvenir vivant qui se construit pendant la fête.</p>
+        <div class="bento-illus">
+          <div class="illus-album">
+            <div class="illus-photo">🖼</div>
+            <div class="illus-photo new">🖼</div>
+            <div class="illus-photo">🖼</div>
+            <div class="illus-photo">🖼</div>
+            <div class="illus-photo new">🖼</div>
+            <div class="illus-photo">🖼</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B -->
+      <div class="bento-card bento-b rv rv-d1">
+        <span class="bento-tag">Livraison express</span>
+        <h3 class="bento-title">QR Code prêt<br/><em>en 48h</em></h3>
+        <p class="bento-desc">Commandez, configurez, recevez. Votre QR code et l'accès à votre tableau de bord arrivent sous 48h dans votre boîte mail.</p>
+        <div class="illus-qr">⬛</div>
+        <div class="illus-chrono" style="margin-top:20px">
+          <div class="chrono-step">
+            <div class="chrono-dot"></div>
+            <div class="chrono-label">Commande</div>
+          </div>
+          <div class="chrono-line"></div>
+          <div class="chrono-step">
+            <div class="chrono-dot" style="background:var(--gold-l);opacity:.6"></div>
+            <div class="chrono-label">Validation</div>
+          </div>
+          <div class="chrono-line"></div>
+          <div class="chrono-step">
+            <div class="chrono-dot" style="background:var(--gold-xl);opacity:.5"></div>
+            <div class="chrono-label">Livraison 48h</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C -->
+      <div class="bento-card bento-c rv rv-d2">
+        <span class="bento-tag">Personnalisation</span>
+        <h3 class="bento-title">Thèmes <em>sur mesure</em><br/>pour chaque fête</h3>
+        <p class="bento-desc">Or & Nuit, Terracotta, Bleu Royal, Ciel Étoilé… ou un thème entièrement personnalisé à vos couleurs.</p>
+        <div style="display:flex;gap:8px;margin-top:20px">
+          <div style="flex:1;height:40px;border-radius:6px;background:linear-gradient(135deg,#1a0f05,#3d2810)"></div>
+          <div style="flex:1;height:40px;border-radius:6px;background:linear-gradient(135deg,#3d1a0e,#6b2d18)"></div>
+          <div style="flex:1;height:40px;border-radius:6px;background:linear-gradient(135deg,#0e1e35,#1a3050)"></div>
+          <div style="flex:1;height:40px;border-radius:6px;background:linear-gradient(135deg,#1a1628,#2a2040)"></div>
+          <div style="flex:1;height:40px;border-radius:6px;background:linear-gradient(135deg,#f5f0e8,#e8ddd0);border:1px solid var(--border)"></div>
+        </div>
+      </div>
+
+      <!-- D -->
+      <div class="bento-card bento-d rv rv-d1">
+        <span class="bento-tag">Livre d'or</span>
+        <h3 class="bento-title"><em>Messages</em><br/>des invités</h3>
+        <p class="bento-desc">En plus des photos, vos invités peuvent laisser un message audio ou écrit dans le livre d'or numérique.</p>
+        <div style="margin-top:20px;font-size:1.8rem;opacity:.4">💌</div>
+      </div>
+
+      <!-- E -->
+      <div class="bento-card bento-e rv rv-d2">
+        <span class="bento-tag">Export</span>
+        <h3 class="bento-title">Téléchargement<br/><em>ZIP complet</em></h3>
+        <p class="bento-desc">Toutes vos photos haute résolution en un clic, après l'événement. Format optimisé pour impression.</p>
+        <div style="margin-top:20px;font-size:1.8rem;opacity:.4">📦</div>
+      </div>
+
+      <!-- F -->
+      <div class="bento-card bento-f rv rv-d3">
+        <span class="bento-tag">Dashboard</span>
+        <h3 class="bento-title">Tableau de bord<br/><em>admin</em></h3>
+        <p class="bento-desc">Modérez les photos, suivez les stats en direct et gérez votre album depuis votre smartphone.</p>
+        <div style="margin-top:20px;font-size:1.8rem;opacity:.4">📊</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══ ÉVÉNEMENTS ══ -->
+<section class="section alt" id="events">
+  <div class="section-inner">
+    <p class="section-tag rv">Adapté à chaque occasion</p>
+    <h2 class="section-heading rv rv-d1">Un album pour<br/><em>chaque célébration</em></h2>
+    <p class="section-sub rv rv-d2">De la soirée henné au gala d'entreprise — Memori s'adapte à votre événement.</p>
+  </div>
+  <div class="events-scroll rv rv-d2" id="events-scroll" style="padding: 0 60px;">
+    <!-- Généré par JS -->
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══ COMMENT ÇA MARCHE ══ -->
+<section class="section" id="how">
+  <div class="section-inner">
+    <p class="section-tag rv">Le processus</p>
+    <h2 class="section-heading rv rv-d1">Simple. Élégant.<br/><em>Inoubliable.</em></h2>
+    <p class="section-sub rv rv-d2">De la commande à l'événement en 48h.</p>
+
+    <div class="steps-layout">
+      <div class="step-card rv rv-d1">
+        <div class="step-num-wrap"><div class="step-num-inner">1</div></div>
+        <div class="step-title">Configurez</div>
+        <p class="step-desc">Choisissez votre événement, le nombre d'invités, le thème visuel et les options. Obtenez votre prix en temps réel.</p>
+      </div>
+      <div class="step-card rv rv-d2">
+        <div class="step-num-wrap"><div class="step-num-inner">2</div></div>
+        <div class="step-title">Recevez</div>
+        <p class="step-desc">Sous 48h, votre QR code prêt à imprimer et l'accès à votre tableau de bord administrateur arrivent par email.</p>
+      </div>
+      <div class="step-card rv rv-d3">
+        <div class="step-num-wrap"><div class="step-num-inner">3</div></div>
+        <div class="step-title">Célébrez</div>
+        <p class="step-desc">Posez les cartes QR sur les tables. Vos invités partagent leurs photos. Téléchargez l'album complet après la fête.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══ CONFIGURATEUR ══ -->
+<section class="section alt" id="configurator">
+  <div class="section-inner" style="margin-bottom:0">
+    <p class="section-tag rv">Configurateur</p>
+    <h2 class="section-heading rv rv-d1">Créez votre<br/><em>expérience sur mesure</em></h2>
+  </div>
+
+  <div class="config-layout section-inner" style="margin-top:0;padding-top:0">
+    <div class="config-panel">
+
+      <!-- Type événement -->
+      <div class="rv">
+        <div class="config-block-title">Type d'événement</div>
+        <div class="event-grid-cfg" id="event-grid">
+          <button class="event-btn-cfg active" onclick="selectEvent(this,'Mariage')">
+            <span class="event-btn-icon">💍</span><span class="event-btn-label">Mariage</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Soirée Henné')">
+            <span class="event-btn-icon">🌿</span><span class="event-btn-label">Henné</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Baptême')">
+            <span class="event-btn-icon">🌸</span><span class="event-btn-label">Baptême</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Diplôme')">
+            <span class="event-btn-icon">🎓</span><span class="event-btn-label">Diplôme</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Anniversaire')">
+            <span class="event-btn-icon">🎂</span><span class="event-btn-label">Anniv.</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Événement Pro')">
+            <span class="event-btn-icon">🤝</span><span class="event-btn-label">Pro</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Fiançailles')">
+            <span class="event-btn-icon">💫</span><span class="event-btn-label">Fiançailles</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectEvent(this,'Autre')">
+            <span class="event-btn-icon">✨</span><span class="event-btn-label">Autre</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Invités -->
+      <div class="rv rv-d1">
+        <div class="config-block-title">Nombre d'invités</div>
+        <div class="slider-header">
+          <span class="slider-label">Combien d'invités attendez-vous ?</span>
+          <span class="slider-value" id="guests-val">50</span>
+        </div>
+        <div class="slider-track">
+          <div class="slider-fill" id="guests-fill" style="width:20%"></div>
+          <div class="slider-thumb" id="guests-thumb" style="left:20%"></div>
+          <input type="range" id="guests-slider" min="10" max="500" value="50" step="5" oninput="updateGuests(this.value)"/>
+        </div>
+        <div class="slider-labels"><span>10</span><span>500+</span></div>
+      </div>
+
+      <!-- Photos -->
+      <div class="rv rv-d2">
+        <div class="config-block-title">Photos par personne</div>
+        <div class="slider-header">
+          <span class="slider-label">Combien de photos par invité ?</span>
+          <span class="slider-value" id="photos-val">5</span>
+        </div>
+        <div class="slider-track">
+          <div class="slider-fill" id="photos-fill" style="width:17%"></div>
+          <div class="slider-thumb" id="photos-thumb" style="left:17%"></div>
+          <input type="range" id="photos-slider" min="1" max="30" value="5" step="1" oninput="updatePhotos(this.value)"/>
+        </div>
+        <div class="slider-labels"><span>1</span><span>30</span></div>
+      </div>
+
+      <!-- Durée -->
+      <div class="rv rv-d2">
+        <div class="config-block-title">Durée d'accès</div>
+        <div class="dur-grid">
+          <button class="event-btn-cfg active" onclick="selectDuration(this,3,'72h')">
+            <span class="event-btn-icon">⚡</span><span class="event-btn-label">72 heures</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectDuration(this,7,'7 jours')">
+            <span class="event-btn-icon">📅</span><span class="event-btn-label">7 jours</span>
+          </button>
+          <button class="event-btn-cfg" onclick="selectDuration(this,30,'30 jours')">
+            <span class="event-btn-icon">🗓</span><span class="event-btn-label">30 jours</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Thème -->
+      <div class="rv rv-d3">
+        <div class="config-block-title">Thème visuel</div>
+        <div class="themes-grid-cfg" id="themes-grid"></div>
+      </div>
+
+    </div>
+
+    <!-- Panneau prix -->
+    <div class="price-panel rv rv-d2">
+      <div class="price-event-tag" id="price-event-label">Mariage</div>
+      <div class="price-calli">Votre événement</div>
+      <div class="price-divider"></div>
+      <div class="price-lines">
+        <div class="price-line">
+          <span class="price-line-label">Formule de base</span>
+          <span class="price-line-val" id="pr-base">49 €</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label" id="pr-guests-label">Invités (50)</span>
+          <span class="price-line-val" id="pr-guests">Inclus</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label" id="pr-photos-label">Photos (5/pers.)</span>
+          <span class="price-line-val" id="pr-photos">Inclus</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label" id="pr-duration-label">Accès 72h</span>
+          <span class="price-line-val" id="pr-duration">Inclus</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label" id="pr-theme-label">Thème Or & Nuit</span>
+          <span class="price-line-val" id="pr-theme">Inclus</span>
+        </div>
+      </div>
+      <div class="price-divider"></div>
+      <div class="price-total-row">
+        <span class="price-total-label">Total</span>
+        <span class="price-total-val"><span class="price-total-currency">€</span><span id="price-total">49</span></span>
+      </div>
+      <p class="price-note">Paiement sécurisé · Livraison sous 48h · Satisfait ou remboursé</p>
+      <button class="btn-order" onclick="openModal()">Commander maintenant</button>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══ EXPÉRIENCE INVITÉ ══ -->
+<section class="section" id="guest-experience">
+  <div class="section-inner">
+    <p class="section-tag rv">L'expérience invité</p>
+    <h2 class="section-heading rv rv-d1">Ce que voient<br/><em>vos invités</em></h2>
+    <p class="section-sub rv rv-d2">En scannant le QR code, vos invités accèdent en 3 secondes à une interface élégante — sans app, sans compte, sans friction.</p>
+
+    <div class="guest-layout rv rv-d2">
+
+      <!-- Étapes cliquables -->
+      <div class="guest-steps">
+        <div class="gstep active" data-step="0" onclick="switchStep(0)">
+          <div class="gstep-num">1</div>
+          <div class="gstep-body">
+            <div class="gstep-title">Scan &amp; Bienvenue</div>
+            <p class="gstep-desc">Le QR code s'ouvre sur une page à vos couleurs — vos prénoms en calligraphie, la date de l'événement. Immersion immédiate.</p>
+          </div>
+        </div>
+        <div class="gstep" data-step="1" onclick="switchStep(1)">
+          <div class="gstep-num">2</div>
+          <div class="gstep-body">
+            <div class="gstep-title">Identification rapide</div>
+            <p class="gstep-desc">Prénom, nom et un code PIN à 4 chiffres. Le profil est mémorisé — l'invité est reconnu sur tous ses appareils sans se réidentifier.</p>
+          </div>
+        </div>
+        <div class="gstep" data-step="2" onclick="switchStep(2)">
+          <div class="gstep-num">3</div>
+          <div class="gstep-body">
+            <div class="gstep-title">Photo &amp; partage</div>
+            <p class="gstep-desc">Il prend une photo ou la choisit depuis sa galerie, ajoute un mot, et partage. Elle rejoint l'album commun en temps réel.</p>
+          </div>
+        </div>
+        <div class="gstep" data-step="3" onclick="switchStep(3)">
+          <div class="gstep-num">4</div>
+          <div class="gstep-body">
+            <div class="gstep-title">Son mini album</div>
+            <p class="gstep-desc">Il retrouve toutes ses photos partagées, peut les télécharger ou les supprimer. Jusqu'à 15 photos par invité selon votre formule.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+
+            <!-- Écran 0 : Hero / Bienvenue -->
+            <div class="pscreen active" id="pscreen-0">
+              <!-- Ligne déco haut -->
+              <div style="position:absolute;top:28px;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,#D4C8B8,transparent)"></div>
+              <!-- Ligne déco bas -->
+              <div style="position:absolute;bottom:14px;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,#D4C8B8,transparent)"></div>
+              <!-- Zellige coin -->
+              <svg style="position:absolute;top:-10px;left:-10px;width:100px;height:100px;opacity:.06" viewBox="0 0 100 100"><defs><pattern id="mq-p" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10 0L20 10L10 20L0 10Z" stroke="#9A7A45" stroke-width="0.5" fill="none"/></pattern></defs><rect width="100" height="100" fill="url(#mq-p)"/></svg>
+
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px">
+                <p style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.4em;text-transform:uppercase;color:#B8965A;margin-bottom:16px">Soirée Henné · 2026</p>
+                <!-- Arche -->
+                <div style="position:relative;display:inline-block;padding:16px 20px 12px;border:1px solid rgba(184,150,90,.25);border-bottom:none;border-radius:50% 50% 0 0/36% 36% 0 0;margin-bottom:2px">
+                  <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:20px;height:12px;border:1px solid rgba(184,150,90,.2);border-bottom:none;border-radius:50% 50% 0 0/100% 100% 0 0;background:#F5F0E8"></div>
+                  <p style="font-family:'Pinyon Script',cursive;font-size:28px;color:#2C2418;line-height:.95">Inès</p>
+                  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:200;font-size:11px;color:#B8965A;margin:3px 0">&amp;</p>
+                  <p style="font-family:'Pinyon Script',cursive;font-size:28px;color:#2C2418;line-height:.95">Karim</p>
+                </div>
+                <div style="height:1px;width:70%;background:rgba(184,150,90,.22);margin:0 auto"></div>
+                <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:9px;color:#8A7A68;margin-top:10px;letter-spacing:.12em">1er · Juillet · 2026</p>
+                <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
+                  <div style="width:28px;height:1px;background:#D4C8B8"></div>
+                  <div style="width:4px;height:4px;background:#B8965A;transform:rotate(45deg)"></div>
+                  <div style="width:28px;height:1px;background:#D4C8B8"></div>
+                </div>
+                <div style="margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:5px">
+                  <p style="font-family:'Cinzel',serif;font-size:5px;letter-spacing:.3em;text-transform:uppercase;color:#C4B8A8">Défiler</p>
+                  <div style="width:1px;height:18px;background:linear-gradient(to bottom,#B8965A,transparent)"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Écran 1 : Modal identité -->
+            <div class="pscreen" id="pscreen-1">
+              <div style="position:absolute;inset:0;background:rgba(245,240,232,.96)"></div>
+              <div style="position:relative;z-index:1;margin:auto;width:220px;background:#F5F0E8;border:1px solid rgba(184,150,90,.28);padding:20px 16px 18px;text-align:center">
+                <div style="position:absolute;top:0;left:14px;right:14px;bottom:16%;border:1px solid rgba(184,150,90,.1);border-bottom:none;border-radius:50% 50% 0 0/12% 12% 0 0;pointer-events:none"></div>
+                <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:200;font-size:15px;color:#2C2418;margin-bottom:3px;position:relative">Bienvenue</p>
+                <p style="font-size:7px;letter-spacing:.04em;color:#8A7A68;margin-bottom:14px;line-height:1.7;position:relative">Pour rejoindre l'album,<br/>présentez-vous.</p>
+                <div style="text-align:left;margin-bottom:10px">
+                  <p style="font-family:'Cinzel',serif;font-size:5px;letter-spacing:.35em;text-transform:uppercase;color:#B8965A;margin-bottom:4px">Prénom</p>
+                  <div style="border-bottom:1px solid rgba(184,150,90,.3);padding:4px 0;display:flex;align-items:center">
+                    <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;color:#2C2418">Fatima</span>
+                    <span style="display:inline-block;width:1px;height:11px;background:#B8965A;margin-left:1px;animation:blink-c 1s infinite"></span>
+                  </div>
+                </div>
+                <div style="text-align:left;margin-bottom:10px">
+                  <p style="font-family:'Cinzel',serif;font-size:5px;letter-spacing:.35em;text-transform:uppercase;color:#B8965A;margin-bottom:4px">Nom</p>
+                  <div style="border-bottom:1px solid rgba(184,150,90,.2);padding:4px 0">
+                    <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11px;color:#C4B8A8">Benali</span>
+                  </div>
+                </div>
+                <div style="text-align:left;margin-bottom:14px">
+                  <p style="font-family:'Cinzel',serif;font-size:5px;letter-spacing:.35em;text-transform:uppercase;color:#B8965A;margin-bottom:7px">Code PIN</p>
+                  <div style="display:flex;gap:7px;justify-content:center">
+                    <div style="width:30px;height:32px;border-bottom:1.5px solid rgba(184,150,90,.5);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:#2C2418">•</div>
+                    <div style="width:30px;height:32px;border-bottom:1.5px solid rgba(184,150,90,.5);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;color:#2C2418">•</div>
+                    <div style="width:30px;height:32px;border-bottom:1px solid rgba(184,150,90,.22)"></div>
+                    <div style="width:30px;height:32px;border-bottom:1px solid rgba(184,150,90,.22)"></div>
+                  </div>
+                </div>
+                <div style="border:1px solid rgba(184,150,90,.42);padding:10px;text-align:center;position:relative;overflow:hidden;cursor:pointer">
+                  <div style="position:absolute;inset:0;background:#B8965A;opacity:.12"></div>
+                  <span style="font-family:'Cinzel',serif;font-size:6px;letter-spacing:.3em;text-transform:uppercase;color:#B8965A;position:relative">Rejoindre l'album</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Écran 2 : Confirmation partage photo -->
+            <div class="pscreen" id="pscreen-2">
+              <!-- Overlay confirmation style henna.html -->
+              <div style="position:absolute;inset:0;background:rgba(245,240,232,.97);z-index:1"></div>
+              <div style="position:relative;z-index:2;display:flex;flex-direction:column;height:100%">
+                <!-- Aperçu photo -->
+                <div style="border-radius:46% 46% 0 0/14% 14% 0 0;overflow:hidden;flex-shrink:0;height:145px;background:linear-gradient(135deg,#d4c4a8,#e8d9c0);display:flex;align-items:center;justify-content:center;position:relative">
+                  <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(184,150,90,.15),rgba(196,137,106,.1))"></div>
+                  <!-- Silhouette photo stylisée -->
+                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,90,.4)" stroke-width="1"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                  <div style="position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(to top,rgba(44,36,24,.3),transparent)"></div>
+                </div>
+                <!-- Corps -->
+                <div style="padding:14px 16px 12px;flex:1;display:flex;flex-direction:column">
+                  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:13px;color:#2C2418;margin-bottom:2px">Partager cette photo ?</p>
+                  <p style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.25em;text-transform:uppercase;color:#B8965A;margin-bottom:12px">FATIMA BENALI</p>
+                  <!-- Champ description -->
+                  <div style="margin-bottom:12px">
+                    <p style="font-family:'Cinzel',serif;font-size:5px;letter-spacing:.35em;text-transform:uppercase;color:#B8965A;margin-bottom:5px">Description · facultatif</p>
+                    <div style="border-bottom:1px solid rgba(184,150,90,.22);padding-bottom:5px;display:flex;align-items:center;gap:3px">
+                      <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;color:#8A7A68">Un moment inoubliable…</span>
+                    </div>
+                    <p style="font-size:6px;color:#C4B8A8;text-align:right;margin-top:2px">22 / 100</p>
+                  </div>
+                  <!-- Barre de progression upload -->
+                  <div style="margin-bottom:12px">
+                    <p style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A7A68;margin-bottom:4px">Envoi en cours…</p>
+                    <div style="height:1px;background:#EAE0D0;position:relative">
+                      <div style="position:absolute;top:0;left:0;height:100%;width:68%;background:linear-gradient(90deg,#9A7A45,#B8965A)"></div>
+                    </div>
+                  </div>
+                  <!-- Boutons -->
+                  <div style="display:flex;gap:8px;margin-top:auto">
+                    <div style="flex:1;border:1px solid rgba(184,150,90,.22);padding:9px;text-align:center">
+                      <span style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.2em;text-transform:uppercase;color:#8A7A68">Annuler</span>
+                    </div>
+                    <div style="flex:2;border:1px solid rgba(184,150,90,.45);padding:9px;text-align:center;position:relative;overflow:hidden;background:rgba(184,150,90,.1)">
+                      <span style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.2em;text-transform:uppercase;color:#B8965A;position:relative">Partager</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Écran 3 : Mon album (après partage) -->
+            <div class="pscreen" id="pscreen-3">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid rgba(212,200,184,.5);margin-bottom:9px">
+                <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;color:#2C2418">Fatima Benali</span>
+                <span style="font-family:'Cinzel',serif;font-size:5px;letter-spacing:.18em;text-transform:uppercase;color:#C4B8A8">Modifier</span>
+              </div>
+              <!-- Compteur -->
+              <div style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.25em;text-transform:uppercase;color:#8A7A68;margin-bottom:5px">4 / 15 photos partagées</div>
+              <div style="height:1px;background:#EAE0D0;margin-bottom:12px;position:relative">
+                <div style="position:absolute;top:0;left:0;height:100%;width:27%;background:linear-gradient(90deg,#9A7A45,#B8965A)"></div>
+              </div>
+              <!-- Header "Mes photos" -->
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
+                <p style="font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.35em;text-transform:uppercase;color:#B8965A">Mes photos</p>
+                <div style="border:1px solid rgba(184,150,90,.3);padding:3px 7px;display:flex;align-items:center;gap:3px">
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#B8965A" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span style="font-family:'Cinzel',serif;font-size:4.5px;letter-spacing:.12em;text-transform:uppercase;color:#B8965A">ZIP</span>
+                </div>
+              </div>
+              <!-- Grille 3×2 avec la nouvelle photo en avant -->
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px">
+                <!-- Nouvelle photo avec badge -->
+                <div style="aspect-ratio:1;background:linear-gradient(135deg,#c4896a,#e8b090);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:14px;position:relative">
+                  🖼
+                  <div style="position:absolute;top:3px;right:3px;background:#B8965A;color:#F5F0E8;font-family:'Cinzel',serif;font-size:4px;letter-spacing:.08em;padding:1px 4px;border-radius:2px">Nouveau</div>
+                  <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(44,36,24,.45),transparent 60%);border-radius:2px"></div>
+                  <div style="position:absolute;bottom:3px;left:3px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:6px;color:rgba(245,240,232,.8)">Un moment…</div>
+                </div>
+                <div style="aspect-ratio:1;background:linear-gradient(135deg,rgba(184,150,90,.25),rgba(184,150,90,.1));border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div>
+                <div style="aspect-ratio:1;background:linear-gradient(135deg,rgba(196,137,106,.2),rgba(196,137,106,.08));border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div>
+                <div style="aspect-ratio:1;background:linear-gradient(135deg,rgba(184,150,90,.18),rgba(184,150,90,.07));border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div>
+                <div style="aspect-ratio:1;background:linear-gradient(135deg,rgba(155,125,80,.15),rgba(155,125,80,.06));border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:14px">🖼</div>
+                <!-- Slot vide -->
+                <div style="aspect-ratio:1;border:1px dashed rgba(184,150,90,.2);border-radius:2px;display:flex;align-items:center;justify-content:center">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(184,150,90,.3)" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+              </div>
+              <!-- Toast succès -->
+              <div style="background:#5A8A6A;color:#F5F0E8;padding:8px 10px;font-family:'Cinzel',serif;font-size:5.5px;letter-spacing:.18em;text-transform:uppercase;text-align:center;border-radius:2px;display:flex;align-items:center;justify-content:center;gap:5px">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Photo partagée — merci !
+              </div>
+              <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:7.5px;color:#8A7A68;text-align:center;margin-top:8px;line-height:1.65">L'album se construit<br/>en temps réel.</p>
+            </div>
+
+          </div><!-- /phone-screen -->
+        </div><!-- /phone -->
+      </div><!-- /phone-wrap -->
+
+    </div>
+  </div>
+</section>
+
+<div class="inv-bar"></div>
+
+<div class="sep"></div>
+
+<!-- ══ WALL OF LOVE ══ -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-tag rv">Ils nous font confiance</p>
+    <h2 class="section-heading rv rv-d1">Ce qu'ils en<br/><em>ont dit</em></h2>
+  </div>
+  <div style="overflow:hidden;margin-top:0">
+    <div class="wol-track" id="wol-track"></div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══ GALERIE THÈMES ══ -->
+<section class="section alt" id="themes">
+  <div class="section-inner">
+    <p class="section-tag rv">Nos thèmes</p>
+    <h2 class="section-heading rv rv-d1">Une esthétique<br/><em>pour chaque célébration</em></h2>
+  </div>
+  <div class="section-inner">
+    <div class="themes-showcase rv rv-d2">
+
+      <!-- Mariage — Or & Nuit -->
+      <div class="showcase-item" onclick="openTLB(this)">
+        <div class="showcase-bg" style="background:#0f0a04;height:100%;display:flex;align-items:center;justify-content:center;padding:12px">
+          <svg viewBox="0 0 640 400" width="100%" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,.6))">
+            <!-- Fenêtre -->
+            <rect width="640" height="400" rx="10" fill="#0f0a04"/>
+            <!-- Chrome bar -->
+            <rect width="640" height="36" rx="10" fill="#1e150a"/>
+            <rect y="26" width="640" height="10" fill="#1e150a"/>
+            <!-- Dots -->
+            <circle cx="18" cy="18" r="5" fill="#c9a96e" opacity=".5"/>
+            <circle cx="32" cy="18" r="5" fill="#c9a96e" opacity=".3"/>
+            <circle cx="46" cy="18" r="5" fill="#c9a96e" opacity=".2"/>
+            <!-- Tab actif -->
+            <rect x="60" y="7" width="160" height="22" rx="4" fill="#130d06"/>
+            <text x="140" y="22" text-anchor="middle" font-size="8" fill="#c9a96e" opacity=".7" font-family="sans-serif">Memori — Mariage</text>
+            <!-- URL -->
+            <rect x="234" y="10" width="210" height="16" rx="8" fill="#c9a96e" fill-opacity=".07"/>
+            <text x="339" y="21" text-anchor="middle" font-size="7" fill="#c9a96e" opacity=".45" font-family="monospace">memori.fr/album/mariage</text>
+            <!-- Contenu -->
+            <rect y="36" width="640" height="364" fill="#130d06"/>
+            <!-- Sidebar -->
+            <rect y="36" width="188" height="364" fill="#100b05"/>
+            <line x1="188" y1="36" x2="188" y2="400" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="94" y="72" text-anchor="middle" font-size="7" fill="#c9a96e" opacity=".45" letter-spacing="3" font-family="sans-serif">MARIAGE</text>
+            <line x1="24" y1="78" x2="164" y2="78" stroke="#c9a96e" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="94" y="112" text-anchor="middle" font-size="17" fill="#c9a96e" font-family="Georgia,serif" font-style="italic">Imane &amp; Yassine</text>
+            <text x="94" y="130" text-anchor="middle" font-size="7" fill="#c9a96e" opacity=".45" letter-spacing="2" font-family="sans-serif">14 · JUIN · 2026</text>
+            <text x="94" y="148" text-anchor="middle" font-size="10" fill="#c9a96e" opacity=".25" font-family="serif">✦ ─── ✦</text>
+            <text x="94" y="186" text-anchor="middle" font-size="26" fill="#c9a96e" font-family="Georgia,serif">248</text>
+            <text x="94" y="202" text-anchor="middle" font-size="6" fill="#c9a96e" opacity=".4" letter-spacing="2" font-family="sans-serif">PHOTOS PARTAGÉES</text>
+            <rect x="67" y="216" width="54" height="54" rx="3" fill="#c9a96e" fill-opacity=".05" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".3"/>
+            <text x="94" y="249" text-anchor="middle" font-size="22" fill="#c9a96e" opacity=".2">▦</text>
+            <text x="94" y="281" text-anchor="middle" font-size="6.5" fill="#c9a96e" opacity=".35" font-family="monospace">QR CODE</text>
+            <rect x="20" y="298" width="148" height="28" rx="4" fill="#c9a96e" fill-opacity=".05" stroke="#c9a96e" stroke-width=".3" stroke-opacity=".2"/>
+            <circle cx="32" cy="312" r="4" fill="#c9a96e" opacity=".35"/><circle cx="41" cy="312" r="4" fill="#c9a96e" opacity=".22"/><circle cx="50" cy="312" r="4" fill="#c9a96e" opacity=".14"/>
+            <text x="62" y="316" font-size="6.5" fill="#c9a96e" opacity=".45" font-family="sans-serif">12 invités actifs</text>
+            <!-- Grille photos 3x2 -->
+            <rect x="198" y="44" width="138" height="154" rx="3" fill="#c9a96e" fill-opacity=".06" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="344" y="44" width="138" height="154" rx="3" fill="#c9a96e" fill-opacity=".06" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="490" y="44" width="138" height="154" rx="3" fill="#c9a96e" fill-opacity=".06" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="198" y="206" width="138" height="154" rx="3" fill="#c9a96e" fill-opacity=".06" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="344" y="206" width="138" height="154" rx="3" fill="#c9a96e" fill-opacity=".06" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="490" y="206" width="138" height="154" rx="3" fill="#c9a96e" fill-opacity=".06" stroke="#c9a96e" stroke-width=".5" stroke-opacity=".25"/>
+            <text x="267" y="127" text-anchor="middle" font-size="28" fill="#c9a96e" opacity=".15">🖼</text>
+            <text x="413" y="127" text-anchor="middle" font-size="28" fill="#c9a96e" opacity=".15">🖼</text>
+            <text x="559" y="127" text-anchor="middle" font-size="28" fill="#c9a96e" opacity=".15">🖼</text>
+            <text x="267" y="289" text-anchor="middle" font-size="28" fill="#c9a96e" opacity=".15">🖼</text>
+            <text x="413" y="289" text-anchor="middle" font-size="28" fill="#c9a96e" opacity=".15">🖼</text>
+            <text x="559" y="289" text-anchor="middle" font-size="28" fill="#c9a96e" opacity=".15">🖼</text>
+          </svg>
+        </div>
+        <div class="showcase-info"><div class="showcase-event">Mariage</div><div class="showcase-name">Or &amp; Nuit</div><div class="showcase-desc">Luxe marocain contemporain</div></div>
+      </div>
+
+      <!-- Henné — Terracotta -->
+      <div class="showcase-item" onclick="openTLB(this)">
+        <div class="showcase-bg" style="background:#1e0c04;height:100%;display:flex;align-items:center;justify-content:center;padding:12px">
+          <svg viewBox="0 0 640 400" width="100%" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,.6))">
+            <rect width="640" height="400" rx="10" fill="#1e0c04"/>
+            <rect width="640" height="36" rx="10" fill="#2a1208"/>
+            <rect y="26" width="640" height="10" fill="#2a1208"/>
+            <circle cx="18" cy="18" r="5" fill="#e8a060" opacity=".5"/>
+            <circle cx="32" cy="18" r="5" fill="#e8a060" opacity=".3"/>
+            <circle cx="46" cy="18" r="5" fill="#e8a060" opacity=".2"/>
+            <rect x="60" y="7" width="160" height="22" rx="4" fill="#180904"/>
+            <text x="140" y="22" text-anchor="middle" font-size="8" fill="#e8a060" opacity=".7" font-family="sans-serif">Memori — Henné</text>
+            <rect x="234" y="10" width="210" height="16" rx="8" fill="#e8a060" fill-opacity=".07"/>
+            <text x="339" y="21" text-anchor="middle" font-size="7" fill="#e8a060" opacity=".45" font-family="monospace">memori.fr/album/henna</text>
+            <rect y="36" width="640" height="364" fill="#180904"/>
+            <rect y="36" width="188" height="364" fill="#160805"/>
+            <line x1="188" y1="36" x2="188" y2="400" stroke="#e8a060" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="94" y="72" text-anchor="middle" font-size="7" fill="#e8a060" opacity=".45" letter-spacing="3" font-family="sans-serif">SOIRÉE HENNÉ</text>
+            <line x1="24" y1="78" x2="164" y2="78" stroke="#e8a060" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="94" y="112" text-anchor="middle" font-size="16" fill="#e8a060" font-family="Georgia,serif" font-style="italic">Soirée de Nadia</text>
+            <text x="94" y="130" text-anchor="middle" font-size="7" fill="#e8a060" opacity=".45" letter-spacing="2" font-family="sans-serif">8 · MARS · 2026</text>
+            <text x="94" y="148" text-anchor="middle" font-size="10" fill="#e8a060" opacity=".25" font-family="serif">❧ ─── ❧</text>
+            <text x="94" y="186" text-anchor="middle" font-size="26" fill="#e8a060" font-family="Georgia,serif">134</text>
+            <text x="94" y="202" text-anchor="middle" font-size="6" fill="#e8a060" opacity=".4" letter-spacing="2" font-family="sans-serif">PHOTOS PARTAGÉES</text>
+            <rect x="67" y="216" width="54" height="54" rx="3" fill="#e8a060" fill-opacity=".05" stroke="#e8a060" stroke-width=".5" stroke-opacity=".3"/>
+            <text x="94" y="249" text-anchor="middle" font-size="22" fill="#e8a060" opacity=".2">▦</text>
+            <text x="94" y="281" text-anchor="middle" font-size="6.5" fill="#e8a060" opacity=".35" font-family="monospace">QR CODE</text>
+            <rect x="20" y="298" width="148" height="28" rx="4" fill="#e8a060" fill-opacity=".05" stroke="#e8a060" stroke-width=".3" stroke-opacity=".2"/>
+            <circle cx="32" cy="312" r="4" fill="#e8a060" opacity=".35"/><circle cx="41" cy="312" r="4" fill="#e8a060" opacity=".22"/><circle cx="50" cy="312" r="4" fill="#e8a060" opacity=".14"/>
+            <text x="62" y="316" font-size="6.5" fill="#e8a060" opacity=".45" font-family="sans-serif">8 invités actifs</text>
+            <rect x="198" y="44" width="138" height="154" rx="3" fill="#e8a060" fill-opacity=".06" stroke="#e8a060" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="344" y="44" width="138" height="154" rx="3" fill="#e8a060" fill-opacity=".06" stroke="#e8a060" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="490" y="44" width="138" height="154" rx="3" fill="#e8a060" fill-opacity=".06" stroke="#e8a060" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="198" y="206" width="138" height="154" rx="3" fill="#e8a060" fill-opacity=".06" stroke="#e8a060" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="344" y="206" width="138" height="154" rx="3" fill="#e8a060" fill-opacity=".06" stroke="#e8a060" stroke-width=".5" stroke-opacity=".25"/>
+            <rect x="490" y="206" width="138" height="154" rx="3" fill="#e8a060" fill-opacity=".06" stroke="#e8a060" stroke-width=".5" stroke-opacity=".25"/>
+            <text x="267" y="127" text-anchor="middle" font-size="28" fill="#e8a060" opacity=".15">🖼</text>
+            <text x="413" y="127" text-anchor="middle" font-size="28" fill="#e8a060" opacity=".15">🖼</text>
+            <text x="559" y="127" text-anchor="middle" font-size="28" fill="#e8a060" opacity=".15">🖼</text>
+            <text x="267" y="289" text-anchor="middle" font-size="28" fill="#e8a060" opacity=".15">🖼</text>
+            <text x="413" y="289" text-anchor="middle" font-size="28" fill="#e8a060" opacity=".15">🖼</text>
+            <text x="559" y="289" text-anchor="middle" font-size="28" fill="#e8a060" opacity=".15">🖼</text>
+          </svg>
+        </div>
+        <div class="showcase-info"><div class="showcase-event">Henné</div><div class="showcase-name">Terracotta &amp; Cuivre</div><div class="showcase-desc">Chaleur des terres du Maghreb</div></div>
+      </div>
+
+      <!-- Baptême — Crème -->
+      <div class="showcase-item" onclick="openTLB(this)">
+        <div class="showcase-bg" style="background:#f0ece4;height:100%;display:flex;align-items:center;justify-content:center;padding:12px">
+          <svg viewBox="0 0 640 400" width="100%" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,.18))">
+            <rect width="640" height="400" rx="10" fill="#f0ece4"/>
+            <rect width="640" height="36" rx="10" fill="#e0d8cc"/>
+            <rect y="26" width="640" height="10" fill="#e0d8cc"/>
+            <circle cx="18" cy="18" r="5" fill="#8a6840" opacity=".5"/>
+            <circle cx="32" cy="18" r="5" fill="#8a6840" opacity=".3"/>
+            <circle cx="46" cy="18" r="5" fill="#8a6840" opacity=".2"/>
+            <rect x="60" y="7" width="160" height="22" rx="4" fill="#f8f4ee"/>
+            <text x="140" y="22" text-anchor="middle" font-size="8" fill="#8a6840" opacity=".7" font-family="sans-serif">Memori — Baptême</text>
+            <rect x="234" y="10" width="210" height="16" rx="8" fill="#8a6840" fill-opacity=".07"/>
+            <text x="339" y="21" text-anchor="middle" font-size="7" fill="#8a6840" opacity=".45" font-family="monospace">memori.fr/album/bapteme</text>
+            <rect y="36" width="640" height="364" fill="#f8f4ee"/>
+            <rect y="36" width="188" height="364" fill="#f0ece4"/>
+            <line x1="188" y1="36" x2="188" y2="400" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="94" y="72" text-anchor="middle" font-size="7" fill="#8a6840" opacity=".45" letter-spacing="3" font-family="sans-serif">BAPTÊME</text>
+            <line x1="24" y1="78" x2="164" y2="78" stroke="#8a6840" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="94" y="112" text-anchor="middle" font-size="17" fill="#8a6840" font-family="Georgia,serif" font-style="italic">Baptême de Lucas</text>
+            <text x="94" y="130" text-anchor="middle" font-size="7" fill="#8a6840" opacity=".45" letter-spacing="2" font-family="sans-serif">22 · AVRIL · 2026</text>
+            <text x="94" y="148" text-anchor="middle" font-size="10" fill="#8a6840" opacity=".25" font-family="serif">✿ ─── ✿</text>
+            <text x="94" y="186" text-anchor="middle" font-size="26" fill="#8a6840" font-family="Georgia,serif">87</text>
+            <text x="94" y="202" text-anchor="middle" font-size="6" fill="#8a6840" opacity=".4" letter-spacing="2" font-family="sans-serif">PHOTOS PARTAGÉES</text>
+            <rect x="67" y="216" width="54" height="54" rx="3" fill="#8a6840" fill-opacity=".05" stroke="#8a6840" stroke-width=".5" stroke-opacity=".3"/>
+            <text x="94" y="249" text-anchor="middle" font-size="22" fill="#8a6840" opacity=".2">▦</text>
+            <text x="94" y="281" text-anchor="middle" font-size="6.5" fill="#8a6840" opacity=".35" font-family="monospace">QR CODE</text>
+            <rect x="20" y="298" width="148" height="28" rx="4" fill="#8a6840" fill-opacity=".05" stroke="#8a6840" stroke-width=".3" stroke-opacity=".2"/>
+            <circle cx="32" cy="312" r="4" fill="#8a6840" opacity=".35"/><circle cx="41" cy="312" r="4" fill="#8a6840" opacity=".22"/><circle cx="50" cy="312" r="4" fill="#8a6840" opacity=".14"/>
+            <text x="62" y="316" font-size="6.5" fill="#8a6840" opacity=".5" font-family="sans-serif">5 invités actifs</text>
+            <rect x="198" y="44" width="138" height="154" rx="3" fill="#8a6840" fill-opacity=".06" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="44" width="138" height="154" rx="3" fill="#8a6840" fill-opacity=".06" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="44" width="138" height="154" rx="3" fill="#8a6840" fill-opacity=".06" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="198" y="206" width="138" height="154" rx="3" fill="#8a6840" fill-opacity=".06" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="206" width="138" height="154" rx="3" fill="#8a6840" fill-opacity=".06" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="206" width="138" height="154" rx="3" fill="#8a6840" fill-opacity=".06" stroke="#8a6840" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="267" y="127" text-anchor="middle" font-size="28" fill="#8a6840" opacity=".15">🖼</text>
+            <text x="413" y="127" text-anchor="middle" font-size="28" fill="#8a6840" opacity=".15">🖼</text>
+            <text x="559" y="127" text-anchor="middle" font-size="28" fill="#8a6840" opacity=".15">🖼</text>
+            <text x="267" y="289" text-anchor="middle" font-size="28" fill="#8a6840" opacity=".15">🖼</text>
+            <text x="413" y="289" text-anchor="middle" font-size="28" fill="#8a6840" opacity=".15">🖼</text>
+            <text x="559" y="289" text-anchor="middle" font-size="28" fill="#8a6840" opacity=".15">🖼</text>
+          </svg>
+        </div>
+        <div class="showcase-info"><div class="showcase-event">Baptême</div><div class="showcase-name">Crème &amp; Tadelakt</div><div class="showcase-desc">Douceur et sérénité</div></div>
+      </div>
+
+      <!-- Anniversaire — Étoilé -->
+      <div class="showcase-item" onclick="openTLB(this)">
+        <div class="showcase-bg" style="background:#0a0916;height:100%;display:flex;align-items:center;justify-content:center;padding:12px">
+          <svg viewBox="0 0 640 400" width="100%" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,.6))">
+            <rect width="640" height="400" rx="10" fill="#0a0916"/>
+            <rect width="640" height="36" rx="10" fill="#16142a"/>
+            <rect y="26" width="640" height="10" fill="#16142a"/>
+            <circle cx="18" cy="18" r="5" fill="#c0b0f0" opacity=".5"/>
+            <circle cx="32" cy="18" r="5" fill="#c0b0f0" opacity=".3"/>
+            <circle cx="46" cy="18" r="5" fill="#c0b0f0" opacity=".2"/>
+            <rect x="60" y="7" width="180" height="22" rx="4" fill="#0a0916"/>
+            <text x="150" y="22" text-anchor="middle" font-size="8" fill="#c0b0f0" opacity=".7" font-family="sans-serif">Memori — Anniversaire</text>
+            <rect x="254" y="10" width="210" height="16" rx="8" fill="#c0b0f0" fill-opacity=".07"/>
+            <text x="359" y="21" text-anchor="middle" font-size="7" fill="#c0b0f0" opacity=".45" font-family="monospace">memori.fr/album/anniversaire</text>
+            <rect y="36" width="640" height="364" fill="#0a0916"/>
+            <!-- étoiles -->
+            <circle cx="220" cy="70" r="1" fill="#f0e8c0" opacity=".5"/><circle cx="350" cy="55" r=".8" fill="#f0e8c0" opacity=".4"/><circle cx="500" cy="80" r="1" fill="#f0e8c0" opacity=".6"/><circle cx="580" cy="50" r=".7" fill="#f0e8c0" opacity=".5"/>
+            <rect y="36" width="188" height="364" fill="#0c0b1a"/>
+            <line x1="188" y1="36" x2="188" y2="400" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="94" y="72" text-anchor="middle" font-size="7" fill="#c0b0f0" opacity=".45" letter-spacing="3" font-family="sans-serif">ANNIVERSAIRE</text>
+            <line x1="24" y1="78" x2="164" y2="78" stroke="#c0b0f0" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="94" y="112" text-anchor="middle" font-size="16" fill="#c0b0f0" font-family="Georgia,serif" font-style="italic">30 ans de Camille</text>
+            <text x="94" y="130" text-anchor="middle" font-size="7" fill="#c0b0f0" opacity=".45" letter-spacing="2" font-family="sans-serif">5 · MAI · 2026</text>
+            <text x="94" y="148" text-anchor="middle" font-size="10" fill="#c0b0f0" opacity=".25" font-family="serif">★ ─── ★</text>
+            <text x="94" y="186" text-anchor="middle" font-size="26" fill="#c0b0f0" font-family="Georgia,serif">312</text>
+            <text x="94" y="202" text-anchor="middle" font-size="6" fill="#c0b0f0" opacity=".4" letter-spacing="2" font-family="sans-serif">PHOTOS PARTAGÉES</text>
+            <rect x="67" y="216" width="54" height="54" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".3"/>
+            <text x="94" y="249" text-anchor="middle" font-size="22" fill="#c0b0f0" opacity=".2">▦</text>
+            <text x="94" y="281" text-anchor="middle" font-size="6.5" fill="#c0b0f0" opacity=".35" font-family="monospace">QR CODE</text>
+            <rect x="20" y="298" width="148" height="28" rx="4" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".3" stroke-opacity=".2"/>
+            <circle cx="32" cy="312" r="4" fill="#c0b0f0" opacity=".35"/><circle cx="41" cy="312" r="4" fill="#c0b0f0" opacity=".22"/><circle cx="50" cy="312" r="4" fill="#c0b0f0" opacity=".14"/>
+            <text x="62" y="316" font-size="6.5" fill="#c0b0f0" opacity=".45" font-family="sans-serif">18 invités actifs</text>
+            <rect x="198" y="44" width="138" height="154" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="44" width="138" height="154" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="44" width="138" height="154" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="198" y="206" width="138" height="154" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="206" width="138" height="154" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="206" width="138" height="154" rx="3" fill="#c0b0f0" fill-opacity=".05" stroke="#c0b0f0" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="267" y="127" text-anchor="middle" font-size="28" fill="#c0b0f0" opacity=".13">🖼</text>
+            <text x="413" y="127" text-anchor="middle" font-size="28" fill="#c0b0f0" opacity=".13">🖼</text>
+            <text x="559" y="127" text-anchor="middle" font-size="28" fill="#c0b0f0" opacity=".13">🖼</text>
+            <text x="267" y="289" text-anchor="middle" font-size="28" fill="#c0b0f0" opacity=".13">🖼</text>
+            <text x="413" y="289" text-anchor="middle" font-size="28" fill="#c0b0f0" opacity=".13">🖼</text>
+            <text x="559" y="289" text-anchor="middle" font-size="28" fill="#c0b0f0" opacity=".13">🖼</text>
+          </svg>
+        </div>
+        <div class="showcase-info"><div class="showcase-event">Anniversaire</div><div class="showcase-name">Ciel Étoilé</div><div class="showcase-desc">Romantique et poétique</div></div>
+      </div>
+
+      <!-- Diplôme — Bleu Royal -->
+      <div class="showcase-item" onclick="openTLB(this)">
+        <div class="showcase-bg" style="background:#060e1e;height:100%;display:flex;align-items:center;justify-content:center;padding:12px">
+          <svg viewBox="0 0 640 400" width="100%" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,.6))">
+            <rect width="640" height="400" rx="10" fill="#060e1e"/>
+            <rect width="640" height="36" rx="10" fill="#0e1e38"/>
+            <rect y="26" width="640" height="10" fill="#0e1e38"/>
+            <circle cx="18" cy="18" r="5" fill="#80aae0" opacity=".5"/>
+            <circle cx="32" cy="18" r="5" fill="#80aae0" opacity=".3"/>
+            <circle cx="46" cy="18" r="5" fill="#80aae0" opacity=".2"/>
+            <rect x="60" y="7" width="160" height="22" rx="4" fill="#060e1e"/>
+            <text x="140" y="22" text-anchor="middle" font-size="8" fill="#80aae0" opacity=".7" font-family="sans-serif">Memori — Diplôme</text>
+            <rect x="234" y="10" width="210" height="16" rx="8" fill="#80aae0" fill-opacity=".07"/>
+            <text x="339" y="21" text-anchor="middle" font-size="7" fill="#80aae0" opacity=".45" font-family="monospace">memori.fr/album/diplome</text>
+            <rect y="36" width="640" height="364" fill="#060e1e"/>
+            <rect y="36" width="188" height="364" fill="#07111e"/>
+            <line x1="188" y1="36" x2="188" y2="400" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="94" y="72" text-anchor="middle" font-size="7" fill="#80aae0" opacity=".45" letter-spacing="3" font-family="sans-serif">DIPLÔME · PRO</text>
+            <line x1="24" y1="78" x2="164" y2="78" stroke="#80aae0" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="94" y="108" text-anchor="middle" font-size="15" fill="#80aae0" font-family="Georgia,serif" font-style="italic">Promotion 2026</text>
+            <text x="94" y="124" text-anchor="middle" font-size="8" fill="#80aae0" opacity=".55" font-family="sans-serif">CESI École d'Ingénieurs</text>
+            <text x="94" y="142" text-anchor="middle" font-size="7" fill="#80aae0" opacity=".45" letter-spacing="2" font-family="sans-serif">JUIN · 2026</text>
+            <text x="94" y="160" text-anchor="middle" font-size="14" fill="#80aae0" opacity=".3">🎓</text>
+            <text x="94" y="196" text-anchor="middle" font-size="26" fill="#80aae0" font-family="Georgia,serif">156</text>
+            <text x="94" y="212" text-anchor="middle" font-size="6" fill="#80aae0" opacity=".4" letter-spacing="2" font-family="sans-serif">PHOTOS PARTAGÉES</text>
+            <rect x="67" y="226" width="54" height="54" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".3"/>
+            <text x="94" y="259" text-anchor="middle" font-size="22" fill="#80aae0" opacity=".2">▦</text>
+            <text x="94" y="291" text-anchor="middle" font-size="6.5" fill="#80aae0" opacity=".35" font-family="monospace">QR CODE</text>
+            <rect x="20" y="308" width="148" height="28" rx="4" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".3" stroke-opacity=".2"/>
+            <circle cx="32" cy="322" r="4" fill="#80aae0" opacity=".35"/><circle cx="41" cy="322" r="4" fill="#80aae0" opacity=".22"/><circle cx="50" cy="322" r="4" fill="#80aae0" opacity=".14"/>
+            <text x="62" y="326" font-size="6.5" fill="#80aae0" opacity=".45" font-family="sans-serif">24 invités actifs</text>
+            <rect x="198" y="44" width="138" height="154" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="44" width="138" height="154" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="44" width="138" height="154" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="198" y="206" width="138" height="154" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="206" width="138" height="154" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="206" width="138" height="154" rx="3" fill="#80aae0" fill-opacity=".05" stroke="#80aae0" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="267" y="127" text-anchor="middle" font-size="28" fill="#80aae0" opacity=".13">🖼</text>
+            <text x="413" y="127" text-anchor="middle" font-size="28" fill="#80aae0" opacity=".13">🖼</text>
+            <text x="559" y="127" text-anchor="middle" font-size="28" fill="#80aae0" opacity=".13">🖼</text>
+            <text x="267" y="289" text-anchor="middle" font-size="28" fill="#80aae0" opacity=".13">🖼</text>
+            <text x="413" y="289" text-anchor="middle" font-size="28" fill="#80aae0" opacity=".13">🖼</text>
+            <text x="559" y="289" text-anchor="middle" font-size="28" fill="#80aae0" opacity=".13">🖼</text>
+          </svg>
+        </div>
+        <div class="showcase-info"><div class="showcase-event">Diplôme · Pro</div><div class="showcase-name">Bleu Nuit Royal</div><div class="showcase-desc">Sophistication et profondeur</div></div>
+      </div>
+
+      <!-- Pro — Ardoise -->
+      <div class="showcase-item" onclick="openTLB(this)">
+        <div class="showcase-bg" style="background:#0c1420;height:100%;display:flex;align-items:center;justify-content:center;padding:12px">
+          <svg viewBox="0 0 640 400" width="100%" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,.6))">
+            <rect width="640" height="400" rx="10" fill="#0c1420"/>
+            <rect width="640" height="36" rx="10" fill="#182030"/>
+            <rect y="26" width="640" height="10" fill="#182030"/>
+            <circle cx="18" cy="18" r="5" fill="#80c0a0" opacity=".5"/>
+            <circle cx="32" cy="18" r="5" fill="#80c0a0" opacity=".3"/>
+            <circle cx="46" cy="18" r="5" fill="#80c0a0" opacity=".2"/>
+            <rect x="60" y="7" width="170" height="22" rx="4" fill="#0c1420"/>
+            <text x="145" y="22" text-anchor="middle" font-size="8" fill="#80c0a0" opacity=".7" font-family="sans-serif">Memori — Événement Pro</text>
+            <rect x="244" y="10" width="210" height="16" rx="8" fill="#80c0a0" fill-opacity=".07"/>
+            <text x="349" y="21" text-anchor="middle" font-size="7" fill="#80c0a0" opacity=".45" font-family="monospace">memori.fr/album/conference</text>
+            <rect y="36" width="640" height="364" fill="#0c1420"/>
+            <rect y="36" width="188" height="364" fill="#0e1620"/>
+            <line x1="188" y1="36" x2="188" y2="400" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="94" y="72" text-anchor="middle" font-size="7" fill="#80c0a0" opacity=".45" letter-spacing="3" font-family="sans-serif">ÉVÉNEMENT PRO</text>
+            <line x1="24" y1="78" x2="164" y2="78" stroke="#80c0a0" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="94" y="110" text-anchor="middle" font-size="15" fill="#80c0a0" font-family="Georgia,serif" font-style="italic">Conférence Annuelle</text>
+            <text x="94" y="128" text-anchor="middle" font-size="7" fill="#80c0a0" opacity=".45" letter-spacing="2" font-family="sans-serif">PARIS · 2026</text>
+            <text x="94" y="146" text-anchor="middle" font-size="10" fill="#80c0a0" opacity=".25">🤝</text>
+            <!-- Stats -->
+            <rect x="20" y="158" width="66" height="42" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="53" y="173" text-anchor="middle" font-size="6" fill="#80c0a0" opacity=".4" font-family="sans-serif">INVITÉS</text>
+            <text x="53" y="190" text-anchor="middle" font-size="14" fill="#80c0a0" font-family="Georgia,serif">248</text>
+            <rect x="94" y="158" width="74" height="42" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".4" stroke-opacity=".2"/>
+            <text x="131" y="173" text-anchor="middle" font-size="6" fill="#80c0a0" opacity=".4" font-family="sans-serif">PHOTOS</text>
+            <text x="131" y="190" text-anchor="middle" font-size="14" fill="#80c0a0" font-family="Georgia,serif">1240</text>
+            <rect x="67" y="214" width="54" height="54" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".3"/>
+            <text x="94" y="247" text-anchor="middle" font-size="22" fill="#80c0a0" opacity=".2">▦</text>
+            <text x="94" y="279" text-anchor="middle" font-size="6.5" fill="#80c0a0" opacity=".35" font-family="monospace">QR CODE</text>
+            <rect x="20" y="296" width="148" height="28" rx="4" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".3" stroke-opacity=".2"/>
+            <circle cx="32" cy="310" r="4" fill="#80c0a0" opacity=".35"/><circle cx="41" cy="310" r="4" fill="#80c0a0" opacity=".22"/><circle cx="50" cy="310" r="4" fill="#80c0a0" opacity=".14"/>
+            <text x="62" y="314" font-size="6.5" fill="#80c0a0" opacity=".45" font-family="sans-serif">42 invités actifs</text>
+            <rect x="198" y="44" width="138" height="154" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="44" width="138" height="154" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="44" width="138" height="154" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="198" y="206" width="138" height="154" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="344" y="206" width="138" height="154" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <rect x="490" y="206" width="138" height="154" rx="3" fill="#80c0a0" fill-opacity=".05" stroke="#80c0a0" stroke-width=".5" stroke-opacity=".2"/>
+            <text x="267" y="127" text-anchor="middle" font-size="28" fill="#80c0a0" opacity=".13">🖼</text>
+            <text x="413" y="127" text-anchor="middle" font-size="28" fill="#80c0a0" opacity=".13">🖼</text>
+            <text x="559" y="127" text-anchor="middle" font-size="28" fill="#80c0a0" opacity=".13">🖼</text>
+            <text x="267" y="289" text-anchor="middle" font-size="28" fill="#80c0a0" opacity=".13">🖼</text>
+            <text x="413" y="289" text-anchor="middle" font-size="28" fill="#80c0a0" opacity=".13">🖼</text>
+            <text x="559" y="289" text-anchor="middle" font-size="28" fill="#80c0a0" opacity=".13">🖼</text>
+          </svg>
+        </div>
+        <div class="showcase-info"><div class="showcase-event">Événement Pro</div><div class="showcase-name">Ardoise &amp; Menthe</div><div class="showcase-desc">Dashboard élégant et pro</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ══ CTA FINAL ══ -->
+<section class="section-cta">
+  <div style="position:relative;z-index:1">
+    <span class="calli rv">Votre soirée,</span>
+    <h2 class="cta-title rv rv-d1">immortalisée pour toujours</h2>
+    <p class="cta-sub rv rv-d2">De la soirée henné au mariage, du baptême au diplôme.<br/>Chaque moment mérite d'être partagé.</p>
+    <div class="cta-btns rv rv-d3">
+      <button class="btn-cta-light" onclick="document.getElementById('configurator').scrollIntoView({behavior:'smooth'})">Configurer mon album</button>
+      <button class="btn-cta-outline" onclick="openModal()">Prendre contact</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-logo">Memori</div>
+  <div class="footer-links">
+    <a href="#" class="footer-link">Mentions légales</a>
+    <a href="#" class="footer-link">CGV</a>
+    <a href="#" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Memori · Tous droits réservés</div>
+</footer>
+
+<!-- ══ THEME LIGHTBOX ══ -->
+<div class="theme-lb" id="theme-lb">
+  <div class="theme-lb-box" id="theme-lb-box">
+    <button class="theme-lb-close" onclick="closeTLB()">✕</button>
+    <div class="theme-lb-mockup" id="tlb-mockup"></div>
+    <div class="theme-lb-panel" id="tlb-panel"></div>
+  </div>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-form-wrap">
+      <h2 class="modal-title">Votre commande</h2>
+      <p class="modal-sub">Remplissez le formulaire ci-dessous. Nous validons votre commande sous 24h et vous livrons votre QR code sous 48h.</p>
+      <div class="modal-summary" id="modal-summary"></div>
+      <form id="order-form" onsubmit="submitOrder(event)">
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Prénom *</label>
+            <input type="text" class="form-input" placeholder="Sophie" required/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Nom *</label>
+            <input type="text" class="form-input" placeholder="Martin" required/>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email *</label>
+          <input type="email" class="form-input" placeholder="sophie@email.com" required/>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Téléphone</label>
+          <input type="tel" class="form-input" placeholder="+33 6 00 00 00 00"/>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">Prénom(s) des honorés</label>
+            <input type="text" class="form-input" placeholder="Sophie & Thomas, Léa & Mehdi…"/>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Date de l'événement *</label>
+            <input type="date" class="form-input" required/>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Message / demande sur mesure</label>
+          <textarea class="form-textarea" placeholder="Précisez vos souhaits particuliers, couleurs, police calligraphique souhaitée…"></textarea>
+        </div>
+        <button type="submit" class="btn-send">Envoyer ma commande</button>
+      </form>
+    </div>
+    <div class="success-msg" id="success-msg">
+      <div class="success-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a6e20" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="success-title">Merci !</div>
+      <p class="success-text">Votre commande a bien été reçue.<br/>Nous revenons vers vous sous 24h pour confirmer et finaliser votre album.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ CURSOR ══ */
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function tick(){
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  rx+=(mx-rx)*.1;ry+=(my-ry)*.1;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button,input,select,textarea').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='46px';ring.style.height='46px';ring.style.borderColor='rgba(154,110,32,.7)';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='7px';cur.style.height='7px';ring.style.width='30px';ring.style.height='30px';ring.style.borderColor='rgba(154,110,32,.45)';});
+});
+
+/* ══ NAV SCROLL ══ */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60));
+
+/* ══ ÉTOILES ══ */
+const starsEl=document.getElementById('stars');
+for(let i=0;i<40;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const d=2+Math.random()*6;
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${d}s;animation-delay:${Math.random()*d}s;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px`;
+  starsEl.appendChild(s);
+}
+
+/* ══ AVATARS HERO ══ */
+const AVATAR_COLORS=['#9a6e20','#7a5210','#5c3c08','#b87820','#8a6030'];
+const AVATAR_INITIALS=['S.M','L.A','Y.B','N.K','C.R'];
+const stack=document.getElementById('hero-avatars');
+AVATAR_INITIALS.forEach((init,i)=>{
+  const a=document.createElement('div');
+  a.className='avatar';
+  a.style.background=AVATAR_COLORS[i];
+  a.textContent=init;
+  stack.appendChild(a);
+});
+
+/* ══ REVEAL ══ */
+document.querySelectorAll('.rv').forEach(el=>
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1}).observe(el)
+);
+
+/* ══ ÉVÉNEMENTS CARDS ══ */
+const EVENTS=[
+  {icon:'💍',name:'Mariage',desc:'L\'album de vos noces, construit par tous vos invités en temps réel.',bg:'linear-gradient(135deg,#1a0f05,#3d2810)'},
+  {icon:'🌿',name:'Soirée Henné',desc:'Capturez la magie des traditions et des femmes réunies.',bg:'linear-gradient(135deg,#3d1a0e,#6b2d18)'},
+  {icon:'🌸',name:'Baptême',desc:'Les premiers souvenirs de votre enfant, partagés avec amour.',bg:'linear-gradient(135deg,#f5f0e8,#e8ddd0)'},
+  {icon:'🎓',name:'Diplôme',desc:'La fierté d\'une promotion entière, immortalisée en un album.',bg:'linear-gradient(135deg,#08142a,#1a3050)'},
+  {icon:'🎂',name:'Anniversaire',desc:'Chaque bougie, chaque sourire — tous les moments de la fête.',bg:'linear-gradient(135deg,#1a1628,#2a2040)'},
+  {icon:'🤝',name:'Événement Pro',desc:'Conférences, galas, teambuildings — un album à l\'image de votre marque.',bg:'linear-gradient(135deg,#101820,#1c2a38)'},
+  {icon:'💫',name:'Fiançailles',desc:'Le premier "oui" mérite un souvenir à la hauteur de ce moment.',bg:'linear-gradient(135deg,#2a1008,#5a2210)'},
+];
+const scroll=document.getElementById('events-scroll');
+EVENTS.forEach(ev=>{
+  const isDark=!ev.bg.includes('f5f0');
+  scroll.innerHTML+=`<div class="event-card">
+    <div class="event-card-preview" style="background:${ev.bg}">
+      <span style="font-size:3rem">${ev.icon}</span>
+    </div>
+    <div class="event-card-body">
+      <span class="event-card-name">${ev.name}</span>
+      <p class="event-card-desc">${ev.desc}</p>
+      <div class="event-card-cta">Configurer <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="2" y1="6" x2="10" y2="6"/><polyline points="7,3 10,6 7,9"/></svg></div>
+    </div>
+  </div>`;
+});
+
+/* ══ THÈMES ══ */
+const THEMES=[
+  {id:'or-nuit',   name:'Or & Nuit',    bg:'linear-gradient(135deg,#1a0f05,#3d2810)', premium:false},
+  {id:'creme',     name:'Tadelakt',     bg:'linear-gradient(135deg,#e8ddd0,#f5f0e8)', premium:false},
+  {id:'bleu-nuit', name:'Bleu Royal',   bg:'linear-gradient(135deg,#0e1e35,#1a3050)', premium:true},
+  {id:'olive',     name:'Vert Olive',   bg:'linear-gradient(135deg,#2a3428,#4a5240)', premium:false},
+  {id:'terra',     name:'Terracotta',   bg:'linear-gradient(135deg,#3d1a0e,#6b2d18)', premium:false},
+  {id:'etoile',    name:'Étoilé',       bg:'linear-gradient(135deg,#1a1628,#2a2040)', premium:true},
+  {id:'rose',      name:'Rose Nacré',   bg:'linear-gradient(135deg,#3d1520,#6b2840)', premium:false},
+  {id:'ardoise',   name:'Ardoise',      bg:'linear-gradient(135deg,#1a2030,#2a3050)', premium:false},
+  {id:'ivoire',    name:'Ivoire Pur',   bg:'linear-gradient(135deg,#f0ece4,#e8e0d4)', premium:false},
+  {id:'sur-mesure',name:'Sur Mesure',   bg:'linear-gradient(135deg,#2e1c08,#5c3c08)', premium:true, custom:true},
+];
+let selectedTheme=THEMES[0];
+function renderThemes(){
+  document.getElementById('themes-grid').innerHTML=THEMES.map(t=>`
+    <div class="theme-card-cfg${t.id===selectedTheme.id?' active':''}" onclick="selectTheme('${t.id}')" title="${t.name}">
+      <div class="theme-preview-cfg" style="background:${t.bg};height:100%">
+        ${t.premium?`<span class="theme-badge-cfg">Premium</span>`:''}
+        <span class="theme-name-cfg">${t.name}</span>
+      </div>
+    </div>`).join('');
+}
+renderThemes();
+function selectTheme(id){
+  selectedTheme=THEMES.find(t=>t.id===id)||THEMES[0];
+  renderThemes();
+  const pa=selectedTheme.premium&&!selectedTheme.custom?20:0;
+  const ca=selectedTheme.custom?80:0;
+  document.getElementById('pr-theme-label').textContent='Thème '+selectedTheme.name;
+  document.getElementById('pr-theme').textContent=pa>0?'+'+pa+' €':ca>0?'+'+ca+' €':'Inclus';
+  calcPrice();
+}
+
+/* ══ CONFIG STATE ══ */
+let state={event:'Mariage',guests:50,photos:5,duration:3,durationLabel:'72h'};
+function selectEvent(btn,label){
+  document.querySelectorAll('#event-grid .event-btn-cfg').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); state.event=label;
+  document.getElementById('price-event-label').textContent=label;
+  calcPrice();
+}
+function selectDuration(btn,days,label){
+  document.querySelectorAll('[data-dur],[onclick*="selectDuration"]').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); state.duration=days; state.durationLabel=label;
+  document.getElementById('pr-duration-label').textContent='Accès '+label;
+  document.getElementById('pr-duration').textContent=days===7?'+15 €':days===30?'+35 €':'Inclus';
+  calcPrice();
+}
+function updateGuests(v){
+  v=parseInt(v); state.guests=v;
+  document.getElementById('guests-val').textContent=v;
+  const pct=(v-10)/(500-10)*100;
+  document.getElementById('guests-fill').style.width=pct+'%';
+  document.getElementById('guests-thumb').style.left=pct+'%';
+  document.getElementById('pr-guests-label').textContent='Invités ('+v+')';
+  document.getElementById('pr-guests').textContent=v>50?'+'+(Math.round((v-50)*.3))+' €':'Inclus';
+  calcPrice();
+}
+function updatePhotos(v){
+  v=parseInt(v); state.photos=v;
+  document.getElementById('photos-val').textContent=v;
+  const pct=(v-1)/(30-1)*100;
+  document.getElementById('photos-fill').style.width=pct+'%';
+  document.getElementById('photos-thumb').style.left=pct+'%';
+  document.getElementById('pr-photos-label').textContent='Photos ('+v+'/pers.)';
+  document.getElementById('pr-photos').textContent=v>5?'+'+(Math.round((v-5)*2))+' €':'Inclus';
+  calcPrice();
+}
+function calcPrice(){
+  let t=49;
+  if(state.guests>50) t+=Math.round((state.guests-50)*.3);
+  if(state.photos>5)  t+=Math.round((state.photos-5)*2);
+  if(state.duration===7)  t+=15;
+  if(state.duration===30) t+=35;
+  if(selectedTheme.premium&&!selectedTheme.custom) t+=20;
+  if(selectedTheme.custom) t+=80;
+  document.getElementById('price-total').textContent=t;
+  return t;
+}
+calcPrice();
+
+/* ══ WALL OF LOVE ══ */
+const TESTIMONIALS=[
+  {text:'Nos 260 invités ont adoré l\'expérience. L\'album final était magnifique — chaque photo racontait un moment unique.',author:'Anaïs & Théo',event:'Mariage civil · Nantes',color:'#9a6e20',initials:'A.T'},
+  {text:'J\'ai utilisé Memori pour le baptême de Kofi. En 48h le QR code était prêt. Simple, beau, inoubliable.',author:'Rokia D.',event:'Baptême · Paris',color:'#7a5210',initials:'R.D'},
+  {text:'Le QR code sur les tables a créé une vraie animation. Plus de 800 photos récupérées en une soirée !',author:'Mehdi & Jade',event:'Fiançailles · Bordeaux',color:'#b87820',initials:'M.J'},
+  {text:'La soirée henné était sublimée. Le thème terracotta correspondait exactement à notre décoration traditionnelle.',author:'Fanta B.',event:'Soirée Henné · Marseille',color:'#5c3c08',initials:'F.B'},
+  {text:'Pour nos 30 ans de mariage, on voulait quelque chose d\'unique. Memori a dépassé toutes nos attentes.',author:'Min-Ji & Lucas',event:'Anniversaire · Lyon',color:'#8a6030',initials:'M.L'},
+  {text:'Interface impeccable pour notre gala d\'entreprise. Livraison en 24h, le dashboard admin est très complet.',author:'Jean-Paul D.',event:'Événement Pro · Paris',color:'#9a6e20',initials:'J.D'},
+  {text:'On a pu revivre le baptême de notre fils à travers les yeux de 150 invités. Des souvenirs inestimables.',author:'Amina & Omar',event:'Baptême · Marseille',color:'#7a5210',initials:'A.O'},
+  {text:'Thème crème élégant, livraison rapide, album magnifique. Tous nos invités ont adoré l\'expérience.',author:'Sophie & Alexandre',event:'Mariage · Strasbourg',color:'#5c3c08',initials:'S.A'},
+  {text:'Même depuis l\'étranger mes cousines ont pu partager leurs photos. Un vrai album collectif à distance !',author:'Nadia K.',event:'Mariage · Bruxelles',color:'#b87820',initials:'N.K'},
+  {text:'Le thème sur mesure correspondait parfaitement à nos couleurs. Une équipe réactive et très à l\'écoute.',author:'Leila & Adam',event:'Mariage · Bordeaux',color:'#8a6030',initials:'L.A'},
+];
+const track=document.getElementById('wol-track');
+[...TESTIMONIALS,...TESTIMONIALS].forEach(t=>{
+  track.innerHTML+=`<div class="wol-card">
+    <div class="wol-header">
+      <div class="wol-avatar" style="background:${t.color}">${t.initials}</div>
+      <div class="wol-info">
+        <div class="wol-name">${t.author}</div>
+        <div class="wol-event">${t.event}</div>
+      </div>
+    </div>
+    <div class="wol-stars">★★★★★</div>
+    <p class="wol-text">"${t.text}"</p>
+  </div>`;
+});
+
+/* ══ GUEST STEPS ══ */
+function switchStep(idx){
+  document.querySelectorAll('.gstep').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.pscreen').forEach((s,i)=>s.classList.toggle('active',i===idx));
+}
+
+/* ══ THEME LIGHTBOX ══ */
+const THEME_DATA = {
+  'Or & Nuit':      {event:'Mariage',       features:['Fond noir profond','Typographie or calligraphique','Ornements géométriques'],desc:'L\'élégance absolue du luxe marocain contemporain. Or sur nuit, un contraste saisissant pour immortaliser le plus beau des jours.'},
+  'Terracotta & Cuivre': {event:'Henné',    features:['Tons chauds du Maghreb','Motifs henna stylisés','Ambiance feu & cuivre'],desc:'La chaleur des terres du Maghreb, les couleurs du henné et de la tradition. Un thème qui honore la beauté de la soirée.'},
+  'Crème & Tadelakt': {event:'Baptême',     features:['Fond crème doux','Typographie sobre & élégante','Tons neutres apaisants'],desc:'Douceur et sérénité pour accueillir le plus précieux des instants. Crème, lin et touches dorées pour un album intemporel.'},
+  'Ciel Étoilé':    {event:'Anniversaire',  features:['Fond bleu nuit profond','Étoiles animées','Ambiance poétique'],desc:'Un ciel de velours parsemé d\'étoiles pour une célébration romantique et poétique. Chaque photo devient une constellation de souvenirs.'},
+  'Bleu Nuit Royal': {event:'Diplôme · Pro',features:['Bleu royal sophistiqué','Mise en page dashboard','Statistiques en direct'],desc:'Sophistication et profondeur pour les grandes occasions professionnelles. Un album à l\'image de votre ambition et de votre réussite.'},
+  'Ardoise & Menthe': {event:'Événement Pro',features:['Interface dashboard élégante','Compteurs en temps réel','Export ZIP professionnel'],desc:'Une interface épurée style dashboard pour les événements corporate. Suivi en direct, modération admin, export complet.'},
+};
+
+/* Mapping nom vitrine → id THEMES */
+const SHOWCASE_TO_THEME = {
+  'Or & Nuit':           'or-nuit',
+  'Terracotta & Cuivre': 'terra',
+  'Crème & Tadelakt':    'creme',
+  'Ciel Étoilé':         'etoile',
+  'Bleu Nuit Royal':     'bleu-nuit',
+  'Ardoise & Menthe':    'ardoise',
+};
+
+function openTLB(item){
+  const bgEl   = item.querySelector('.showcase-bg');
+  const infoEl = item.querySelector('.showcase-info');
+  const name     = infoEl.querySelector('.showcase-name').textContent.trim();
+  const eventTxt = infoEl.querySelector('.showcase-event').textContent.trim();
+  const desc     = infoEl.querySelector('.showcase-desc').textContent.trim();
+  const data     = THEME_DATA[name] || {};
+  const themeId  = SHOWCASE_TO_THEME[name] || null;
+
+  // Clone le mockup en pleine taille
+  const mockupClone = bgEl.cloneNode(true);
+  mockupClone.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
+  const svg = mockupClone.querySelector('svg');
+
+  const tlbMockup = document.getElementById('tlb-mockup');
+  tlbMockup.style.position = 'relative';
+  tlbMockup.innerHTML = '';
+  tlbMockup.appendChild(mockupClone);
+
+  // Calculer les dimensions après que le DOM est rendu
+  if(svg){
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
+    svg.removeAttribute('style');
+    svg.style.filter = 'drop-shadow(0 20px 60px rgba(0,0,0,.7))';
+    requestAnimationFrame(()=>{
+      const mW = tlbMockup.offsetWidth  - 32;  // padding 16px x2
+      const mH = tlbMockup.offsetHeight - 32;
+      const vbAR = 640 / 400; // viewBox aspect ratio (paysage)
+      let svgW, svgH;
+      if(mW / mH > vbAR){
+        // Conteneur plus large → hauteur pilote
+        svgH = mH; svgW = mH * vbAR;
+      } else {
+        // Conteneur plus haut → largeur pilote
+        svgW = mW; svgH = mW / vbAR;
+      }
+      svg.style.width  = svgW + 'px';
+      svg.style.height = svgH + 'px';
+      svg.style.display = 'block';
+      svg.style.filter = 'drop-shadow(0 20px 60px rgba(0,0,0,.7))';
+    });
+  }
+
+  // Panneau info + bouton avec pré-sélection
+  const features = (data.features||[]).map(f=>`<div class="tlb-feature">${f}</div>`).join('');
+  const btnOnclick = themeId
+    ? `closeTLB();selectTheme('${themeId}');document.getElementById('configurator').scrollIntoView({behavior:'smooth'})`
+    : `closeTLB();document.getElementById('configurator').scrollIntoView({behavior:'smooth'})`;
+
+  document.getElementById('tlb-panel').innerHTML = `
+    <div class="tlb-event">${eventTxt}</div>
+    <div class="tlb-name">${name}</div>
+    <div class="tlb-desc">${data.desc || desc}</div>
+    <div class="tlb-divider"></div>
+    <div class="tlb-tags">${features}</div>
+    <button class="tlb-btn" onclick="${btnOnclick}">Choisir ce thème →</button>`;
+
+  document.getElementById('theme-lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTLB(){
+  document.getElementById('theme-lb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('theme-lb').addEventListener('click', e=>{
+  if(e.target === document.getElementById('theme-lb')) closeTLB();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeTLB(); });
+
+/* ══ MODAL ══ */
+function openModal(){
+  const total=calcPrice();
+  document.getElementById('modal-summary').innerHTML=`
+    <div class="modal-summary-row"><span class="modal-summary-label">Événement</span><span class="modal-summary-val">${state.event}</span></div>
+    <div class="modal-summary-row"><span class="modal-summary-label">Invités</span><span class="modal-summary-val">${state.guests} personnes</span></div>
+    <div class="modal-summary-row"><span class="modal-summary-label">Photos / invité</span><span class="modal-summary-val">${state.photos} photos</span></div>
+    <div class="modal-summary-row"><span class="modal-summary-label">Accès</span><span class="modal-summary-val">${state.durationLabel}</span></div>
+    <div class="modal-summary-row"><span class="modal-summary-label">Thème</span><span class="modal-summary-val">${selectedTheme.name}</span></div>
+    <div class="modal-summary-row"><span class="modal-summary-label">Total</span><span class="modal-summary-val" style="font-size:1.1rem">${total} €</span></div>`;
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('modal-bg').addEventListener('click',e=>{if(e.target===document.getElementById('modal-bg'))closeModal();});
+function submitOrder(e){
+  e.preventDefault();
+  document.getElementById('modal-form-wrap').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+</script>
+</body>
+</html>
